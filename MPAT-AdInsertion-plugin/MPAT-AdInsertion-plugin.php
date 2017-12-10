@@ -13,8 +13,8 @@
  * @package           MPAT_AdInsertion_plugin
  *
  * @wordpress-plugin
- * Plugin Name:       WordPress Plugin Boilerplate
- * Plugin URI:        http://example.com/MPAT-AdInsertion-plugin-uri/
+ * Plugin Name:       MPAT Ad-Insertion Plugin
+ * Plugin URI:        https://github.com/Mark-003/MPAT-AdInsertion-plugin
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.0
  * Author:            Your Name or Your Company
