@@ -8,8 +8,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/public/partials
+ * @package    MPAT_AdInsertion_plugin
+ * @subpackage MPAT_AdInsertion_plugin/public/partials
  */
 ?>
 
