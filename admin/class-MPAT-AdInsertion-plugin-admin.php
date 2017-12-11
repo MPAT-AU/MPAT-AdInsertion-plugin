@@ -100,4 +100,15 @@ class MPAT_AdInsertion_plugin_Admin {
 
 	}
 
+    public function addToAdminPage() {
+        // page_title, menu_title, capability, menu_slug, function, icon_url, position
+        add_menu_page(
+            'MPAT Ad Insertion Plugin',
+            'AdInsertionPlugin',
+            'edit_pages',
+            plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/MPAT-AdInsertion-plugin-admin-display.php',
+            null
+        );
+    }
+
 }
