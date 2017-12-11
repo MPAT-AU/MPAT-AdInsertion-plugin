@@ -1,0 +1,17 @@
+{
+  "name" : "mpat/mpat-adinsertion-plugin",
+  "description" : "MPAT Ad Insertion Plugin",
+  "version" : "1.0.0",
+  "license" : "GPL2",
+  "authors" : [{
+    "name" : "Mark-003"
+  }
+  ],
+  "repositories" : [
+    {
+      "type" : "vcs",
+      "url" : "git@github.com:Mark-003/MPAT-AdInsertion-plugin.git"
+    }
+  ],
+  "type" : "wordpress-plugin"
+}
