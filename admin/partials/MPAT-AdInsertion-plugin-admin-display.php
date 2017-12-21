@@ -14,7 +14,7 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <!-- <meta charset="utf-8" />
@@ -22,9 +22,15 @@
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
-    <script src="DaiHandler.js"></script>
+    <script>
+        function test(){
+            console.log("test")
+        }
+    
+    
+    </script>
 </head>
 <body>
-    <button onclick="test()">Click me</button
+    <button onclick="test">Click me</button
 </body>
 </html>
