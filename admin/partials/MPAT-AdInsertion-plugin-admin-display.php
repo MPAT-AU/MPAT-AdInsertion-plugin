@@ -31,6 +31,6 @@
     </script>
 </head>
 <body>
-    <button onclick="test">Click me</button
+    <button onclick="test()">Click me</button
 </body>
 </html>
