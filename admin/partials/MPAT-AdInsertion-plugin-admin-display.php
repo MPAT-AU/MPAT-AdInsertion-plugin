@@ -24,9 +24,31 @@
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
     <script>
         function test(){
-            console.log("test")
+
+            fetch("test.json")
+            .then(response => response.json())
+            .then(json => console.log(json));
+
+            // httpGetAsync("http://daiservices.fokus.fraunhofer.de:3001/json/fame/vod", json, response => {
+
+            //     console.log(response);
+
+            // });
+
+
         }
     
+
+        function httpGetAsync(theUrl, JSONBODY , callback)
+        {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() { 
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    callback(xmlHttp.responseText);
+            }
+            xmlHttp.open("GET", theUrl, true); 
+            xmlHttp.send(JSONBODY);
+        }
     
     </script>
 </head>

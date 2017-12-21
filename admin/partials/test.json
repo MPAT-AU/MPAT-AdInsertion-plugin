@@ -1,0 +1,33 @@
+{
+  "content": {
+    "dash": [
+      {
+        "mpd": "http://daiservices.fokus.fraunhofer.de:3002/content/dash/redbull-caribbeansea-1/redbull-caribbeansea-1.mpd",
+        "baseUrl": "http://daiservices.fokus.fraunhofer.de:3002/content/dash/redbull-caribbeansea-1/",
+        "type": "content",
+        "subContent": [
+          {
+            "mpd": "",
+            "baseUrl": "",
+            "type": "ad",
+            "spliceTime": 12000
+          }
+        ],
+        "inlineEvents": []
+      }
+    ],
+    "hls": [
+      {
+        "m3u8": "http://daiservices.fokus.fraunhofer.de:3002/content/hls/redbull-caribbeansea-1/redbull-caribbeansea-1.m3u8",
+        "type": "content",
+        "subContent": [
+          {
+            "m3u8": "",
+            "type": "ad",
+            "spliceTime": 12000
+          }
+        ]
+      }
+    ]
+  }
+}
