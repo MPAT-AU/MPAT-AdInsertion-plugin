@@ -25,15 +25,13 @@
     <script>
         function test(){
 
-            fetch("test.json")
-            .then(response => response.json())
-            .then(json => console.log(json));
+            let json = JSON.parse("test.json");
 
-            // httpGetAsync("http://daiservices.fokus.fraunhofer.de:3001/json/fame/vod", json, response => {
+            httpGetAsync("http://daiservices.fokus.fraunhofer.de:3001/json/fame/vod", json, response => {
 
-            //     console.log(response);
+                console.log(response);
 
-            // });
+            });
 
 
         }
