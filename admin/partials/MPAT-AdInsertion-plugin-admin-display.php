@@ -17,22 +17,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
     <script>
+
+
+
         function test(){
 
-            let json = JSON.parse("test.json");
-
-            httpGetAsync("http://daiservices.fokus.fraunhofer.de:3001/json/fame/vod", json, response => {
-
+            let json = "";//JSON.parse("test.json");
+            httpGetAsync("https://jsonplaceholder.typicode.com/posts/1", json, response => {
                 console.log(response);
-
             });
-
 
         }
     
