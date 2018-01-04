@@ -18,33 +18,9 @@
 <html>
 <head>
     <script>
-
-
-
-        function test(){
-
-            let json = "";//JSON.parse("test.json");
-            httpGetAsync("https://jsonplaceholder.typicode.com/posts/1", json, response => {
-                console.log(response);
-            });
-
-        }
-    
-
-        function httpGetAsync(theUrl, JSONBODY , callback)
-        {
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.onreadystatechange = function() { 
-                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                    callback(xmlHttp.responseText);
-            }
-            xmlHttp.open("GET", theUrl, true); 
-            xmlHttp.send(JSONBODY);
-        }
-    
     </script>
 </head>
 <body>
-    <button onclick="test()">Click me</button
+    <button onclick="sendAndHandleRequest()">Click me</button
 </body>
 </html>
