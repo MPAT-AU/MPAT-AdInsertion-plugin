@@ -12,15 +12,6 @@
  * @subpackage MPAT_AdInsertion_plugin/admin/partials
  */
 ?>
+<div id="reactRoot" class="wrap mpat"></div>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-<!DOCTYPE html>
-<html>
-<head>
-    <script>
-    </script>
-</head>
-<body>
-    <button onclick="sendAndHandleRequest()">Click me</button
-</body>
-</html>

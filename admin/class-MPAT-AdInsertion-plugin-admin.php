@@ -73,7 +73,7 @@ class MPAT_AdInsertion_plugin_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'css/MPAT-AdInsertion-plugin-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'css/MPAT-AdInsertion-plugin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -95,10 +95,11 @@ class MPAT_AdInsertion_plugin_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+        $adminInterface_ver  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/build/adminInterface.bundle.js' ));
+        wp_enqueue_script( 'adminInterface', plugin_dir_url( __FILE__ ) . 'js/build/adminInterface.bundle.js', array( ), $adminInterface_ver);
+        wp_enqueue_script( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'js/MPAT-AdInsertion-plugin.js', array( 'wp-api', 'adminInterface' ), $this->version, false );
 
-		wp_enqueue_script( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'js/MPAT-AdInsertion-plugin-admin.js', array( 'jquery' ), $this->version, false );
-
-	}
+    }
 
     public function addToAdminPage() {
         // page_title, menu_title, capability, menu_slug, function, icon_url, position

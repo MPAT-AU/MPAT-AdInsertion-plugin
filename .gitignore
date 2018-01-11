@@ -1,3 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
 MPAT-AdInsertion-plugin.iml
+/admin/js/build/
+/node_modules/
