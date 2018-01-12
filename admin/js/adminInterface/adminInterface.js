@@ -37,9 +37,7 @@ class AdminInterface {
         if(!rootObject)
             return
 
-        ReactDOM.render(
-            <Interface name='Mark-003'/>,
-            rootObject)
+        ReactDOM.render(<Interface/>, rootObject)
     }
 }
 
