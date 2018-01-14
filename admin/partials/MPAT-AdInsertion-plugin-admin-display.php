@@ -12,6 +12,8 @@
  * @subpackage MPAT_AdInsertion_plugin/admin/partials
  */
 ?>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" 
+  type="text/javascript"></script>
 <div id="reactRoot" class="wrap mpat"></div>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
