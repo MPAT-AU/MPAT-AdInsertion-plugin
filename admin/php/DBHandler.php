@@ -16,9 +16,11 @@ $path = $_SERVER['DOCUMENT_ROOT'];
 include_once $path . '/wp/wp-load.php';
 
 // handling requests
-if(isset($_GET['function'])) {
-    switch($_GET['function']){
+if ( isset( $_POST['function'] ) ) {
+    switch ( $_POST['function'] ) {
         case 'createTables':
+
+        debug_to_console("in here");
             createVideoTable();
             createPartTable();
             createAdBlockTable();
@@ -27,16 +29,23 @@ if(isset($_GET['function'])) {
     }
 }
 
+if ( isset( $_GET['function'] ) ) {
+    switch ( $_GET['function'] ) {
+        case 'getVideos':
+            getVideos();
+        break;
+    }
+}
+
 // database functions
-function createVideoTable(){
-    
+function createVideoTable() {
     global $wpdb;
 
     // global $mpat_table_prefix;
     // $table_name = $wpdb->prefix.$mpat_table_prefix.'video';
 
     $table_name = 'video';
-    if( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name) {
+    if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name ) {
 
         // global $table_name;
 
@@ -51,12 +60,11 @@ function createVideoTable(){
     }
 }
 
-function createPartTable(){
-    
+function createPartTable() {
     global $wpdb;
     
     $table_name = 'part';
-    if( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name) {
+    if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name ) {
 
         $wpdb->query( 
             'CREATE TABLE part (
@@ -72,12 +80,11 @@ function createPartTable(){
     }
 }
 
-function createAdBlockTable(){
-    
+function createAdBlockTable() {
     global $wpdb;
     
     $table_name = 'ad_block';
-    if( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name) {
+    if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name ) {
 
         $wpdb->query( 
             'CREATE TABLE ad_block (
@@ -91,12 +98,11 @@ function createAdBlockTable(){
     }
 }
 
-function createAdTable(){
-    
+function createAdTable() {
     global $wpdb;
     
     $table_name = 'ad';
-    if( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name) {
+    if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name ) {
 
         $wpdb->query( 
             'CREATE TABLE ad (
@@ -109,4 +115,34 @@ function createAdTable(){
     }
 }
 
+function getVideos() {
+    global $wpdb;
+
+    // $wpdb->insert( 
+    //     'video', 
+    //     array( 
+    //         'name' => 'testing', 
+    //         'output_dash_url' => '123',
+    //         'output_hls_url' => '456'
+
+    //     ), 
+    //     array( 
+    //         '%s', 
+    //         '%s' 
+    //     ) 
+    // );
+    $results = $wpdb->get_results( 
+        'SELECT *
+        FROM video'
+    );
+ 
+    // TODO results to json and send back
+
+    // foreach ( $results as $result ) {
+    //     // debug_to_console( $result->id );
+    //     // echo( $results);
+    //     // echo( $result->id );
+    // }
+
+}
 ?>
