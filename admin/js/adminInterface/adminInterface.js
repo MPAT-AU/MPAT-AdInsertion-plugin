@@ -4,7 +4,7 @@
 import React    from 'react'
 import ReactDOM from 'react-dom'
 
-import Interface from './interface/interface'
+import { InterfaceRoot } from './interface/interface'
 
 // variables area
 const version = '1.0.0'
@@ -37,7 +37,7 @@ class AdminInterface {
         if(!rootObject)
             return
 
-        ReactDOM.render(<Interface/>, rootObject)
+        ReactDOM.render(<InterfaceRoot/>, rootObject)
     }
 }
 

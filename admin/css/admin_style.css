@@ -1,0 +1,48 @@
+.ad-inserter-h2 {
+    font-size: 21px;
+    font-weight: 600;
+    border-bottom: 1px solid #ccc;
+    text-transform: uppercase;
+    padding: 21px 10px;
+}
+
+.ad-inserter-h3 {
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.ad-inserter-flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.ad-inserter-right-button-group {
+    display: flex;
+    align-items: flex-end;
+}
+
+.ad-inserter-right-button-group > link > button {
+    margin: 0 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.db-test-button {
+    display: block;
+    margin-top: 100px;
+}

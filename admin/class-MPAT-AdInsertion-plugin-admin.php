@@ -73,6 +73,7 @@ class MPAT_AdInsertion_plugin_Admin {
 		 * class.
 		 */
 
+        wp_enqueue_style( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'css/admin_style.css', array(), $this->version, 'all' );
 		wp_enqueue_style( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'css/MPAT-AdInsertion-plugin.css', array(), $this->version, 'all' );
 
 	}
@@ -107,9 +108,23 @@ class MPAT_AdInsertion_plugin_Admin {
             'MPAT Ad Insertion Plugin',
             'AdInsertionPlugin',
             'edit_pages',
-            plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/MPAT-AdInsertion-plugin-admin-display.php',
-            null
+            'mpat-ad-insertion',
+            array(&$this, 'display')
         );
+        add_submenu_page(
+            'mpat-ad-insertion',
+            'New Video',
+            'New Video',
+            'edit_pages',
+            'mpat-ad-insertion-new-video',
+            array(&$this, 'display')
+        );
+    }
+
+    function display() {
+	    ?>
+            <div id="reactRoot" class="wrap mpat"></div>
+        <?php
     }
 
 }
