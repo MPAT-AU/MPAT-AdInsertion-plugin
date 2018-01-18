@@ -5,9 +5,9 @@ export function createTables() {
         url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
         data: {function: 'createTables'},
         type: 'post',
-        success: function(data){
-            console.log("success");
+        success: function(data) {
             console.log(data);
+            return data;
         },
         error: function (error) {
             console.log("Error happened: ");
@@ -24,6 +24,7 @@ export function getVideos() {
         type: 'get',
         success: function(data) {
             console.log(data);
+            return data;
         },
         error: function (error) {
             console.log("Error happened: ");
@@ -32,7 +33,7 @@ export function getVideos() {
     });
 }
 
-// returns JSON-array with all videos
+// returns JSON with video
 export function getVideo(id) {
     $.ajax({
         url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
@@ -40,6 +41,7 @@ export function getVideo(id) {
         type: 'get',
         success: function(data) {
             console.log(data);
+            return data;
         },
         error: function (error) {
             console.log("Error happened: ");
@@ -47,3 +49,4 @@ export function getVideo(id) {
         }
     });
 }
+
