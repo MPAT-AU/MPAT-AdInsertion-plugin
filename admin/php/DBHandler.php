@@ -34,6 +34,9 @@ if ( isset( $_GET['function'] ) ) {
         case 'getVideos':
             getVideos();
         break;
+        case 'getVideo':
+            getVideo($_GET['id']);
+        break;
     }
 }
 
@@ -118,31 +121,48 @@ function createAdTable() {
 function getVideos() {
     global $wpdb;
 
-    // $wpdb->insert( 
-    //     'video', 
-    //     array( 
-    //         'name' => 'testing', 
-    //         'output_dash_url' => '123',
-    //         'output_hls_url' => '456'
 
-    //     ), 
-    //     array( 
-    //         '%s', 
-    //         '%s' 
-    //     ) 
-    // );
     $results = $wpdb->get_results( 
         'SELECT *
         FROM video'
     );
  
-    // TODO results to json and send back
+    $json = json_encode( $results );
+    echo $json;
+}
 
+function getVideo($id) {
+    global $wpdb;
+
+    $results = $wpdb->get_results( $wpdb->prepare(  
+        'SELECT *
+        FROM video
+        WHERE id = %d',
+        $id
+    ));
+ 
+    $json = json_encode($results[0]);
+    echo $json;
     // foreach ( $results as $result ) {
-    //     // debug_to_console( $result->id );
-    //     // echo( $results);
-    //     // echo( $result->id );
+    //     $myjson = json_encode($result);
+    //     echo $myjson;
     // }
 
 }
+
+// for creating data
+// $wpdb->insert( 
+//     'video', 
+//     array( 
+//         'name' => 'testing', 
+//         'output_dash_url' => '123',
+//         'output_hls_url' => '456'
+
+//     ), 
+//     array( 
+//         '%s', 
+//         '%s' 
+//     ) 
+// );
+
 ?>

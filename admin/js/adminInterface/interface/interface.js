@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react';
-import { createTables, getVideos } from '../handler/DBHandler';
+import { createTables, getVideos, getVideo } from '../handler/DBHandler';
 
 class Interface extends React.Component {
     render() {
@@ -11,6 +11,7 @@ class Interface extends React.Component {
                 <button className='white_blue'>add new video with ad's</button>
                 <button className='white_blue' onClick={ () => createTables()}>DB create Tables</button>
                 <button className='white_blue' onClick={ () => getVideos()}>DB get Videos</button>
+                <button className='white_blue' onClick={ () => getVideo(1)}>DB get Video</button>
             </div>
         );
     }
