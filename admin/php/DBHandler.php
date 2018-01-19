@@ -25,13 +25,13 @@ if ( isset( $_POST['function'] ) ) {
             createAdTable();
             break;
         case 'createAd':
-            createAd($_GET['json']);
+            createAd($_POST['json']);
             break;
         case 'updateAd':
-            updateAd($_GET['id'],$_GET['json']);
+            updateAd($_POST['id'],$_POST['json']);
             break; 
         case 'deleteAd':
-            deleteAd($_GET['id']);
+            deleteAd($_POST['id']);
             break;      
     }
 }
@@ -198,8 +198,6 @@ function getAd($id) {
 function createAd($json){
     global $wpdb;
 
-    $json = json_decode($json, true);
-
     $result = $wpdb->insert( 
         'ad', 
         array( 
@@ -224,8 +222,6 @@ function createAd($json){
 // 4.4
 function updateAd($id,$json){
     global $wpdb;
-
-    $json = json_decode($json, true);
 
     $result = $wpdb->update( 
         'ad', 
@@ -257,8 +253,6 @@ function updateAd($id,$json){
 // 4.5
 function deleteAd($id){
     global $wpdb;
-
-    $json = json_decode($json, true);
 
     $result = $wpdb->delete( 
         'ad', 
