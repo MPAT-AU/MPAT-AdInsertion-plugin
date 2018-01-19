@@ -106,10 +106,12 @@ function createAdBlockTable() {
 
         $wpdb->query( 
             'CREATE TABLE ad_block (
-                id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                id BIGINT(20) NOT NULL,
                 p_id BIGINT(20) NOT NULL,
                 ad_id BIGINT(20) NOT NULL,
                 sec_in_part INT(20),
+                order_nr INT(20) NOT NULL,
+                PRIMARY KEY(id, p_id, order_nr),
                 CONSTRAINT `fk_ad_block_part` FOREIGN KEY (p_id) REFERENCES part (id) ON DELETE CASCADE ON UPDATE RESTRICT
             )'
         );
@@ -163,6 +165,119 @@ function getVideo($id) {
     //     echo $myjson;
     // }
 
+}
+
+// 4.1
+function getAds() {
+    global $wpdb;
+
+
+    $results = $wpdb->get_results( 
+        'SELECT *
+        FROM ad'
+    );
+ 
+    $json = json_encode( $results );
+    echo $json;
+}
+
+// 4.2
+function getAd($id) {
+    global $wpdb;
+
+    $result = $wpdb->get_results( $wpdb->prepare(  
+        'SELECT *
+        FROM ad
+        WHERE id = %d',
+        $id
+    ));
+     
+    //debug_to_console($result)
+
+    if (is_null($result)){
+        echo false;
+    } else {
+        $json = json_encode($result[0]);
+        echo $json;
+    }
+    
+}
+
+// 4.3
+function createAd($json){
+    global $wpdb;
+
+    $result = $wpdb->insert( 
+        'ad', 
+        array( 
+            'name' => $json['name'], 
+            'dash_url' => $json['dash_url'],
+            'hls_url' => $json['hls_url']
+        ), 
+        array( 
+            '%s', 
+            '%s',
+            '%s' 
+        ) 
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 4.4
+function updateAd($id,$json){
+    global $wpdb;
+
+    $result = $wpdb->update( 
+        'ad', 
+        array( 
+            'name' => $json['name'], 
+            'dash_url' => $json['dash_url'],
+            'hls_url' => $json['hls_url']
+        ),
+        array(
+            'id' => $id
+        ), 
+        array( 
+            '%s', 
+            '%s',
+            '%s' 
+        ),
+        array(
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 4.5
+function deleteAd($id){
+    global $wpdb;
+
+    $result = $wpdb->delete( 
+        'ad', 
+        array(
+             'id' => $id 
+        ),
+        array( 
+            '%d' 
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
 }
 
 function createData() {
@@ -364,120 +479,6 @@ function createData() {
         )
     );
 
-}
-
-
-// 4.1
-function getAds() {
-    global $wpdb;
-
-
-    $results = $wpdb->get_results( 
-        'SELECT *
-        FROM ad'
-    );
- 
-    $json = json_encode( $results );
-    echo $json;
-}
-
-// 4.2
-function getAd($id) {
-    global $wpdb;
-
-    $result = $wpdb->get_results( $wpdb->prepare(  
-        'SELECT *
-        FROM ad
-        WHERE id = %d',
-        $id
-    ));
-     
-    //debug_to_console($result)
-
-    if (is_null($result)){
-        echo false;
-    } else {
-        $json = json_encode($result[0]);
-        echo $json;
-    }
-    
-}
-
-// 4.3
-function createAd($json){
-    global $wpdb;
-
-    $result = $wpdb->insert( 
-        'ad', 
-        array( 
-            'name' => $json['name'], 
-            'dash_url' => $json['dash_url'],
-            'hls_url' => $json['hls_url']
-        ), 
-        array( 
-            '%s', 
-            '%s',
-            '%s' 
-        ) 
-    );
-
-    if (false === $result){
-        echo false;
-    } else {
-        echo true;
-    } 
-}
-
-// 4.4
-function updateAd($id,$json){
-    global $wpdb;
-
-    $result = $wpdb->update( 
-        'ad', 
-        array( 
-            'name' => $json['name'], 
-            'dash_url' => $json['dash_url'],
-            'hls_url' => $json['hls_url']
-        ),
-        array(
-            'id' => $id
-        ), 
-        array( 
-            '%s', 
-            '%s',
-            '%s' 
-        ),
-        array(
-            '%d'
-        )
-    );
-
-    if (false === $result){
-        echo false;
-    } else {
-        echo true;
-    } 
-}
-
-// 4.5
-function deleteAd($id){
-    global $wpdb;
-
-    $result = $wpdb->delete( 
-        'ad', 
-        array(
-             'id' => $id 
-        ),
-        array( 
-            '%d' 
-        )
-    );
-
-    if (false === $result){
-        echo false;
-    } else {
-        echo true;
-    } 
 }
 
 ?>
