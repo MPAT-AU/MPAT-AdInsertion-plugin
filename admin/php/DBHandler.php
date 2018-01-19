@@ -352,131 +352,159 @@ function createData() {
         )
     );
 
-    // creat parts
+    // create parts
     $wpdb->insert( 
         'part', 
         array( 
-            'v_id' => '1',
+            'v_id' => 1,
             'name' => 'part 1',
             'dash_url' => 'part dash url 1',
             'hls_url' => 'part hls url 1',
-            'part_nr' => '1'
+            'part_nr' => 1
         )
     );
 
     $wpdb->insert( 
         'part', 
         array( 
-            'v_id' => '1',
+            'v_id' => 1,
             'name' => 'part 2',
             'dash_url' => 'part dash url 2',
             'hls_url' => 'part hls url 2',
-            'part_nr' => '2'
+            'part_nr' => 2
         )
     );
 
     $wpdb->insert( 
         'part', 
         array( 
-            'v_id' => '1',
+            'v_id' => 1,
             'name' => 'part 3',
             'dash_url' => 'part dash url 3',
             'hls_url' => 'part hls url 3',
-            'part_nr' => '3'
+            'part_nr' => 3
         )
     );
 
     $wpdb->insert( 
         'part', 
         array( 
-            'v_id' => '2',
+            'v_id' => 2,
             'name' => 'part 4',
             'dash_url' => 'part dash url 4',
             'hls_url' => 'part hls url 4',
-            'part_nr' => '1'
+            'part_nr' => 1
         )
     );
 
     $wpdb->insert( 
         'part', 
         array( 
-            'v_id' => '3',
+            'v_id' => 3,
             'name' => 'part 5',
             'dash_url' => 'part dash url 5',
             'hls_url' => 'part hls url 5',
-            'part_nr' => '1'
+            'part_nr' => 1
         )
     );
 
     $wpdb->insert( 
         'part', 
         array( 
-            'v_id' => '3',
+            'v_id' => 3,
             'name' => 'part 6',
             'dash_url' => 'part dash url 6',
             'hls_url' => 'part hls url 6',
-            'part_nr' => '2'
+            'part_nr' => 2
         )
     );
 
     $wpdb->insert( 
         'part', 
         array( 
-            'v_id' => '3',
+            'v_id' => 3,
             'name' => 'part 7',
             'dash_url' => 'part dash url 7',
             'hls_url' => 'part hls url 7',
-            'part_nr' => '3'
+            'part_nr' => 3
         )
     );
 
     $wpdb->insert( 
         'part', 
         array( 
-            'v_id' => '3',
+            'v_id' => 3,
             'name' => 'part 8',
             'dash_url' => 'part dash url 8',
             'hls_url' => 'part hls url 8',
-            'part_nr' => '4'
+            'part_nr' => 4
         )
     );
        
     $wpdb->insert( 
         'part', 
         array( 
-            'v_id' => '4',
+            'v_id' => 4,
             'name' => 'part 9',
             'dash_url' => 'part dash url 9',
             'hls_url' => 'part hls url 9',
-            'part_nr' => '1'
+            'part_nr' => 1
         )
     );
     
     // create ad blocks
     $wpdb->insert( 
         'ad_block', 
-        array( 
+        array(
+            'id' => 1,
             'p_id' => 1,
             'ad_id' => 1,
-            'sec_in_part' => 10
+            'sec_in_part' => 10,
+            'order_nr' => 1
         )
     );
 
     $wpdb->insert( 
         'ad_block', 
-        array( 
-            'p_id' => 4,
+        array(
+            'id' => 1,
+            'p_id' => 1,
             'ad_id' => 2,
-            'sec_in_part' => 5
+            'sec_in_part' => 10,
+            'order_nr' => 2
         )
     );
 
     $wpdb->insert( 
         'ad_block', 
-        array( 
+        array(
+            'id' => 2,
+            'p_id' => 4,
+            'ad_id' => 1,
+            'sec_in_part' => 15,
+            'order_nr' => 1
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block', 
+        array(
+            'id' => 3,
+            'p_id' => 9,
+            'ad_id' => 2,
+            'sec_in_part' => 5,
+            'order_nr' => 1
+        )
+    );;
+
+    $wpdb->insert( 
+        'ad_block', 
+        array(
+            'id' => 3,
             'p_id' => 9,
             'ad_id' => 3,
-            'sec_in_part' => 10
+            'sec_in_part' => 10,
+            'order_nr' => 2
         )
     );
 
