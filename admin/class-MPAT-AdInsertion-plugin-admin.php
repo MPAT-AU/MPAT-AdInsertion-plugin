@@ -73,7 +73,8 @@ class MPAT_AdInsertion_plugin_Admin {
 		 * class.
 		 */
 
-        wp_enqueue_style( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'css/admin_style.css', array(), $this->version, 'all' );
+        $adminCss_ver  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'css/admin_style.css' ));
+        wp_enqueue_style( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'css/admin_style.css', array(), $adminCss_ver, 'all' );
 		wp_enqueue_style( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'css/MPAT-AdInsertion-plugin.css', array(), $this->version, 'all' );
 
 	}
@@ -106,9 +107,18 @@ class MPAT_AdInsertion_plugin_Admin {
         // page_title, menu_title, capability, menu_slug, function, icon_url, position
         add_menu_page(
             'MPAT Ad Insertion Plugin',
-            'AdInsertionPlugin',
+            'Video Ad Insertion',
             'edit_pages',
             'mpat-ad-insertion',
+            array(&$this, 'display'),
+			'dashicons-format-video'
+        );
+        add_submenu_page(
+            'mpat-ad-insertion',
+            'All Ad Inserted Videos',
+            'All Ad Inserted Videos',
+            'edit_pages',
+            'mpat-ad-insertion-all-ad-inserted-videos',
             array(&$this, 'display')
         );
         add_submenu_page(
@@ -117,6 +127,22 @@ class MPAT_AdInsertion_plugin_Admin {
             'New Video',
             'edit_pages',
             'mpat-ad-insertion-new-video',
+            array(&$this, 'display')
+        );
+        add_submenu_page(
+            'mpat-ad-insertion',
+            'All Ads',
+            'All Ads',
+            'edit_pages',
+            'mpat-ad-insertion-all-ads',
+            array(&$this, 'display')
+        );
+        add_submenu_page(
+            'mpat-ad-insertion',
+            'New Ad',
+            'New Ad',
+            'edit_pages',
+            'mpat-ad-insertion-new-ad',
             array(&$this, 'display')
         );
     }

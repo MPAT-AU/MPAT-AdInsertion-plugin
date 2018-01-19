@@ -1,9 +1,9 @@
 .ad-inserter-h2 {
     font-size: 21px;
     font-weight: 600;
-    border-bottom: 1px solid #ccc;
     text-transform: uppercase;
-    padding: 21px 10px;
+    padding: 25px 0;
+    margin: 0;
 }
 
 .ad-inserter-h3 {
@@ -12,20 +12,36 @@
     text-transform: uppercase;
 }
 
-.ad-inserter-flex-container {
+.ad-inserter-headline, .ad-inserter-headline-with-button {
+    padding: 0 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+.ad-inserter-headline-with-button {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 10px;
 }
 
 .ad-inserter-right-button-group {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: flex-end;
 }
 
-.ad-inserter-right-button-group > link > button {
-    margin: 0 10px;
+.ad-inserter-right-button-group > a {
+    margin: 0 8px;
+}
+
+.ad-inserter-space-around-button-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.ad-insertion-content-wrapper {
+    padding: 0 10px;
 }
 
 
@@ -38,11 +54,6 @@
 
 
 
-
-
-
-
-.db-test-button {
-    display: block;
+.db-test-buttons {
     margin-top: 100px;
 }

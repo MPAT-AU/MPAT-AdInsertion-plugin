@@ -4,9 +4,11 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { parse } from 'query-string'
 
+import HomeVideoAdInsertion from './homeVideoAdInsertion'
+import AllVideos from './allVideos'
 import NewVideo from './newVideo'
-import Table from './table'
-import { createTables, getVideos, getVideo } from '../handler/DBHandler';
+import AllAds from './allAds'
+import NewAd from './newAd'
 
 class InterfaceRoot extends React.Component {
     render() {
@@ -22,12 +24,11 @@ class Interface extends React.Component {
     render() {
         return (
             <div>
-                <h2 className='ad-inserter-h2'>MPAT Ad Inserter</h2>
-                { parse(location.search).page === 'mpat-ad-insertion' ? <Table/> : null }
+                { parse(location.search).page === 'mpat-ad-insertion' ? <HomeVideoAdInsertion/> : null }
+                { parse(location.search).page === 'mpat-ad-insertion-all-ad-inserted-videos' ? <AllVideos/> : null }
                 { parse(location.search).page === 'mpat-ad-insertion-new-video' ? <NewVideo/> : null }
-                <button className='white_blue' onClick={ () => createTables()}>DB create Tables</button>
-                <button className='white_blue' onClick={ () => getVideos()}>DB get Videos</button>
-                <button className='white_blue' onClick={ () => getVideo(1)}>DB get Video</button>
+                { parse(location.search).page === 'mpat-ad-insertion-all-ads' ? <AllAds/> : null }
+                { parse(location.search).page === 'mpat-ad-insertion-new-ad' ? <NewAd/> : null }
             </div>
         );
     }
