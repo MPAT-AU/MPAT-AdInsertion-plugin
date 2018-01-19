@@ -19,13 +19,20 @@ include_once $path . '/wp/wp-load.php';
 if ( isset( $_POST['function'] ) ) {
     switch ( $_POST['function'] ) {
         case 'createTables':
-
-        debug_to_console("in here");
             createVideoTable();
             createPartTable();
             createAdBlockTable();
             createAdTable();
             break;
+        case 'createAd':
+            createAd($_GET['json']);
+            break;
+        case 'updateAd':
+            updateAd($_GET['id'],$_GET['json']);
+            break; 
+        case 'deleteAd':
+            deleteAd($_GET['id']);
+            break;      
     }
 }
 
@@ -33,10 +40,16 @@ if ( isset( $_GET['function'] ) ) {
     switch ( $_GET['function'] ) {
         case 'getVideos':
             getVideos();
-        break;
+            break;
         case 'getVideo':
             getVideo($_GET['id']);
-        break;
+            break;
+        case 'getAds':
+            getAds();
+            break;
+        case 'getAd':
+            getAd($_GET['id']);
+            break;
     }
 }
 
@@ -150,19 +163,118 @@ function getVideo($id) {
 
 }
 
-// for creating data
-// $wpdb->insert( 
-//     'video', 
-//     array( 
-//         'name' => 'testing', 
-//         'output_dash_url' => '123',
-//         'output_hls_url' => '456'
 
-//     ), 
-//     array( 
-//         '%s', 
-//         '%s' 
-//     ) 
-// );
+
+// 4.1
+function getAds() {
+    global $wpdb;
+
+
+    $results = $wpdb->get_results( 
+        'SELECT *
+        FROM ad'
+    );
+ 
+    $json = json_encode( $results );
+    echo $json;
+}
+
+// 4.2
+function getAd($id) {
+    global $wpdb;
+
+    $results = $wpdb->get_results( $wpdb->prepare(  
+        'SELECT *
+        FROM ad
+        WHERE id = %d',
+        $id
+    ));
+ 
+    $json = json_encode($results[0]);
+    echo $json;
+}
+
+// 4.3
+function createAd($json){
+    global $wpdb;
+
+    $json = json_decode($json, true);
+
+    $result = $wpdb->insert( 
+        'ad', 
+        array( 
+            'name' => $json['name'], 
+            'dash_url' => $json['dash_url'],
+            'hls_url' => $json['hls_url']
+        ), 
+        array( 
+            '%s', 
+            '%s',
+            '%s' 
+        ) 
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 4.4
+function updateAd($id,$json){
+    global $wpdb;
+
+    $json = json_decode($json, true);
+
+    $result = $wpdb->update( 
+        'ad', 
+        array( 
+            'name' => $json['name'], 
+            'dash_url' => $json['dash_url'],
+            'hls_url' => $json['hls_url']
+        ),
+        array(
+            'id' => $id
+        ), 
+        array( 
+            '%s', 
+            '%s',
+            '%s' 
+        ),
+        array(
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 4.5
+function deleteAd($id){
+    global $wpdb;
+
+    $json = json_decode($json, true);
+
+    $result = $wpdb->delete( 
+        'ad', 
+        array(
+             'id' => $id 
+        ),
+        array( 
+            '%d' 
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
 
 ?>
