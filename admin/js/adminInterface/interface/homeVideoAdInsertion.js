@@ -4,7 +4,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import { highlightNavigation } from '../helper/wpRouting'
-import { createTables, getVideos, getVideo, getAds, getAd, createAd, updateAd, deleteAd } from '../handler/DBHandler';
+
+import { createTables, getVideos, getVideo, getAds, getAd, createAd, updateAd, deleteAd, createData } from '../handler/DBHandler';
 
 
 class HomeVideoAdInsertion extends React.Component {
@@ -37,6 +38,7 @@ class HomeVideoAdInsertion extends React.Component {
                 </div>
                 <div className='ad-inserter-space-around-button-group'>
                     <button className='ad-inserter-button-white-blue' onClick={ () => createTables()}>DB create Tables</button>
+                    <button className='ad-inserter-button-white-blue' onClick={ () => createData()}>DB create Test Data</button>
                     <button className='ad-inserter-button-white-blue' onClick={ () => getVideos()}>DB get Videos</button>
                     <button className='ad-inserter-button-white-blue' onClick={ () => getVideo(1)}>DB get Video</button>
                     <button className='ad-inserter-button-white-blue' onClick={ () => getAds()}>DB getAds</button>

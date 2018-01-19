@@ -328,3 +328,21 @@ export function deleteAd(id){
         }
     });
 }
+
+
+// just for testing
+export function createData(){
+    $.ajax({
+        url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
+        data: {function: 'createData'},
+        type: 'post',
+        success: function(data) {
+            console.log("createData()- Data recieved: " + data);
+            return true;
+        },
+        error: function (error) {
+            console.log("createData()- Error happened: " + error);
+            return false;
+        }
+    });
+}

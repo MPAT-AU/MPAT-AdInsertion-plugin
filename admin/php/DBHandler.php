@@ -15,14 +15,18 @@ define( 'SHORTINIT', true );
 $path = $_SERVER['DOCUMENT_ROOT'];
 include_once $path . '/wp/wp-load.php';
 
-// handling requests
+// handling POST requests
 if ( isset( $_POST['function'] ) ) {
     switch ( $_POST['function'] ) {
         case 'createTables':
             createVideoTable();
+            createAdTable();
             createPartTable();
             createAdBlockTable();
-            createAdTable();
+            createAdBlockPartTable();
+            break;
+        case 'createData': 
+            createData();
             break;
         case 'createAd':
             createAd($_POST['json']);
@@ -36,6 +40,7 @@ if ( isset( $_POST['function'] ) ) {
     }
 }
 
+// handling GET requests
 if ( isset( $_GET['function'] ) ) {
     switch ( $_GET['function'] ) {
         case 'getVideos':
@@ -63,15 +68,13 @@ function createVideoTable() {
     $table_name = 'video';
     if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name ) {
 
-        // global $table_name;
-
         $wpdb->query( 
-            'CREATE TABLE video (
-                id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(20),
-                output_dash_url VARCHAR(1000),
-                output_hls_url VARCHAR(1000)
-            )'
+                'CREATE TABLE video (
+                    id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    name VARCHAR(20),
+                    output_dash_url VARCHAR(1000),
+                    output_hls_url VARCHAR(1000)
+                )'
         );
     }
 }
@@ -106,9 +109,27 @@ function createAdBlockTable() {
             'CREATE TABLE ad_block (
                 id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 p_id BIGINT(20) NOT NULL,
-                ad_id BIGINT(20) NOT NULL,
                 sec_in_part INT(20),
-                CONSTRAINT `fk_ad_block_part` FOREIGN KEY (p_id) REFERENCES part (id) ON DELETE CASCADE ON UPDATE RESTRICT
+                 CONSTRAINT `fk_ad_block_part` FOREIGN KEY (p_id) REFERENCES part (id) ON DELETE CASCADE ON UPDATE RESTRICT
+            )'
+        );
+    }
+}
+
+function createAdBlockPartTable() {
+    global $wpdb;
+    
+    $table_name = 'ad_block_part';
+    if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name ) {
+
+        $wpdb->query( 
+            'CREATE TABLE ad_block_part (
+                ab_id BIGINT(20) NOT NULL,
+                order_nr INT(20) NOT NULL,
+                ad_id BIGINT(20) NOT NULL,
+                PRIMARY KEY(ab_id, order_nr),
+                CONSTRAINT `fk_ad_block_part_ad_block` FOREIGN KEY (ab_id) REFERENCES ad_block (id) ON DELETE CASCADE ON UPDATE RESTRICT,
+                CONSTRAINT `fk_ad_block_part_ad` FOREIGN KEY (ad_id) REFERENCES ad (id) ON DELETE CASCADE ON UPDATE RESTRICT
             )'
         );
     }
@@ -136,8 +157,12 @@ function getVideos() {
 
 
     $results = $wpdb->get_results( 
-        'SELECT *
-        FROM video'
+        'SELECT id, name, output_dash_url, output_hls_url, number_of_video_parts 
+        FROM video v, 
+            (SELECT v_id, COUNT(*) as number_of_video_parts 
+            FROM part 
+            GROUP BY v_id) np 
+        WHERE v.id = np.v_id'
     );
  
     $json = json_encode( $results );
@@ -163,8 +188,6 @@ function getVideo($id) {
 
 }
 
-
-
 // 4.1
 function getAds() {
     global $wpdb;
@@ -183,15 +206,22 @@ function getAds() {
 function getAd($id) {
     global $wpdb;
 
-    $results = $wpdb->get_results( $wpdb->prepare(  
+    $result = $wpdb->get_results( $wpdb->prepare(  
         'SELECT *
         FROM ad
         WHERE id = %d',
         $id
     ));
- 
-    $json = json_encode($results[0]);
-    echo $json;
+     
+    //debug_to_console($result)
+
+    if (is_null($result)){
+        echo false;
+    } else {
+        $json = json_encode($result[0]);
+        echo $json;
+    }
+    
 }
 
 // 4.3
@@ -269,6 +299,268 @@ function deleteAd($id){
     } else {
         echo true;
     } 
+}
+
+function createData() {
+    global $wpdb;
+    // creating videos
+    $wpdb->insert( 
+        'video', 
+        array( 
+            'name' => 'video 1', 
+            'output_dash_url' => 'video dash url 1',
+            'output_hls_url' => 'video hls url 1'
+
+        )
+    );
+
+    $wpdb->insert( 
+        'video', 
+        array( 
+            'name' => 'video 2', 
+            'output_dash_url' => 'video dash url 2',
+            'output_hls_url' => 'video hls url 2'
+
+        )
+    );
+
+    $wpdb->insert( 
+        'video', 
+        array( 
+            'name' => 'video 3', 
+            'output_dash_url' => 'video dash url 3',
+            'output_hls_url' => 'video hls url 3'
+
+        )
+    );
+
+    $wpdb->insert( 
+        'video', 
+        array( 
+            'name' => 'video 4', 
+            'output_dash_url' => 'video dash url 4',
+            'output_hls_url' => 'video hls url 4'
+
+        )
+    );
+
+    // create ads
+    $wpdb->insert( 
+        'ad', 
+        array( 
+            'name' => 'ad 1',
+            'dash_url' => 'ad dash url 1',
+            'hls_url' => 'ad hls url 1'
+        )
+    );
+
+    $wpdb->insert( 
+        'ad', 
+        array( 
+            'name' => 'ad 2',
+            'dash_url' => 'ad dash url 2',
+            'hls_url' => 'ad hls url 2'
+        )
+    );
+    
+    $wpdb->insert( 
+        'ad', 
+        array( 
+            'name' => 'ad 3',
+            'dash_url' => 'ad dash url 3',
+            'hls_url' => 'ad hls url 3'
+        )
+    );
+
+    // create parts
+    $wpdb->insert( 
+        'part', 
+        array( 
+            'v_id' => 1,
+            'name' => 'part 1',
+            'dash_url' => 'part dash url 1',
+            'hls_url' => 'part hls url 1',
+            'part_nr' => 1
+        )
+    );
+
+    $wpdb->insert( 
+        'part', 
+        array( 
+            'v_id' => 1,
+            'name' => 'part 2',
+            'dash_url' => 'part dash url 2',
+            'hls_url' => 'part hls url 2',
+            'part_nr' => 2
+        )
+    );
+
+    $wpdb->insert( 
+        'part', 
+        array( 
+            'v_id' => 1,
+            'name' => 'part 3',
+            'dash_url' => 'part dash url 3',
+            'hls_url' => 'part hls url 3',
+            'part_nr' => 3
+        )
+    );
+
+    $wpdb->insert( 
+        'part', 
+        array( 
+            'v_id' => 2,
+            'name' => 'part 4',
+            'dash_url' => 'part dash url 4',
+            'hls_url' => 'part hls url 4',
+            'part_nr' => 1
+        )
+    );
+
+    $wpdb->insert( 
+        'part', 
+        array( 
+            'v_id' => 3,
+            'name' => 'part 5',
+            'dash_url' => 'part dash url 5',
+            'hls_url' => 'part hls url 5',
+            'part_nr' => 1
+        )
+    );
+
+    $wpdb->insert( 
+        'part', 
+        array( 
+            'v_id' => 3,
+            'name' => 'part 6',
+            'dash_url' => 'part dash url 6',
+            'hls_url' => 'part hls url 6',
+            'part_nr' => 2
+        )
+    );
+
+    $wpdb->insert( 
+        'part', 
+        array( 
+            'v_id' => 3,
+            'name' => 'part 7',
+            'dash_url' => 'part dash url 7',
+            'hls_url' => 'part hls url 7',
+            'part_nr' => 3
+        )
+    );
+
+    $wpdb->insert( 
+        'part', 
+        array( 
+            'v_id' => 3,
+            'name' => 'part 8',
+            'dash_url' => 'part dash url 8',
+            'hls_url' => 'part hls url 8',
+            'part_nr' => 4
+        )
+    );
+       
+    $wpdb->insert( 
+        'part', 
+        array( 
+            'v_id' => 4,
+            'name' => 'part 9',
+            'dash_url' => 'part dash url 9',
+            'hls_url' => 'part hls url 9',
+            'part_nr' => 1
+        )
+    );
+    
+    // create ad blocks
+    $wpdb->insert( 
+        'ad_block', 
+        array(
+            'p_id' => 1,
+            'sec_in_part' => 10
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block', 
+        array(
+            'p_id' => 4,
+            'sec_in_part' => 15
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block', 
+        array(
+            'p_id' => 9,
+            'sec_in_part' => 5
+        )
+    );
+
+    // create ad block parts
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 1,
+            'order_nr' => 1,
+            'ad_id' => 1
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 1,
+            'order_nr' => 2,
+            'ad_id' => 2
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 1,
+            'order_nr' => 3,
+            'ad_id' => 3
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 2,
+            'order_nr' => 1,
+            'ad_id' => 1
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 2,
+            'order_nr' => 2,
+            'ad_id' => 2
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 3,
+            'order_nr' => 1,
+            'ad_id' => 1
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 3,
+            'order_nr' => 2,
+            'ad_id' => 2
+        )
+    );
+
 }
 
 ?>
