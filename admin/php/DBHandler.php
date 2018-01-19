@@ -161,14 +161,14 @@ function getVideos() {
 	            (SELECT v_id, COUNT(*) as number_of_video_parts 
     	            FROM video_part
     	            GROUP BY v_id) novp,
-                (SELECT p.v_id, COUNT(*) as number_of_ad_blocks
+                (SELECT vp.v_id, COUNT(*) as number_of_ad_blocks
 		            FROM video_part vp, ad_block ab
-		            WHERE p.id = ab.p_id
-		            GROUP BY p.v_id) noab,
-                (SELECT p.v_id, COUNT(*) AS number_of_ads
+		            WHERE vp.id = ab.p_id
+		            GROUP BY vp.v_id) noab,
+                (SELECT vp.v_id, COUNT(*) AS number_of_ads
 					FROM video_part vp, ad_block ab, ad_block_part abp
-					WHERE p.id = ab.p_id AND ab.id = abp.ab_id
-					GROUP BY p.v_id) noa
+					WHERE vp.id = ab.p_id AND ab.id = abp.ab_id
+					GROUP BY vp.v_id) noa
             WHERE v.id = novp.v_id AND novp.v_id = noab.v_id AND noab.v_id = noa.v_id'
     );
  
