@@ -94,7 +94,7 @@ class CreateAd extends React.Component {
             return <Redirect push to='/wp/wp-admin/admin.php?page=mpat-ad-insertion-all-ads'/>
         }
         return (
-            <form className='ad-insertion-content-wrapper' >
+            <form className='ad-insertion-content-wrapper' onSubmit={this.handleSubmit}>
                 <div className='ad-inserter-lable-input-row'>
                     <label className='ad-inserter-input-label'>ad name</label>
                     <input className='ad-inserter-input'
@@ -141,7 +141,7 @@ class CreateAd extends React.Component {
                     {
                         this.state.createAd ?
                             <LoadingButton loadingMessage='create'/> :
-                            <button onClick={this.handleSubmit}
+                            <button type='submit'
                                     className='ad-inserter-button-green-white'>
                                 create
                             </button>
