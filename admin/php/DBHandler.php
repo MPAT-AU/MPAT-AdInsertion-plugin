@@ -183,15 +183,22 @@ function getAds() {
 function getAd($id) {
     global $wpdb;
 
-    $results = $wpdb->get_results( $wpdb->prepare(  
+    $result = $wpdb->get_results( $wpdb->prepare(  
         'SELECT *
         FROM ad
         WHERE id = %d',
         $id
     ));
- 
-    $json = json_encode($results[0]);
-    echo $json;
+     
+    //debug_to_console($result)
+
+    if (is_null($result)){
+        echo false;
+    } else {
+        $json = json_encode($result[0]);
+        echo $json;
+    }
+    
 }
 
 // 4.3
