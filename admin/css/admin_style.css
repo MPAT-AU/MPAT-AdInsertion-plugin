@@ -1,3 +1,4 @@
+/* ========== heading ========== */
 .ad-inserter-h2 {
     font-size: 21px;
     font-weight: 600;
@@ -12,6 +13,7 @@
     text-transform: uppercase;
 }
 
+/* ========== headline ========== */
 .ad-inserter-headline, .ad-inserter-headline-with-button {
     padding: 0 10px;
     border-bottom: 1px solid #ccc;
@@ -24,6 +26,7 @@
     justify-content: space-between;
 }
 
+/* ========== button groups ========== */
 .ad-inserter-right-button-group {
     display: flex;
     align-items: center;
@@ -40,20 +43,110 @@
     justify-content: space-around;
 }
 
+/* ========== layout ========== */
 .ad-insertion-content-wrapper {
     padding: 0 10px;
+}
+
+
+/* ========== buttons ========== */
+.ad-inserter-button-green-white {
+    background-color: #25C1B2;
+    border-color: #25C1B2;
+    color: #fff;
+    text-transform: uppercase !important;
+    text-shadow: none;
+    line-height: 40px;
+    border-radius: 3px;
+    border-style: none !important;
+    height: 44px;
+    padding: 0 20px;
+    cursor: pointer;
+}
+
+.ad-inserter-button-green-white:hover {
+    background-color: #37D1BE;
+    border-color: #37D1BE;
+}
+
+.ad-inserter-button-white-blue {
+    background-color: #fff;
+    color: #43B4F9;
+    text-transform: uppercase !important;
+    text-shadow: none;
+    line-height: 40px;
+    border: 2px solid #43B4F9;
+    border-radius: 3px;
+    height: 44px;
+    padding: 0 20px;
+    cursor: pointer;
+}
+
+.ad-inserter-button-white-blue:hover {
+    border-color: #59C3F7;
+    color: #59C3F7;
+}
+
+/* ========== forms ========== */
+.ad-inserter-lable-input-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 420px;
+    padding: 20px 0;
+}
+
+.ad-inserter-lable-input-row > label {
+    text-transform: uppercase;
+    padding-right: 10px;
+}
+
+.ad-inserter-lable-input-row > input {
+    box-shadow: none;
+    background: none;
+    outline: none;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    border-bottom: 2px solid #43B4F9;
+    transition: border-color .2s;
+    height: 30px;
+    max-width: 300px;
+    width: 100%;
+}
+
+.ad-inserter-lable-input-row > input::-webkit-input-placeholder {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.ad-inserter-lable-input-row > input:-moz-placeholder { /* Firefox 18- */
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.ad-inserter-lable-input-row > input::-moz-placeholder {  /* Firefox 19+ */
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.ad-inserter-lable-input-row > input:-ms-input-placeholder {
+    text-align: center;
+    text-transform: uppercase;
+}
+.ad-inserter-lable-input-row > input::placeholder {
+    text-align: center;
+    text-transform: uppercase;
+}
+.ad-inserter-lable-input-row > input:focus {
+    border: 2px solid #43B4F9;
+    transition: border-color .2s;
 }
 
 
 
 
 
-
-
-
-
-
-
+/* ========== only for test purposes (delete later!!!) ========== */
 .db-test-buttons {
     margin-top: 100px;
 }

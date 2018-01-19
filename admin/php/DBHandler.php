@@ -27,6 +27,15 @@ if ( isset( $_POST['function'] ) ) {
         case 'createData': 
             createData();
             break;
+        case 'createAd':
+            createAd($_POST['json']);
+            break;
+        case 'updateAd':
+            updateAd($_POST['id'],$_POST['json']);
+            break; 
+        case 'deleteAd':
+            deleteAd($_POST['id']);
+            break;      
     }
 }
 
@@ -35,10 +44,16 @@ if ( isset( $_GET['function'] ) ) {
     switch ( $_GET['function'] ) {
         case 'getVideos':
             getVideos();
-        break;
+            break;
         case 'getVideo':
             getVideo($_GET['id']);
-        break;
+            break;
+        case 'getAds':
+            getAds();
+            break;
+        case 'getAd':
+            getAd($_GET['id']);
+            break;
     }
 }
 
@@ -349,7 +364,120 @@ function createData() {
         )
     );
 
+}
 
+
+// 4.1
+function getAds() {
+    global $wpdb;
+
+
+    $results = $wpdb->get_results( 
+        'SELECT *
+        FROM ad'
+    );
+ 
+    $json = json_encode( $results );
+    echo $json;
+}
+
+// 4.2
+function getAd($id) {
+    global $wpdb;
+
+    $result = $wpdb->get_results( $wpdb->prepare(  
+        'SELECT *
+        FROM ad
+        WHERE id = %d',
+        $id
+    ));
+     
+    //debug_to_console($result)
+
+    if (is_null($result)){
+        echo false;
+    } else {
+        $json = json_encode($result[0]);
+        echo $json;
+    }
+    
+}
+
+// 4.3
+function createAd($json){
+    global $wpdb;
+
+    $result = $wpdb->insert( 
+        'ad', 
+        array( 
+            'name' => $json['name'], 
+            'dash_url' => $json['dash_url'],
+            'hls_url' => $json['hls_url']
+        ), 
+        array( 
+            '%s', 
+            '%s',
+            '%s' 
+        ) 
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 4.4
+function updateAd($id,$json){
+    global $wpdb;
+
+    $result = $wpdb->update( 
+        'ad', 
+        array( 
+            'name' => $json['name'], 
+            'dash_url' => $json['dash_url'],
+            'hls_url' => $json['hls_url']
+        ),
+        array(
+            'id' => $id
+        ), 
+        array( 
+            '%s', 
+            '%s',
+            '%s' 
+        ),
+        array(
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 4.5
+function deleteAd($id){
+    global $wpdb;
+
+    $result = $wpdb->delete( 
+        'ad', 
+        array(
+             'id' => $id 
+        ),
+        array( 
+            '%d' 
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
 }
 
 ?>

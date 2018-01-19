@@ -150,7 +150,7 @@ class MPAT_AdInsertion_plugin_Admin {
     function display() {
 	    ?>
             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" type="text/javascript"></script>
-            <div id="reactRoot" class="wrap mpat"></div>
+            <div id="reactRoot" class="wrap"></div>
         <?php
     }
 
