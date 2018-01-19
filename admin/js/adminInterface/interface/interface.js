@@ -5,10 +5,10 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { parse } from 'query-string'
 
 import HomeVideoAdInsertion from './homeVideoAdInsertion'
-import AllVideos from './allVideos'
-import NewVideo from './newVideo'
-import AllAds from './allAds'
-import NewAd from './newAd'
+import AllVideos from './videos/allVideos'
+import NewVideo from './videos/newVideo'
+import AllAds from './ads/allAds'
+import NewAd from './ads/newAd'
 
 class InterfaceRoot extends React.Component {
     render() {
