@@ -111,8 +111,9 @@ function createAdBlockTable() {
                 ad_id BIGINT(20) NOT NULL,
                 sec_in_part INT(20),
                 order_nr INT(20) NOT NULL,
-                PRIMARY KEY(id, p_id, order_nr),
-                CONSTRAINT `fk_ad_block_part` FOREIGN KEY (p_id) REFERENCES part (id) ON DELETE CASCADE ON UPDATE RESTRICT
+                PRIMARY KEY(order_nr),
+                CONSTRAINT `fk_ad_block_part` FOREIGN KEY (p_id) REFERENCES part (id) ON DELETE CASCADE ON UPDATE RESTRICT,
+                CONSTRAINT `fk_ad_block_ad` FOREIGN KEY (ad_id) REFERENCES ad (id) ON DELETE CASCADE ON UPDATE RESTRICT
             )'
         );
     }
