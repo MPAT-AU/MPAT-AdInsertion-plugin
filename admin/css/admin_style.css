@@ -112,6 +112,7 @@
     height: 30px;
     max-width: 300px;
     width: 100%;
+    margin: 0 !important;
 }
 
 .ad-inserter-lable-input-row > input::-webkit-input-placeholder {
@@ -142,7 +143,45 @@
     transition: border-color .2s;
 }
 
+/* ========== loading button ========== */
+@keyframes changeGradient {
+    0% { background: linear-gradient(141deg, #37D1BE 0%, #25C1B2 11%); }
+    5% { background: linear-gradient(141deg, #37D1BE 6%, #25C1B2 16%); }
+    10% { background: linear-gradient(141deg, #25C1B2 0%, #37D1BE 11%, #25C1B2 21%); }
+    15% { background: linear-gradient(141deg, #25C1B2 6%, #37D1BE 16%, #25C1B2 26%); }
+    20% { background: linear-gradient(141deg, #25C1B2 11%, #37D1BE 21%, #25C1B2 31%); }
+    25% { background: linear-gradient(141deg, #25C1B2 16%, #37D1BE 26%, #25C1B2 36%); }
+    30% { background: linear-gradient(141deg, #25C1B2 21%, #37D1BE 31%, #25C1B2 41%); }
+    35% { background: linear-gradient(141deg, #25C1B2 26%, #37D1BE 36%, #25C1B2 46%); }
+    40% { background: linear-gradient(141deg, #25C1B2 31%, #37D1BE 41%, #25C1B2 51%); }
+    45% { background: linear-gradient(141deg, #25C1B2 36%, #37D1BE 46%, #25C1B2 56%); }
+    50% { background: linear-gradient(141deg, #25C1B2 41%, #37D1BE 51%, #25C1B2 61%); }
+    55% { background: linear-gradient(141deg, #25C1B2 46%, #37D1BE 56%, #25C1B2 66%); }
+    60% { background: linear-gradient(141deg, #25C1B2 51%, #37D1BE 61%, #25C1B2 71%); }
+    65% { background: linear-gradient(141deg, #25C1B2 56%, #37D1BE 66%, #25C1B2 76%); }
+    70% { background: linear-gradient(141deg, #25C1B2 61%, #37D1BE 71%, #25C1B2 81%); }
+    75% { background: linear-gradient(141deg, #25C1B2 66%, #37D1BE 76%, #25C1B2 86%); }
+    80% { background: linear-gradient(141deg, #25C1B2 71%, #37D1BE 81%, #25C1B2 91%); }
+    85% { background: linear-gradient(141deg, #25C1B2 76%, #37D1BE 86%, #25C1B2 96%); }
+    90% { background: linear-gradient(141deg, #25C1B2 81%, #37D1BE 91%); }
+    95% { background: linear-gradient(141deg, #25C1B2 86%, #37D1BE 96%); }
+    100% { background: linear-gradient(141deg, #25C1B2 91%, #37D1BE 0%); }
+}
 
+.ad-inserter-loading-button-container {
+    display: inline-block;
+    padding: 0 20px;
+    border-radius: 3px;
+    color: #fff;
+    text-transform: uppercase;
+    animation-duration: .8s;
+    animation-name: changeGradient;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    cursor: progress;
+    line-height: 44px;
+    height: 44px;
+}
 
 
 

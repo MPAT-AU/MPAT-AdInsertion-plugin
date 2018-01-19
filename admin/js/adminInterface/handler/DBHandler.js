@@ -275,19 +275,20 @@ export function getAd(id) {
 // returns true/false
 // POST
 export function createAd(json){
-    $.ajax({
-        url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
-        data: {function: 'createAd', json: json},
-        type: 'post',
-        success: function(data) {
-            console.log("createAd()- Data recieved: " + data);
-            return true;
-        },
-        error: function (error) {
-            console.log("createAd()- Error happened: " + error);
-            return false;
-        }
-    });
+    return new Promise((resolve, reject) =>
+        $.ajax({
+            url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
+            data: {function: 'createAd', json: json},
+            type: 'post',
+            success: function(data) {
+                console.log("createAd()- Data recieved: " + data);
+                resolve(true);
+            },
+            error: function (error) {
+                console.log("createAd()- Error happened: " + error);
+                resolve(false);
+            }
+    }));
 }
 
 // 4.4
