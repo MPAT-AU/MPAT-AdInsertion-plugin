@@ -141,8 +141,12 @@ function getVideos() {
 
 
     $results = $wpdb->get_results( 
-        'SELECT *
-        FROM video'
+        'SELECT id, name, output_dash_url, output_hls_url, number_of_video_parts 
+        FROM video v, 
+            (SELECT v_id, COUNT(*) as number_of_video_parts 
+            FROM part 
+            GROUP BY v_id) np 
+        WHERE v.id = np.v_id'
     );
  
     $json = json_encode( $results );
