@@ -23,6 +23,7 @@ if ( isset( $_POST['function'] ) ) {
             createAdTable();
             createPartTable();
             createAdBlockTable();
+            createAdBlockPartTable();
             break;
         case 'createData': 
             createData();
@@ -106,14 +107,29 @@ function createAdBlockTable() {
 
         $wpdb->query( 
             'CREATE TABLE ad_block (
-                id BIGINT(20) NOT NULL,
+                id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 p_id BIGINT(20) NOT NULL,
-                ad_id BIGINT(20) NOT NULL,
                 sec_in_part INT(20),
+                 CONSTRAINT `fk_ad_block_part` FOREIGN KEY (p_id) REFERENCES part (id) ON DELETE CASCADE ON UPDATE RESTRICT
+            )'
+        );
+    }
+}
+
+function createAdBlockPartTable() {
+    global $wpdb;
+    
+    $table_name = 'ad_block_part';
+    if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name ) {
+
+        $wpdb->query( 
+            'CREATE TABLE ad_block_part (
+                ab_id BIGINT(20) NOT NULL,
                 order_nr INT(20) NOT NULL,
-                PRIMARY KEY(id, order_nr),
-                CONSTRAINT `fk_ad_block_part` FOREIGN KEY (p_id) REFERENCES part (id) ON DELETE CASCADE ON UPDATE RESTRICT,
-                CONSTRAINT `fk_ad_block_ad` FOREIGN KEY (ad_id) REFERENCES ad (id) ON DELETE CASCADE ON UPDATE RESTRICT
+                ad_id BIGINT(20) NOT NULL,
+                PRIMARY KEY(ab_id, order_nr),
+                CONSTRAINT `fk_ad_block_part_ad_block` FOREIGN KEY (ab_id) REFERENCES ad_block (id) ON DELETE CASCADE ON UPDATE RESTRICT,
+                CONSTRAINT `fk_ad_block_part_ad` FOREIGN KEY (ad_id) REFERENCES ad (id) ON DELETE CASCADE ON UPDATE RESTRICT
             )'
         );
     }
@@ -460,55 +476,88 @@ function createData() {
     $wpdb->insert( 
         'ad_block', 
         array(
-            'id' => 1,
             'p_id' => 1,
-            'ad_id' => 1,
-            'sec_in_part' => 10,
-            'order_nr' => 1
+            'sec_in_part' => 10
         )
     );
 
     $wpdb->insert( 
         'ad_block', 
         array(
-            'id' => 1,
-            'p_id' => 1,
-            'ad_id' => 2,
-            'sec_in_part' => 10,
-            'order_nr' => 2
-        )
-    );
-
-    $wpdb->insert( 
-        'ad_block', 
-        array(
-            'id' => 2,
             'p_id' => 4,
-            'ad_id' => 1,
-            'sec_in_part' => 15,
-            'order_nr' => 1
+            'sec_in_part' => 15
         )
     );
 
     $wpdb->insert( 
         'ad_block', 
         array(
-            'id' => 3,
             'p_id' => 9,
-            'ad_id' => 2,
-            'sec_in_part' => 5,
-            'order_nr' => 1
+            'sec_in_part' => 5
         )
-    );;
+    );
+
+    // create ad block parts
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 1,
+            'order_nr' => 1,
+            'ad_id' => 1
+        )
+    );
 
     $wpdb->insert( 
-        'ad_block', 
+        'ad_block_part', 
         array(
-            'id' => 3,
-            'p_id' => 9,
-            'ad_id' => 3,
-            'sec_in_part' => 10,
-            'order_nr' => 2
+            'ab_id' => 1,
+            'order_nr' => 2,
+            'ad_id' => 2
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 1,
+            'order_nr' => 3,
+            'ad_id' => 3
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 2,
+            'order_nr' => 1,
+            'ad_id' => 1
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 2,
+            'order_nr' => 2,
+            'ad_id' => 2
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 3,
+            'order_nr' => 1,
+            'ad_id' => 1
+        )
+    );
+
+    $wpdb->insert( 
+        'ad_block_part', 
+        array(
+            'ab_id' => 3,
+            'order_nr' => 2,
+            'ad_id' => 2
         )
     );
 
