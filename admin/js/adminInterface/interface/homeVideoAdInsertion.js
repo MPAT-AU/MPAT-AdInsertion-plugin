@@ -18,16 +18,16 @@ class HomeVideoAdInsertion extends React.Component {
                     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
                     <div className='ad-inserter-space-around-button-group'>
                         <Link to={'/wp/wp-admin/admin.php?page=mpat-ad-insertion-all-ad-inserted-videos'}>
-                            <button className='white_blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-all-ad-inserted-videos')}>all ad inserded videos</button>
+                            <button className='ad-inserter-button-white-blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-all-ad-inserted-videos')}>all ad inserded videos</button>
                         </Link>
                         <Link to={'/wp/wp-admin/admin.php?page=mpat-ad-insertion-new-video'}>
-                            <button className='white_blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-new-video')}>+ new video</button>
+                            <button className='ad-inserter-button-white-blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-new-video')}>+ new video</button>
                         </Link>
                         <Link to={'/wp/wp-admin/admin.php?page=mpat-ad-insertion-all-ads'}>
-                            <button className='white_blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-all-ads')}>all videos</button>
+                            <button className='ad-inserter-button-white-blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-all-ads')}>all videos</button>
                         </Link>
                         <Link to={'/wp/wp-admin/admin.php?page=mpat-ad-insertion-new-ad'}>
-                            <button className='white_blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-new-ad')}>+ new ad</button>
+                            <button className='ad-inserter-button-white-blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-new-ad')}>+ new ad</button>
                         </Link>
                     </div>
                 </div>
@@ -36,14 +36,14 @@ class HomeVideoAdInsertion extends React.Component {
                     <h2 className='ad-inserter-h2 db-test-buttons'>Buttons for test purposes</h2>
                 </div>
                 <div className='ad-inserter-space-around-button-group'>
-                    <button className='white_blue' onClick={ () => createTables()}>DB create Tables</button>
-                    <button className='white_blue' onClick={ () => getVideos()}>DB get Videos</button>
-                    <button className='white_blue' onClick={ () => getVideo(1)}>DB get Video</button>
-                    <button className='white_blue' onClick={ () => getAds()}>DB getAds</button>
-                    <button className='white_blue' onClick={ () => getAd(1)}>DB getAd(1)</button>
-                    <button className='white_blue' onClick={ () => createAd({name: 'test',dash_url: 'ahsgfjahf',hls_url: 'jdhfkjshdkfj'})}>DB create ad</button>
-                    <button className='white_blue' onClick={ () => updateAd(1,{name: 'test2',dash_url: 'ahsgfjahf',hls_url: 'jdhfkjshdkfj'})}>DB update</button>
-                    <button className='white_blue' onClick={ () => deleteAd(1)}>DB delete</button>
+                    <button className='ad-inserter-button-white-blue' onClick={ () => createTables()}>DB create Tables</button>
+                    <button className='ad-inserter-button-white-blue' onClick={ () => getVideos()}>DB get Videos</button>
+                    <button className='ad-inserter-button-white-blue' onClick={ () => getVideo(1)}>DB get Video</button>
+                    <button className='ad-inserter-button-white-blue' onClick={ () => getAds()}>DB getAds</button>
+                    <button className='ad-inserter-button-white-blue' onClick={ () => getAd(1)}>DB getAd(1)</button>
+                    <button className='ad-inserter-button-white-blue' onClick={ () => createAd({name: 'test',dash_url: 'ahsgfjahf',hls_url: 'jdhfkjshdkfj'})}>DB create ad</button>
+                    <button className='ad-inserter-button-white-blue' onClick={ () => updateAd(1,{name: 'test2',dash_url: 'ahsgfjahf',hls_url: 'jdhfkjshdkfj'})}>DB update</button>
+                    <button className='ad-inserter-button-white-blue' onClick={ () => deleteAd(1)}>DB delete</button>
                 </div>
             </div>
         );
