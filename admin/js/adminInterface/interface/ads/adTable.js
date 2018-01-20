@@ -3,9 +3,23 @@
 import React from 'react'
 
 class AdTable extends React.Component {
+
+    getAds(){
+        return null
+    }
+
     render() {
+        const data = this.getAds()
+        const columns = [
+            {
+
+            }
+        ]
         return (
-            <p>Insert table here!</p>
+            <ReactTable
+                date={data}
+                columns={columns}>
+            </ReactTable>
         );
     }
 }
