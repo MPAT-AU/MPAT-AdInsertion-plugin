@@ -252,6 +252,26 @@ export function getAds() {
     });
 }
 
+
+// 4.1.2
+// returns JSON-array with all ads
+// GET
+export function getAdsWithCount() {
+    $.ajax({
+        url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
+        data: {function: 'getAdsWithCount'},
+        type: 'get',
+        success: function(data) {
+            console.log("getAdsWithCount()- Data recieved: " + data);
+            return data;
+        },
+        error: function (error) {
+            console.log("getAdsWithCount()- Error happened: " + error);
+            return {};
+        }
+    });
+}
+
 // 4.2
 // returns JSON with ads
 // GET
