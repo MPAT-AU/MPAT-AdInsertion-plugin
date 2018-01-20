@@ -2,24 +2,24 @@
 
 import React from 'react'
 
+import { getAdsWithCount } from '../../handler/DBHandler'
+
 class AdTable extends React.Component {
 
     getAds(){
-        return null
+        getAdsWithCount().then(result => {
+        })
     }
 
     render() {
         const data = this.getAds()
-        const columns = [
-            {
-
-            }
-        ]
+        // const columns = [
+        //     {
+        //
+        //     }
+        // ]
         return (
-            <ReactTable
-                date={data}
-                columns={columns}>
-            </ReactTable>
+            <h2>Table</h2>
         );
     }
 }
