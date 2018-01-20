@@ -52,6 +52,9 @@ if ( isset( $_GET['function'] ) ) {
         case 'getAds':
             getAds();
             break;
+        case 'getAdsWithCount':
+            getAdsWithCount();
+            break;    
         case 'getAd':
             getAd($_GET['id']);
             break;
@@ -199,10 +202,27 @@ function getVideo($id) {
 function getAds() {
     global $wpdb;
 
-
     $results = $wpdb->get_results( 
         'SELECT *
         FROM ad'
+    );
+ 
+    $json = json_encode( $results );
+    echo $json;
+}
+
+// 4.1.2
+function getAdsWithCount() {
+    global $wpdb;
+
+    $results = $wpdb->get_results( 
+        "   SELECT ad.name, ad.dash_url, ad.hls_url, aduse.uses 
+            FROM ad, 
+                (SELECT ad_block_part.ad_id AS id, COUNT(*) AS uses 
+                 FROM ad_block_part 
+                 GROUP BY ad_block_part.ad_id) aduse 
+            WHERE ad.id = aduse.id
+        "
     );
  
     $json = json_encode( $results );
@@ -220,7 +240,6 @@ function getAd($id) {
         $id
     ));
      
-    //debug_to_console($result)
 
     if (is_null($result)){
         echo false;
