@@ -29,7 +29,7 @@ export function getVideos() {
         type: 'get',
         success: function(data) {
             console.log("getVideos()- Data recieved: " + data);
-            resolve(data);
+            resolve(JSON.parse(data));
         },
         error: function (error) {
             console.log("getVideos()- Error happened: " + error);
@@ -49,7 +49,7 @@ export function getVideo(id) {
         type: 'get',
         success: function(data) {
             console.log("getVideo()- Data recieved: " + data);
-            resolve(data);
+            resolve(JSON.parse(data));
         },
         error: function (error) {
             console.log("getVideo()- Error happened: " + error);
@@ -256,7 +256,7 @@ export function getAds() {
         type: 'get',
         success: function(data) {
             console.log("getAds()- Data recieved: " + data);
-            resolve(data);
+            resolve(JSON.parse(data));
         },
         error: function (error) {
             console.log("getAds()- Error happened: " + error);
@@ -277,7 +277,7 @@ export function getAdsWithCount() {
         type: 'get',
         success: function(data) {
             console.log("getAdsWithCount()- Data recieved: " + data);
-            resolve(data);
+            resolve(JSON.parse(data));
         },
         error: function (error) {
             console.log("getAdsWithCount()- Error happened: " + error);
@@ -297,7 +297,7 @@ export function getAd(id) {
         type: 'get',
         success: function(data) {
             console.log("getAd()- Data recieved: " + data);
-            resolve(data);
+            resolve(JSON.parse(data));
         },
         error: function (error) {
             console.log("getAd()- Error happened: " + error);
