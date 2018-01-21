@@ -18,7 +18,7 @@ export function createTables() {
     }));
 }
 
-// 1.1
+// 1.1.1
 // returns JSON-array with all videos
 // GET
 export function getVideos() {
@@ -33,6 +33,26 @@ export function getVideos() {
         },
         error: function (error) {
             console.log("getVideos()- Error happened: " + error);
+            reject();
+        }
+    }));
+}
+
+// 1.1.2
+// returns JSON-array with all videos
+// GET
+export function getVideosForDropdown() {
+    return new Promise((resolve, reject) =>
+    $.ajax({
+        url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
+        data: {function: 'getVideosForDropdown'},
+        type: 'get',
+        success: function(data) {
+            console.log("getVideosForDropdown()- Data recieved: " + data);
+            resolve(JSON.parse(data));
+        },
+        error: function (error) {
+            console.log("getVideosForDropdown()- Error happened: " + error);
             reject();
         }
     }));

@@ -43,19 +43,22 @@ if ( isset( $_POST['function'] ) ) {
 // handling GET requests
 if ( isset( $_GET['function'] ) ) {
     switch ( $_GET['function'] ) {
-        case 'getVideos':
+        case 'getVideos':                   //1.1.1
             getVideos();
             break;
-        case 'getVideo':
+        case 'getVideo':                    //1.2
             getVideo($_GET['id']);
             break;
-        case 'getAds':
+        case 'getVideosForDropdown':        //1.1.2
+            getVideosForDropdown();
+            break;    
+        case 'getAds':                      //4.1.1
             getAds();
             break;
-        case 'getAdsWithCount':
+        case 'getAdsWithCount':             //4.1.2
             getAdsWithCount();
             break;    
-        case 'getAd':
+        case 'getAd':                       //4.2
             getAd($_GET['id']);
             break;
     }
@@ -155,6 +158,7 @@ function createAdTable() {
     }
 }
 
+//1.1.1
 function getVideos() {
     global $wpdb;
 
@@ -179,6 +183,20 @@ function getVideos() {
     echo $json;
 }
 
+//1.1.2
+function getVideosForDropdown() {
+    global $wpdb;
+
+    $results = $wpdb->get_results( 
+        'SELECT video.name, video.output_dash_url, video.output_hls_url
+            FROM video'
+    );
+ 
+    $json = json_encode( $results );
+    echo $json;
+}
+
+//1.2
 function getVideo($id) {
     global $wpdb;
 
@@ -191,12 +209,8 @@ function getVideo($id) {
  
     $json = json_encode($results[0]);
     echo $json;
-    // foreach ( $results as $result ) {
-    //     $myjson = json_encode($result);
-    //     echo $myjson;
-    // }
-
 }
+
 
 // 4.1
 function getAds() {
