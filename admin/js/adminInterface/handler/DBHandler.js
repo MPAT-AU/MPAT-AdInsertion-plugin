@@ -387,6 +387,78 @@ export function deleteAd(id){
 }
 
 
+
+// 5.1
+// returns true/false
+// POST
+export function createAdBlockPart(json){
+    return new Promise((resolve, reject) =>
+    $.ajax({
+        url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
+        data: {function: 'createAdBlockPart', json: json},
+        type: 'post',
+        success: function(data) {
+            console.log("createAdBlockPart()- Data recieved: " + data);
+            resolve(true);
+        },
+        error: function (error) {
+            console.log("createAdBlockPart()- Error happened: " + error);
+            reject(false);
+        }
+    }));
+}
+
+// 5.2
+// returns true/false
+// POST
+export function updateAdBlockPart(ab_id,order_nr,ad_id){
+    return new Promise((resolve, reject) =>
+    $.ajax({
+        url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
+        data: {function: 'updateAdBlock',ab_id: ab_id, order_nr: order_nr, ad_id:ad_id},
+        type: 'post',
+        success: function(data) {
+            console.log("updateAdBlock()- Data recieved: " + data);
+            resolve(true);
+        },
+        error: function (error) {
+            console.log("updateAdBlock()- Error happened: " + error);
+            reject(false);
+        }
+    }));
+}
+
+// 5.3
+// returns true/false
+// POST
+export function deleteAdBlockPart(ab_id,order_nr){
+    return new Promise((resolve, reject) =>
+    $.ajax({
+        url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
+        data: {function: 'deleteAdBlock', ab_id: ab_id, order_nr:order_nr},
+        type: 'post',
+        success: function(data) {
+            console.log("deleteAdBlock()- Data recieved: " + data);
+            resolve(true);
+        },
+        error: function (error) {
+            console.log("deleteAdBlock()- Error happened: " + error);
+            reject(false);
+        }
+    }));
+}
+
+
+
+
+
+
+
+
+
+
+
+
 // just for testing
 export function createData(){
     return new Promise((resolve, reject) =>

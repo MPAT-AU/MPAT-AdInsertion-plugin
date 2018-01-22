@@ -28,15 +28,24 @@ if ( isset( $_POST['function'] ) ) {
         case 'createData': 
             createData();
             break;
-        case 'createAd':
+        case 'createAd':                                //4.3
             createAd($_POST['json']);
             break;
-        case 'updateAd':
+        case 'updateAd':                                //4.4
             updateAd($_POST['id'],$_POST['json']);
             break; 
-        case 'deleteAd':
+        case 'deleteAd':                                //4.5
             deleteAd($_POST['id']);
-            break;      
+            break;
+        case 'createAdBlockPart':                                //5.1
+            createAdBlockPart($_POST['json']);
+            break;
+        case 'updateAdBlockPart':                                //5.2
+            updateAdBlockPart($_POST['ab_id'],$_POST['order_nr'],$_POST['ad_id']);
+            break; 
+        case 'deleteAdBlock':                                    //5.3
+            deleteAdBlockPart($_POST['ab_id'],$_POST['order_nr']);
+            break;                
     }
 }
 
@@ -212,6 +221,8 @@ function getVideo($id) {
 }
 
 
+
+
 // 4.1
 function getAds() {
     global $wpdb;
@@ -328,6 +339,86 @@ function deleteAd($id){
              'id' => $id 
         ),
         array( 
+            '%d' 
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+
+
+
+// 5.1
+function createAdBlockPart($json){
+    global $wpdb;
+
+    $result = $wpdb->insert( 
+        'ad_block_part', 
+        array( 
+            'ab_id' => $json['ab_id'], 
+            'order_nr' => $json['order_nr'],
+            'ad_id' => $json['ad_id']
+        ), 
+        array( 
+            '%d', 
+            '%d',
+            '%d' 
+        ) 
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 5.2
+function updateAdBlockPart($ab_id,$order_nr,$ad_id){
+    global $wpdb;
+
+    $result = $wpdb->update( 
+        'ad_block_partad', 
+        array( 
+            'ad_id' => $ad_id
+        ),
+        array(
+            'ab_id' => $ab_id, 
+            'order_nr' => $order_nr
+        ), 
+        array( 
+            '%d'
+        ),
+        array(
+            '%d',
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 5.3
+function deleteAdBlockPart($ab_id,$order_nr){
+    global $wpdb;
+
+    $result = $wpdb->delete( 
+        'ad_block_part', 
+        array(
+             'ab_id' => $ab_id,
+             'order_nr' => $order_nr
+        ),
+        array( 
+            '%d',
             '%d' 
         )
     );
