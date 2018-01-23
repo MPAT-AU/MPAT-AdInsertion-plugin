@@ -28,6 +28,15 @@ if ( isset( $_POST['function'] ) ) {
         case 'createData': 
             createData();
             break;
+        case 'createVideo':                                 //1.3
+            createVideo($_POST['json']);
+            break;
+        case 'updateVideo':                                 //1.4
+            updateVideo($_POST['id'],$_POST['json']);
+            break; 
+        case 'deleteVideo':                                 //1.5
+            deleteVideo($_POST['id']);
+            break;     
         case 'createVideoPart':                                 //2.1
             createVideoPart($_POST['json']);
             break;
@@ -95,16 +104,13 @@ if ( isset( $_GET['function'] ) ) {
 function createVideoTable() {
     global $wpdb;
 
-    // global $mpat_table_prefix;
-    // $table_name = $wpdb->prefix.$mpat_table_prefix.'video';
-
     $table_name = 'video';
     if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name ) {
 
         $wpdb->query( 
                 'CREATE TABLE video (
                     id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    name VARCHAR(20),
+                    name VARCHAR(1000),
                     output_dash_url VARCHAR(1000),
                     output_hls_url VARCHAR(1000)
                 )'
@@ -122,7 +128,7 @@ function createVideoPartTable() {
             'CREATE TABLE video_part (
                 id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 v_id BIGINT(20) NOT NULL,
-                name VARCHAR(20),
+                name VARCHAR(1000),
                 dash_url VARCHAR(1000),
                 hls_url VARCHAR(1000),
                 part_nr INT,
@@ -177,13 +183,22 @@ function createAdTable() {
         $wpdb->query( 
             'CREATE TABLE ad (
                 id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(20),
+                name VARCHAR(1000),
                 dash_url VARCHAR(1000),
                 hls_url VARCHAR(1000)
             )'
         );
     }
 }
+
+
+
+
+
+
+
+
+
 
 //1.1.1
 function getVideos() {
@@ -237,6 +252,90 @@ function getVideo($id) {
     $json = json_encode($results[0]);
     echo $json;
 }
+
+// 1.3
+function createVideo($json){
+    global $wpdb;
+
+    $result = $wpdb->insert( 
+        'video', 
+        array(  
+            'name' => $json['name'],
+            'output_dash_url' => $json['output_dash_url'],
+            'output_hls_url' => $json['output_hls_url']
+        ), 
+        array( 
+            '%s',
+            '%s',
+            '%s'
+        ) 
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 1.4
+function updateVideo($id,$json){
+    global $wpdb;
+
+    $result = $wpdb->update( 
+        'video', 
+        array( 
+            'name' => $json['name'],
+            'output_dash_url' => $json['output_dash_url'],
+            'output_hls_url' => $json['output_hls_url']
+        ),
+        array(
+            'id' => $id 
+        ), 
+        array( 
+            '%s',
+            '%s',
+            '%s'
+        ),
+        array(
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 1.5
+function deleteVideo($id){
+    global $wpdb;
+
+    $result = $wpdb->delete( 
+        'video', 
+        array(
+             'id' => $id
+        ),
+        array( 
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+
+
+
+
+
+
 
 
 
@@ -326,6 +425,16 @@ function deleteVideoPart($id){
 }
 
 
+
+
+
+
+
+
+
+
+
+
 // 3.1
 function createAdBlock($json){
     global $wpdb;
@@ -398,6 +507,13 @@ function deleteAdBlock($id){
         echo true;
     } 
 }
+
+
+
+
+
+
+
 
 
 
@@ -531,6 +647,13 @@ function deleteAd($id){
 
 
 
+
+
+
+
+
+
+
 // 5.1
 function createAdBlockPart($json){
     global $wpdb;
@@ -607,6 +730,20 @@ function deleteAdBlockPart($ab_id,$order_nr){
         echo true;
     } 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function createData() {
     global $wpdb;
