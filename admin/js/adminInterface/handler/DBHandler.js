@@ -184,7 +184,7 @@ export function updateVideoPart(id,json){
 // 2.3
 // returns true/false
 // POST
-export function deleteVIdeoPart(id){
+export function deleteVideoPart(id){
     return new Promise((resolve, reject) =>
     $.ajax({
         url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',

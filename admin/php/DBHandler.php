@@ -28,25 +28,34 @@ if ( isset( $_POST['function'] ) ) {
         case 'createData': 
             createData();
             break;
-        case 'createAdBlock':                                //3.1
+        case 'createVideoPart':                                 //2.1
+            createVideoPart($_POST['json']);
+            break;
+        case 'updateVideoPart':                                 //2.2
+            updateVideoPart($_POST['id'],$_POST['json']);
+            break; 
+        case 'deleteVideoPart':                                 //2.3
+            deleteVideoPart($_POST['id']);
+            break;       
+        case 'createAdBlock':                                   //3.1
             createAdBlock($_POST['json']);
             break;
-        case 'updateAdBlock':                                //3.2
+        case 'updateAdBlock':                                   //3.2
             updateAdBlock($_POST['id'],$_POST['json']);
             break; 
-        case 'deleteAdBlock':                                //3.3
+        case 'deleteAdBlock':                                   //3.3
             deleteAdBlock($_POST['id']);
             break;    
-        case 'createAd':                                //4.3
+        case 'createAd':                                        //4.3
             createAd($_POST['json']);
             break;
-        case 'updateAd':                                //4.4
+        case 'updateAd':                                        //4.4
             updateAd($_POST['id'],$_POST['json']);
             break; 
-        case 'deleteAd':                                //4.5
+        case 'deleteAd':                                        //4.5
             deleteAd($_POST['id']);
             break;
-        case 'createAdBlockPart':                                //5.1
+        case 'createAdBlockPart':                               //5.1
             createAdBlockPart($_POST['json']);
             break;
         case 'updateAdBlockPart':                                //5.2
@@ -230,6 +239,93 @@ function getVideo($id) {
 }
 
 
+
+// 2.1
+function createVideoPart($json){
+    global $wpdb;
+
+    $result = $wpdb->insert( 
+        'video_part', 
+        array( 
+            'v_id' => $json['v_id'], 
+            'name' => $json['name'],
+            'dash_url' => $json['dash_url'],
+            'hls_url' => $json['hls_url'],
+            'part_nr' => $json['part_nr']
+        ), 
+        array( 
+            '%d', 
+            '%s',
+            '%s',
+            '%s',
+            '%d'
+        ) 
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 2.2
+function updateVideoPart($id,$json){
+    global $wpdb;
+
+    $result = $wpdb->update( 
+        'video_part', 
+        array( 
+            'v_id' => $json['v_id'], 
+            'name' => $json['name'],
+            'dash_url' => $json['dash_url'],
+            'hls_url' => $json['hls_url'],
+            'part_nr' => $json['part_nr']
+        ),
+        array(
+            'id' => $id 
+        ), 
+        array( 
+            '%d', 
+            '%s',
+            '%s',
+            '%s',
+            '%d'
+        ),
+        array(
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 2.3
+function deleteVideoPart($id){
+    global $wpdb;
+
+    $result = $wpdb->delete( 
+        'video_part', 
+        array(
+             'id' => $id
+        ),
+        array( 
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+
 // 3.1
 function createAdBlock($json){
     global $wpdb;
@@ -264,8 +360,7 @@ function updateAdBlock($id,$json){
             'p_id' => $json['p_id']
         ),
         array(
-            'id' => $id, 
-            
+            'id' => $id
         ), 
         array( 
             '%d',
