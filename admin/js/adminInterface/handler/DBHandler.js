@@ -1,4 +1,6 @@
 
+var debuggingON = false;
+
 // creates all necessary tables
 // POST
 export function createTables() {
@@ -8,11 +10,15 @@ export function createTables() {
         data: {function: 'createTables'},
         type: 'post',
         success: function(data) {
-            console.log("createTables()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("createTables()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("createTables()- Error happened: " + error);
+            if (debuggingON){
+                console.log("createTables()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -28,11 +34,15 @@ export function getVideos() {
         data: {function: 'getVideos'},
         type: 'get',
         success: function(data) {
-            console.log("getVideos()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("getVideos()- Data recieved: " + data);
+            }
             resolve(JSON.parse(data));
         },
         error: function (error) {
-            console.log("getVideos()- Error happened: " + error);
+            if (debuggingON){
+                console.log("getVideos()- Error happened: " + error);
+            }
             reject();
         }
     }));
@@ -48,11 +58,15 @@ export function getVideosForDropdown() {
         data: {function: 'getVideosForDropdown'},
         type: 'get',
         success: function(data) {
-            console.log("getVideosForDropdown()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("getVideosForDropdown()- Data recieved: " + data);
+            } 
             resolve(JSON.parse(data));
         },
         error: function (error) {
-            console.log("getVideosForDropdown()- Error happened: " + error);
+            if (debuggingON){
+                console.log("getVideosForDropdown()- Error happened: " + error);
+            }
             reject();
         }
     }));
@@ -68,11 +82,15 @@ export function getVideo(id) {
         data: {function: 'getVideo', id: id},
         type: 'get',
         success: function(data) {
-            console.log("getVideo()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("getVideo()- Data recieved: " + data);
+            }
             resolve(JSON.parse(data));
         },
         error: function (error) {
-            console.log("getVideo()- Error happened: " + error);
+            if (debuggingON){
+                console.log("getVideo()- Error happened: " + error);
+            } 
             reject();
         }
     }));
@@ -88,11 +106,15 @@ export function createVideo(json){
         data: {function: 'createVideo', json: json},
         type: 'post',
         success: function(data) {
-            console.log("createVideo()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("createVideo()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("createVideo()- Error happened: " + error);
+            if (debuggingON){
+                console.log("createVideo()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -108,11 +130,15 @@ export function updateVideo(id, json){
         data: {function: 'updateVideo',id: id, json: json},
         type: 'post',
         success: function(data) {
-            console.log("updateVideo()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("updateVideo()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("updateVideo()- Error happened: " + error);
+            if (debuggingON){
+                console.log("updateVideo()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -128,11 +154,15 @@ export function deleteVideo(id){
         data: {function: 'deleteVideo', id: id},
         type: 'post',
         success: function(data) {
-            console.log("deleteVideo()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("deleteVideo()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("deleteVideo()- Error happened: " + error);
+            if (debuggingON){
+                console.log("deleteVideo()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -151,11 +181,15 @@ export function createVideoPart(json){
         data: {function: 'createVideoPart', json: json},
         type: 'post',
         success: function(data) {
-            console.log("createVideoPart()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("createVideoPart()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("createVideoPart()- Error happened: " + error);
+            if (debuggingON){
+                console.log("createVideoPart()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -171,11 +205,15 @@ export function updateVideoPart(id,json){
         data: {function: 'updateVideoPart',id: id, json: json},
         type: 'post',
         success: function(data) {
-            console.log("updateVideoPart()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("updateVideoPart()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("updateVideoPart()- Error happened: " + error);
+            if (debuggingON){
+                console.log("updateVideoPart()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -191,11 +229,15 @@ export function deleteVideoPart(id){
         data: {function: 'deleteVIdeoPart', id: id},
         type: 'post',
         success: function(data) {
-            console.log("deleteVIdeoPart()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("deleteVIdeoPart()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("deleteVIdeoPart()- Error happened: " + error);
+            if (debuggingON){
+                console.log("deleteVIdeoPart()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -213,11 +255,15 @@ export function createAdBlock(json){
         data: {function: 'createAdBlock', json: json},
         type: 'post',
         success: function(data) {
-            console.log("createAdBlock()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("createAdBlock()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("createAdBlock()- Error happened: " + error);
+            if (debuggingON){
+                console.log("createAdBlock()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -233,11 +279,15 @@ export function updateAdBlock(id,json){
         data: {function: 'updateAdBlock',id: id, json: json},
         type: 'post',
         success: function(data) {
-            console.log("updateAdBlock()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("updateAdBlock()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("updateAdBlock()- Error happened: " + error);
+            if (debuggingON){
+                console.log("updateAdBlock()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -253,11 +303,15 @@ export function deleteAdBlock(id){
         data: {function: 'deleteAdBlock', id: id},
         type: 'post',
         success: function(data) {
-            console.log("deleteAdBlock()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("deleteAdBlock()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("deleteAdBlock()- Error happened: " + error);
+            if (debuggingON){
+                console.log("deleteAdBlock()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -275,11 +329,15 @@ export function getAds() {
         data: {function: 'getAds'},
         type: 'get',
         success: function(data) {
-            console.log("getAds()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("getAds()- Data recieved: " + data);
+            }
             resolve(JSON.parse(data));
         },
         error: function (error) {
-            console.log("getAds()- Error happened: " + error);
+            if (debuggingON){
+                console.log("getAds()- Error happened: " + error);
+            }
             reject();
         }
     }));
@@ -296,11 +354,15 @@ export function getAdsWithCount() {
         data: {function: 'getAdsWithCount'},
         type: 'get',
         success: function(data) {
-            console.log("getAdsWithCount()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("getAdsWithCount()- Data recieved: " + data);
+            }
             resolve(JSON.parse(data));
         },
         error: function (error) {
-            console.log("getAdsWithCount()- Error happened: " + error);
+            if (debuggingON){
+                console.log("getAdsWithCount()- Error happened: " + error);
+            }
             reject();
         }
     }));
@@ -316,11 +378,15 @@ export function getAd(id) {
         data: {function: 'getAd', id: id},
         type: 'get',
         success: function(data) {
-            console.log("getAd()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("getAd()- Data recieved: " + data);
+            }
             resolve(JSON.parse(data));
         },
         error: function (error) {
-            console.log("getAd()- Error happened: " + error);
+            if (debuggingON){
+                console.log("getAd()- Error happened: " + error);
+            }
             reject();
         }
     }));
@@ -336,11 +402,15 @@ export function createAd(json){
             data: {function: 'createAd', json: json},
             type: 'post',
             success: function(data) {
-                console.log("createAd()- Data recieved: " + data);
+                if (debuggingON){
+                    console.log("createAd()- Data recieved: " + data);
+                }
                 resolve(true);
             },
             error: function (error) {
-                console.log("createAd()- Error happened: " + error);
+                if (debuggingON){
+                    console.log("createAd()- Error happened: " + error);
+                }
                 reject(false);
             }
     }));
@@ -356,11 +426,15 @@ export function updateAd(id,json){
         data: {function: 'updateAd',id: id, json: json},
         type: 'post',
         success: function(data) {
-            console.log("updateAd()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("updateAd()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("updateAd()- Error happened: " + error);
+            if (debuggingON){
+                console.log("updateAd()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -376,11 +450,15 @@ export function deleteAd(id){
         data: {function: 'deleteAd', id: id},
         type: 'post',
         success: function(data) {
-            console.log("deleteAd()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("deleteAd()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("deleteAd()- Error happened: " + error);
+            if (debuggingON){
+                console.log("deleteAd()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -398,11 +476,15 @@ export function createAdBlockPart(json){
         data: {function: 'createAdBlockPart', json: json},
         type: 'post',
         success: function(data) {
-            console.log("createAdBlockPart()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("createAdBlockPart()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("createAdBlockPart()- Error happened: " + error);
+            if (debuggingON){
+                console.log("createAdBlockPart()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -418,11 +500,15 @@ export function updateAdBlockPart(ab_id,order_nr,ad_id){
         data: {function: 'updateAdBlock',ab_id: ab_id, order_nr: order_nr, ad_id:ad_id},
         type: 'post',
         success: function(data) {
-            console.log("updateAdBlock()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("updateAdBlock()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("updateAdBlock()- Error happened: " + error);
+            if (debuggingON){
+                console.log("updateAdBlock()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -438,11 +524,15 @@ export function deleteAdBlockPart(ab_id,order_nr){
         data: {function: 'deleteAdBlock', ab_id: ab_id, order_nr:order_nr},
         type: 'post',
         success: function(data) {
-            console.log("deleteAdBlock()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("deleteAdBlock()- Data recieved: " + data);
+            }
             resolve(true);
         },
         error: function (error) {
-            console.log("deleteAdBlock()- Error happened: " + error);
+            if (debuggingON){
+                console.log("deleteAdBlock()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
@@ -467,11 +557,15 @@ export function createData(){
         data: {function: 'createData'},
         type: 'post',
         success: function(data) {
-            console.log("createData()- Data recieved: " + data);
+            if (debuggingON){
+                console.log("createData()- Data recieved: " + data);
+            } 
             resolve(true);
         },
         error: function (error) {
-            console.log("createData()- Error happened: " + error);
+            if (debuggingON){
+                console.log("createData()- Error happened: " + error);
+            }
             reject(false);
         }
     }));
