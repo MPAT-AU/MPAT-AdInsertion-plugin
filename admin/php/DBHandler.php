@@ -28,6 +28,15 @@ if ( isset( $_POST['function'] ) ) {
         case 'createData': 
             createData();
             break;
+        case 'createAdBlock':                                //3.1
+            createAdBlock($_POST['json']);
+            break;
+        case 'updateAdBlock':                                //3.2
+            updateAdBlock($_POST['id'],$_POST['json']);
+            break; 
+        case 'deleteAdBlock':                                //3.3
+            deleteAdBlock($_POST['id']);
+            break;    
         case 'createAd':                                //4.3
             createAd($_POST['json']);
             break;
@@ -220,6 +229,80 @@ function getVideo($id) {
     echo $json;
 }
 
+
+// 3.1
+function createAdBlock($json){
+    global $wpdb;
+
+    $result = $wpdb->insert( 
+        'ad_block', 
+        array( 
+            'sec_in_part' => $json['sec_in_part'], 
+            'p_id' => $json['p_id']
+        ), 
+        array( 
+            '%d', 
+            '%d'
+        ) 
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 3.2
+function updateAdBlock($id,$json){
+    global $wpdb;
+
+    $result = $wpdb->update( 
+        'ad_block', 
+        array( 
+            'sec_in_part' => $json['sec_in_part'],
+            'p_id' => $json['p_id']
+        ),
+        array(
+            'id' => $id, 
+            
+        ), 
+        array( 
+            '%d',
+            '%d'
+        ),
+        array(
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 3.3
+function deleteAdBlock($id){
+    global $wpdb;
+
+    $result = $wpdb->delete( 
+        'ad_block', 
+        array(
+             'id' => $id
+        ),
+        array( 
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
 
 
 
