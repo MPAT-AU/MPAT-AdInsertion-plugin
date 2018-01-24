@@ -277,7 +277,7 @@ export function getAdsWithCount() {
         type: 'get',
         success: function(data) {
             console.log("getAdsWithCount()- Data recieved: " + data);
-            resolve(data);
+            resolve(JSON.parse(data));
         },
         error: function (error) {
             console.log("getAdsWithCount()- Error happened: " + error);

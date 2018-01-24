@@ -6,8 +6,8 @@ class LoadingButton extends React.Component {
 
     render() {
         return (
-            <div className='ad-inserter-loading-button-container'>
-                {this.props.loadingMessage}
+            <div className={ this.props.color === 'green' ? 'ad-inserter-loading-button-container' : 'ad-inserter-loading-button-container white'}>
+                <i className="material-icons">{this.props.icon}</i>{this.props.loadingMessage}
             </div>
         );
     }

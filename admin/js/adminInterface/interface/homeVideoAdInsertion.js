@@ -19,16 +19,28 @@ class HomeVideoAdInsertion extends React.Component {
                     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
                     <div className='ad-inserter-space-around-button-group'>
                         <Link to={'/wp/wp-admin/admin.php?page=mpat-ad-insertion-all-ad-inserted-videos'}>
-                            <button className='ad-inserter-button-white-blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-all-ad-inserted-videos')}>all ad inserded videos</button>
+                            <button className='ad-inserter-button-white-blue'
+                                    onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-all-ad-inserted-videos')}>
+                                <i className="material-icons">reorder</i>all ad inserted videos
+                            </button>
                         </Link>
                         <Link to={'/wp/wp-admin/admin.php?page=mpat-ad-insertion-new-video'}>
-                            <button className='ad-inserter-button-white-blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-new-video')}>+ new video</button>
+                            <button className='ad-inserter-button-white-blue'
+                                    onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-new-video')}>
+                                <i className="material-icons">add</i>new video
+                            </button>
                         </Link>
                         <Link to={'/wp/wp-admin/admin.php?page=mpat-ad-insertion-all-ads'}>
-                            <button className='ad-inserter-button-white-blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-all-ads')}>all videos</button>
+                            <button className='ad-inserter-button-white-blue'
+                                    onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-all-ads')}>
+                                <i className="material-icons">reorder</i>all ads
+                            </button>
                         </Link>
                         <Link to={'/wp/wp-admin/admin.php?page=mpat-ad-insertion-new-ad'}>
-                            <button className='ad-inserter-button-white-blue' onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-new-ad')}>+ new ad</button>
+                            <button className='ad-inserter-button-white-blue'
+                                    onClick={() => highlightNavigation('mpat-ad-insertion','mpat-ad-insertion-new-ad')}>
+                                <i className="material-icons">add</i>new ad
+                            </button>
                         </Link>
                     </div>
                 </div>

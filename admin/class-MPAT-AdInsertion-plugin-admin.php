@@ -75,9 +75,10 @@ class MPAT_AdInsertion_plugin_Admin {
 
         $adminCss_ver  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'css/admin_style.css' ));
         wp_enqueue_style( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'css/admin_style.css', array(), $adminCss_ver, 'all' );
-		wp_enqueue_style( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'css/MPAT-AdInsertion-plugin.css', array(), $this->version, 'all' );
+        wp_enqueue_style( $this->MPAT_AdInsertion_plugin, plugin_dir_url( __FILE__ ) . 'css/MPAT-AdInsertion-plugin.css', array(), $this->version, 'all' );
+        wp_enqueue_style( $this->MPAT_AdInsertion_plugin, 'https://fonts.googleapis.com/icon?family=Material+Icons');
 
-	}
+    }
 
 	/**
 	 * Register the JavaScript for the admin area.
@@ -150,7 +151,8 @@ class MPAT_AdInsertion_plugin_Admin {
     function display() {
 	    ?>
             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" type="text/javascript"></script>
-            <div id="reactRoot" class="wrap"></div>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <div id="reactRoot" class="wrap ad-inserter"></div>
         <?php
     }
 

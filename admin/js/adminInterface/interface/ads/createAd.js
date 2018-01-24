@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { highlightNavigation } from '../../helper/wpRouting'
 import { createAd } from '../../handler/DBHandler'
 import LoadingButton from '../loadingButton'
+import { waitTwoSeconds } from '../demoHelper'
 
 class CreateAd extends React.Component {
     constructor(props) {
@@ -41,17 +42,6 @@ class CreateAd extends React.Component {
         }
     }
 
-    // only for demo purposes
-    sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    // only for demo purposes
-    async waitTwoSeconds() {
-        console.log('Taking a break...');
-        await this.sleep(2000);
-        console.log('Two second later');
-    }
-
     handleSubmit(event) {
         event.preventDefault();
         this.setState({createAd: true})
@@ -67,7 +57,7 @@ class CreateAd extends React.Component {
         //         }
         //     })
         // only for demo purposes
-        this.waitTwoSeconds().then(() =>
+        waitTwoSeconds(2000).then(() =>
             createAd(json)
                 .then(result => {
                     this.setState({createdAd: false})
@@ -94,7 +84,7 @@ class CreateAd extends React.Component {
             return <Redirect push to='/wp/wp-admin/admin.php?page=mpat-ad-insertion-all-ads'/>
         }
         return (
-            <form className='ad-insertion-content-wrapper' onSubmit={this.handleSubmit}>
+            <form className='ad-inserter-create-ad' onSubmit={this.handleSubmit}>
                 <div className='ad-inserter-lable-input-row'>
                     <label className='ad-inserter-input-label'>ad name</label>
                     <input className='ad-inserter-input'
@@ -102,6 +92,7 @@ class CreateAd extends React.Component {
                            placeholder='name'
                            title='Insert a name for this ad.'
                            type='text'
+                           maxLength='20'
                            required
                            value={this.state.name}
                            onChange={this.handleChange}/>
@@ -135,15 +126,15 @@ class CreateAd extends React.Component {
                         <button type='button'
                                 className='ad-inserter-button-white-blue'
                                 onClick={() => highlightNavigation('mpat-ad-insertion-new-ad', 'mpat-ad-insertion-all-ads')}>
-                            cancel
+                            <i className="material-icons">clear</i>cancel
                         </button>
                     </Link>
                     {
                         this.state.createAd ?
-                            <LoadingButton loadingMessage='create'/> :
+                            <LoadingButton icon='add_to_queue' color='green' loadingMessage='create'/> :
                             <button type='submit'
                                     className='ad-inserter-button-green-white'>
-                                create
+                                <i className="material-icons">add_to_queue</i>create
                             </button>
                     }
                 </div>
