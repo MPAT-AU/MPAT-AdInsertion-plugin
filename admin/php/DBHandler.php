@@ -28,34 +28,73 @@ if ( isset( $_POST['function'] ) ) {
         case 'createData': 
             createData();
             break;
-        case 'createAd':
+        case 'createVideo':                                 //1.3
+            createVideo($_POST['json']);
+            break;
+        case 'updateVideo':                                 //1.4
+            updateVideo($_POST['id'],$_POST['json']);
+            break; 
+        case 'deleteVideo':                                 //1.5
+            deleteVideo($_POST['id']);
+            break;     
+        case 'createVideoPart':                                 //2.1
+            createVideoPart($_POST['json']);
+            break;
+        case 'updateVideoPart':                                 //2.2
+            updateVideoPart($_POST['id'],$_POST['json']);
+            break; 
+        case 'deleteVideoPart':                                 //2.3
+            deleteVideoPart($_POST['id']);
+            break;       
+        case 'createAdBlock':                                   //3.1
+            createAdBlock($_POST['json']);
+            break;
+        case 'updateAdBlock':                                   //3.2
+            updateAdBlock($_POST['id'],$_POST['json']);
+            break; 
+        case 'deleteAdBlock':                                   //3.3
+            deleteAdBlock($_POST['id']);
+            break;    
+        case 'createAd':                                        //4.3
             createAd($_POST['json']);
             break;
-        case 'updateAd':
+        case 'updateAd':                                        //4.4
             updateAd($_POST['id'],$_POST['json']);
             break; 
-        case 'deleteAd':
+        case 'deleteAd':                                        //4.5
             deleteAd($_POST['id']);
-            break;      
+            break;
+        case 'createAdBlockPart':                               //5.1
+            createAdBlockPart($_POST['json']);
+            break;
+        case 'updateAdBlockPart':                                //5.2
+            updateAdBlockPart($_POST['ab_id'],$_POST['order_nr'],$_POST['ad_id']);
+            break; 
+        case 'deleteAdBlock':                                    //5.3
+            deleteAdBlockPart($_POST['ab_id'],$_POST['order_nr']);
+            break;                
     }
 }
 
 // handling GET requests
 if ( isset( $_GET['function'] ) ) {
     switch ( $_GET['function'] ) {
-        case 'getVideos':
+        case 'getVideos':                   //1.1.1
             getVideos();
             break;
-        case 'getVideo':
+        case 'getVideo':                    //1.2
             getVideo($_GET['id']);
             break;
-        case 'getAds':
+        case 'getVideosForDropdown':        //1.1.2
+            getVideosForDropdown();
+            break;    
+        case 'getAds':                      //4.1.1
             getAds();
             break;
-        case 'getAdsWithCount':
+        case 'getAdsWithCount':             //4.1.2
             getAdsWithCount();
             break;    
-        case 'getAd':
+        case 'getAd':                       //4.2
             getAd($_GET['id']);
             break;
     }
@@ -65,16 +104,13 @@ if ( isset( $_GET['function'] ) ) {
 function createVideoTable() {
     global $wpdb;
 
-    // global $mpat_table_prefix;
-    // $table_name = $wpdb->prefix.$mpat_table_prefix.'video';
-
     $table_name = 'video';
     if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') != $table_name ) {
 
         $wpdb->query( 
                 'CREATE TABLE video (
                     id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    name VARCHAR(20),
+                    name VARCHAR(1000),
                     output_dash_url VARCHAR(1000),
                     output_hls_url VARCHAR(1000)
                 )'
@@ -92,7 +128,7 @@ function createVideoPartTable() {
             'CREATE TABLE video_part (
                 id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 v_id BIGINT(20) NOT NULL,
-                name VARCHAR(20),
+                name VARCHAR(1000),
                 dash_url VARCHAR(1000),
                 hls_url VARCHAR(1000),
                 part_nr INT,
@@ -147,7 +183,7 @@ function createAdTable() {
         $wpdb->query( 
             'CREATE TABLE ad (
                 id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(20),
+                name VARCHAR(1000),
                 dash_url VARCHAR(1000),
                 hls_url VARCHAR(1000)
             )'
@@ -155,6 +191,16 @@ function createAdTable() {
     }
 }
 
+
+
+
+
+
+
+
+
+
+//1.1.1
 function getVideos() {
     global $wpdb;
 
@@ -179,6 +225,20 @@ function getVideos() {
     echo $json;
 }
 
+//1.1.2
+function getVideosForDropdown() {
+    global $wpdb;
+
+    $results = $wpdb->get_results( 
+        'SELECT video.name, video.output_dash_url, video.output_hls_url
+            FROM video'
+    );
+ 
+    $json = json_encode( $results );
+    echo $json;
+}
+
+//1.2
 function getVideo($id) {
     global $wpdb;
 
@@ -191,12 +251,271 @@ function getVideo($id) {
  
     $json = json_encode($results[0]);
     echo $json;
-    // foreach ( $results as $result ) {
-    //     $myjson = json_encode($result);
-    //     echo $myjson;
-    // }
-
 }
+
+// 1.3
+function createVideo($json){
+    global $wpdb;
+
+    $result = $wpdb->insert( 
+        'video', 
+        array(  
+            'name' => $json['name'],
+            'output_dash_url' => $json['output_dash_url'],
+            'output_hls_url' => $json['output_hls_url']
+        ), 
+        array( 
+            '%s',
+            '%s',
+            '%s'
+        ) 
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 1.4
+function updateVideo($id,$json){
+    global $wpdb;
+
+    $result = $wpdb->update( 
+        'video', 
+        array( 
+            'name' => $json['name'],
+            'output_dash_url' => $json['output_dash_url'],
+            'output_hls_url' => $json['output_hls_url']
+        ),
+        array(
+            'id' => $id 
+        ), 
+        array( 
+            '%s',
+            '%s',
+            '%s'
+        ),
+        array(
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 1.5
+function deleteVideo($id){
+    global $wpdb;
+
+    $result = $wpdb->delete( 
+        'video', 
+        array(
+             'id' => $id
+        ),
+        array( 
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+
+
+
+
+
+
+
+
+
+// 2.1
+function createVideoPart($json){
+    global $wpdb;
+
+    $result = $wpdb->insert( 
+        'video_part', 
+        array( 
+            'v_id' => $json['v_id'], 
+            'name' => $json['name'],
+            'dash_url' => $json['dash_url'],
+            'hls_url' => $json['hls_url'],
+            'part_nr' => $json['part_nr']
+        ), 
+        array( 
+            '%d', 
+            '%s',
+            '%s',
+            '%s',
+            '%d'
+        ) 
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 2.2
+function updateVideoPart($id,$json){
+    global $wpdb;
+
+    $result = $wpdb->update( 
+        'video_part', 
+        array( 
+            'v_id' => $json['v_id'], 
+            'name' => $json['name'],
+            'dash_url' => $json['dash_url'],
+            'hls_url' => $json['hls_url'],
+            'part_nr' => $json['part_nr']
+        ),
+        array(
+            'id' => $id 
+        ), 
+        array( 
+            '%d', 
+            '%s',
+            '%s',
+            '%s',
+            '%d'
+        ),
+        array(
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 2.3
+function deleteVideoPart($id){
+    global $wpdb;
+
+    $result = $wpdb->delete( 
+        'video_part', 
+        array(
+             'id' => $id
+        ),
+        array( 
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// 3.1
+function createAdBlock($json){
+    global $wpdb;
+
+    $result = $wpdb->insert( 
+        'ad_block', 
+        array( 
+            'sec_in_part' => $json['sec_in_part'], 
+            'p_id' => $json['p_id']
+        ), 
+        array( 
+            '%d', 
+            '%d'
+        ) 
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 3.2
+function updateAdBlock($id,$json){
+    global $wpdb;
+
+    $result = $wpdb->update( 
+        'ad_block', 
+        array( 
+            'sec_in_part' => $json['sec_in_part'],
+            'p_id' => $json['p_id']
+        ),
+        array(
+            'id' => $id
+        ), 
+        array( 
+            '%d',
+            '%d'
+        ),
+        array(
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 3.3
+function deleteAdBlock($id){
+    global $wpdb;
+
+    $result = $wpdb->delete( 
+        'ad_block', 
+        array(
+             'id' => $id
+        ),
+        array( 
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+
+
+
+
+
+
+
+
 
 // 4.1
 function getAds() {
@@ -324,6 +643,107 @@ function deleteAd($id){
         echo true;
     } 
 }
+
+
+
+
+
+
+
+
+
+
+
+// 5.1
+function createAdBlockPart($json){
+    global $wpdb;
+
+    $result = $wpdb->insert( 
+        'ad_block_part', 
+        array( 
+            'ab_id' => $json['ab_id'], 
+            'order_nr' => $json['order_nr'],
+            'ad_id' => $json['ad_id']
+        ), 
+        array( 
+            '%d', 
+            '%d',
+            '%d' 
+        ) 
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 5.2
+function updateAdBlockPart($ab_id,$order_nr,$ad_id){
+    global $wpdb;
+
+    $result = $wpdb->update( 
+        'ad_block_partad', 
+        array( 
+            'ad_id' => $ad_id
+        ),
+        array(
+            'ab_id' => $ab_id, 
+            'order_nr' => $order_nr
+        ), 
+        array( 
+            '%d'
+        ),
+        array(
+            '%d',
+            '%d'
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+// 5.3
+function deleteAdBlockPart($ab_id,$order_nr){
+    global $wpdb;
+
+    $result = $wpdb->delete( 
+        'ad_block_part', 
+        array(
+             'ab_id' => $ab_id,
+             'order_nr' => $order_nr
+        ),
+        array( 
+            '%d',
+            '%d' 
+        )
+    );
+
+    if (false === $result){
+        echo false;
+    } else {
+        echo true;
+    } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function createData() {
     global $wpdb;
