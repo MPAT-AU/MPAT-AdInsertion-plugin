@@ -88,6 +88,12 @@
 }
 
 /* ========== forms ========== */
+.ad-inserter-create-ad {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+}
+
 .ad-inserter-lable-input-row {
     display: flex;
     align-items: center;
@@ -95,11 +101,7 @@
     padding: 20px 0;
 }
 
-.ad-inserter-create-ad .ad-inserter-lable-input-row {
-    max-width: 420px;
-}
-
-.ad-inserter-table-edit-ad-view .ad-inserter-lable-input-row {
+.ad-inserter-table-edit-ad-view .ad-inserter-lable-input-row, .ad-inserter-create-ad .ad-inserter-lable-input-row  {
     width: 100%;
 }
 
@@ -108,7 +110,7 @@
     padding-right: 10px;
 }
 
-.ad-inserter-table-edit-ad-view label {
+.ad-inserter-table-edit-ad-view label, .ad-inserter-create-ad label {
     width: 120px;
 }
 
@@ -123,10 +125,6 @@
     height: 30px;
     width: 100%;
     margin: 0 !important;
-}
-
-.ad-inserter-create-ad input {
-    max-width: 300px;
 }
 
 .ad-inserter-lable-input-row > input::-webkit-input-placeholder {
@@ -159,7 +157,6 @@
 
 
 /* ========== button ========== */
-
 .ad-inserter button, .ad-inserter .ad-inserter-loading-button-container, .ad-inserter .ad-inserter-loading-button-container.white {
     display: flex;
     align-items: center;
