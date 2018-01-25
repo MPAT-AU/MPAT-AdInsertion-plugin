@@ -353,9 +353,22 @@
     margin: 0 4px;
 }
 
-/* font */
-.ad-inserter-bold {
-    /*font-weight: 600;*/
+/* ========== no ad data ========== */
+.ad-inserter-no-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 200px;
+}
+
+.ad-inserter-no-data > p {
+    align-self: center;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.ad-inserter-no-data > a {
+    align-self: center;
 }
 
 /* ========== only for test purposes (delete later!!!) ========== */

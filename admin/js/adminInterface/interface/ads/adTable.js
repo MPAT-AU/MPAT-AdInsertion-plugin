@@ -6,6 +6,7 @@ import { getAdsWithCount, updateAd, deleteAd } from '../../handler/DBHandler'
 import LoadingButton from '../loadingButton'
 import { waitTwoSeconds } from '../demoHelper'
 import LoadingScreen from '../loadingScreen'
+import NoData from '../noData'
 
 class AdTable extends React.Component {
     constructor(props) {
@@ -24,10 +25,10 @@ class AdTable extends React.Component {
 
     getAdDataArray() {
         getAdsWithCount().then(result => {
-             result = result.map((ad) => {
-                 ad.editOpen = false
-                 ad.saveAd = false
-                 ad.deleteAd = false
+            result = result.map((ad) => {
+                ad.editOpen = false
+                ad.saveAd = false
+                ad.deleteAd = false
                 return ad
             })
             this.setState({
@@ -117,7 +118,7 @@ class AdTable extends React.Component {
         //     })
 
         // only for demo purposes
-        waitTwoSeconds(2000).then(() =>
+        waitTwoSeconds(1000).then(() =>
             deleteAd(this.state.adDataArray[index].id)
                 .then(result => {
                     this.setDeleteAd(index)
@@ -239,18 +240,27 @@ class AdTable extends React.Component {
         const loadingScreenOrTable = this.state.loadData ?
             <LoadingScreen/>
                 :
-            <table className='ad-inserter-table'>
-                <thead className='ad-inserter-thead'>
-                <tr>
-                    <th className='ad-inserter-th ad-inserter-table-cell-left'>name</th>
-                    <th className='ad-inserter-th ad-inserter-table-cell-center'>uses</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {tableContent}
-                </tbody>
-            </table>
+            (
+                this.state.adDataArray.length === 0 ?
+                <NoData datatype='ads'
+                        linkToNew='/wp/wp-admin/admin.php?page=mpat-ad-insertion-new-ad'
+                        from='mpat-ad-insertion-all-ads'
+                        to='mpat-ad-insertion-new-ad'
+                        buttonText='new ad'/>
+                :
+                <table className='ad-inserter-table'>
+                    <thead className='ad-inserter-thead'>
+                    <tr>
+                        <th className='ad-inserter-th ad-inserter-table-cell-left'>name</th>
+                        <th className='ad-inserter-th ad-inserter-table-cell-center'>uses</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {tableContent}
+                    </tbody>
+                </table>
+            )
 
         return (<div>{loadingScreenOrTable}</div>)
     }
