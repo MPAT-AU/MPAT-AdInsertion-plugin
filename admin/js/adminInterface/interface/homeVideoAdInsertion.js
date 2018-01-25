@@ -49,25 +49,26 @@ class HomeVideoAdInsertion extends React.Component {
                     <h2 className='ad-inserter-h2 db-test-buttons'>Buttons for test purposes</h2>
                 </div>
                 <div className='ad-inserter-space-around-button-group'>
-                    <p>
-                    <h2>Tables</h2>
-                    <button className='ad-inserter-button-white-blue' onClick={ () => createTables()}>DB create Tables</button>
-                    <button className='ad-inserter-button-white-blue' onClick={ () => createData()}>DB create Test Data</button>
-                    </p>
-                    <p>
-                    <h2>Videos</h2>
-                    <button className='ad-inserter-button-white-blue' onClick={ () => getVideos()}>DB get Videos</button>
-                    <button className='ad-inserter-button-white-blue' onClick={ () => getVideo(1)}>DB get Video</button>
-                    </p>
-                    <p>
-                    <h2>Ads</h2>
-                    <button className='ad-inserter-button-white-blue' onClick={ () => getAds()}>DB getAds</button>
-                    <button className='ad-inserter-button-white-blue' onClick={ () => getAdsWithCount()}>DB getAdsWithCount</button>
-                    <button className='ad-inserter-button-white-blue' onClick={ () => getAd(1)}>DB getAd(1)</button>
-                    <button className='ad-inserter-button-white-blue' onClick={ () => createAd({name: 'test',dash_url: 'ahsgfjahf',hls_url: 'jdhfkjshdkfj'})}>DB create ad</button>
-                    <button className='ad-inserter-button-white-blue' onClick={ () => updateAd(1,{name: 'test2',dash_url: 'ahsgfjahf',hls_url: 'jdhfkjshdkfj'})}>DB update</button>
-                    <button className='ad-inserter-button-white-blue' onClick={ () => deleteAd(1)}>DB delete</button>
-                    </p>
+
+                    <div>
+                        <h2>Tables</h2>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => createTables()}>DB create Tables</button>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => createData()}>DB create Test Data</button>
+                    </div>
+                    <div>
+                        <h2>Videos</h2>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => getVideos()}>DB get Videos</button>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => getVideo(1)}>DB get Video</button>
+                    </div>
+                    <div>
+                        <h2>Ads</h2>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => getAds()}>DB getAds</button>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => getAdsWithCount()}>DB getAdsWithCount</button>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => getAd(1)}>DB getAd(1)</button>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => createAd({name: 'test',dash_url: 'ahsgfjahf',hls_url: 'jdhfkjshdkfj'})}>DB create ad</button>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => updateAd(1,{name: 'test2',dash_url: 'ahsgfjahf',hls_url: 'jdhfkjshdkfj'})}>DB update</button>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => deleteAd(1)}>DB delete</button>
+                    </div>
                 </div>
             </div>
         );
