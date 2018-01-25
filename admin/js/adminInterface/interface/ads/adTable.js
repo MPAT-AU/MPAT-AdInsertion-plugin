@@ -96,6 +96,7 @@ class AdTable extends React.Component {
                     }
                 })
         )
+        return false
     }
 
     setSaveAd(index) {
@@ -105,7 +106,6 @@ class AdTable extends React.Component {
     }
 
     handleDelete(index) {
-        event.preventDefault();
         this.setDeleteAd(index)
         // deleteAd(this.state.adDataArray[index].id)
         //     .then(result => {

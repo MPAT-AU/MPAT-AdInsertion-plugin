@@ -69,6 +69,7 @@ class CreateAd extends React.Component {
                     }
                 })
         )
+        return false
     }
 
     getJsonForSubmit() {
