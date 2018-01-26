@@ -147,9 +147,9 @@ function createAdBlockTable() {
         $wpdb->query( 
             'CREATE TABLE ad_block (
                 id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                p_id BIGINT(20) NOT NULL,
+                vp_id BIGINT(20) NOT NULL,
                 sec_in_part INT(20),
-                 CONSTRAINT `fk_ad_block_video_part` FOREIGN KEY (p_id) REFERENCES video_part (id) ON DELETE CASCADE ON UPDATE RESTRICT
+                 CONSTRAINT `fk_ad_block_video_part` FOREIGN KEY (vp_id) REFERENCES video_part (id) ON DELETE CASCADE ON UPDATE RESTRICT
             )'
         );
     }
@@ -212,11 +212,11 @@ function getVideos() {
     	            GROUP BY v_id) novp,
                 (SELECT vp.v_id, COUNT(*) as number_of_ad_blocks
 		            FROM video_part vp, ad_block ab
-		            WHERE vp.id = ab.p_id
+		            WHERE vp.id = ab.vp_id
 		            GROUP BY vp.v_id) noab,
                 (SELECT vp.v_id, COUNT(*) AS number_of_ads
 					FROM video_part vp, ad_block ab, ad_block_part abp
-					WHERE vp.id = ab.p_id AND ab.id = abp.ab_id
+					WHERE vp.id = ab.vp_id AND ab.id = abp.ab_id
 					GROUP BY vp.v_id) noa
             WHERE v.id = novp.v_id AND novp.v_id = noab.v_id AND noab.v_id = noa.v_id'
     );
@@ -443,7 +443,7 @@ function createAdBlock($json){
         'ad_block', 
         array( 
             'sec_in_part' => $json['sec_in_part'], 
-            'p_id' => $json['p_id']
+            'vp_id' => $json['vp_id']
         ), 
         array( 
             '%d', 
@@ -466,7 +466,7 @@ function updateAdBlock($id,$json){
         'ad_block', 
         array( 
             'sec_in_part' => $json['sec_in_part'],
-            'p_id' => $json['p_id']
+            'vp_id' => $json['vp_id']
         ),
         array(
             'id' => $id
@@ -920,7 +920,7 @@ function createData() {
     $wpdb->insert( 
         'ad_block', 
         array(
-            'p_id' => 1,
+            'vp_id' => 1,
             'sec_in_part' => 10
         )
     );
@@ -928,7 +928,7 @@ function createData() {
     $wpdb->insert( 
         'ad_block', 
         array(
-            'p_id' => 4,
+            'vp_id' => 4,
             'sec_in_part' => 15
         )
     );
@@ -936,7 +936,7 @@ function createData() {
     $wpdb->insert( 
         'ad_block', 
         array(
-            'p_id' => 7,
+            'vp_id' => 7,
             'sec_in_part' => 5
         )
     );
@@ -944,7 +944,7 @@ function createData() {
     $wpdb->insert( 
         'ad_block', 
         array(
-            'p_id' => 8,
+            'vp_id' => 8,
             'sec_in_part' => 5
         )
     );
@@ -952,7 +952,7 @@ function createData() {
     $wpdb->insert( 
         'ad_block', 
         array(
-            'p_id' => 9,
+            'vp_id' => 9,
             'sec_in_part' => 5
         )
     );
