@@ -230,7 +230,7 @@ function getVideosForDropdown() {
     global $wpdb;
 
     $results = $wpdb->get_results( 
-        'SELECT video.name, video.output_dash_url, video.output_hls_url
+        'SELECT video.name, video.id, video.output_dash_url, video.output_hls_url
             FROM video'
     );
  
@@ -752,7 +752,7 @@ function createData() {
         'video', 
         array( 
             'name' => 'video 1', 
-            'output_dash_url' => 'video dash url 1',
+            'output_dash_url' => 'http://daiservices.fokus.fraunhofer.de:3002/mpds/1515962031964.mpd',
             'output_hls_url' => 'video hls url 1'
 
         )
@@ -762,7 +762,7 @@ function createData() {
         'video', 
         array( 
             'name' => 'video 2', 
-            'output_dash_url' => 'video dash url 2',
+            'output_dash_url' => 'http://daiservices.fokus.fraunhofer.de:3002/mpds/1512926780398.mpd',
             'output_hls_url' => 'video hls url 2'
 
         )
@@ -772,7 +772,7 @@ function createData() {
         'video', 
         array( 
             'name' => 'video 3', 
-            'output_dash_url' => 'video dash url 3',
+            'output_dash_url' => 'http://daiservices.fokus.fraunhofer.de:3002/mpds/1512920080953.mpd',
             'output_hls_url' => 'video hls url 3'
 
         )
@@ -782,7 +782,7 @@ function createData() {
         'video', 
         array( 
             'name' => 'video 4', 
-            'output_dash_url' => 'video dash url 4',
+            'output_dash_url' => 'http://elive.fokus.fraunhofer.de/websrv/waipu/dash/waipu_testcontent_02/waiputestcontent_02.mpd',
             'output_hls_url' => 'video hls url 4'
 
         )
