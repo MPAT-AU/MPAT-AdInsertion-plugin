@@ -5,8 +5,67 @@ import { Link } from 'react-router-dom'
 
 import { highlightNavigation } from '../helper/wpRouting'
 
-import { createTables, getVideos, getVideo, getAds, getAd, createAd, updateAd, deleteAd, createData, getAdsWithCount } from '../handler/DBHandler';
+import { createTables, getVideos, getVideo, getAds, getAd, createAd, updateAd, deleteAd, createData, getAdsWithCount, createVideo, deleteTables } from '../handler/DBHandler';
 
+var createVideoTestJson = {
+    "name" : "Testvideo",
+    "output_dash_url" : "http://daiservices.fokus.fraunhofer.de:3002/mpds/1515962031964.mpd",
+    "output_hls_url": "http://samp.le/url.hls",
+    "parts":  [
+      {
+        "name": "Part 1",
+        "dash_url": "http://daiservices.fokus.fraunhofer.de:3002/mpds/1515962031964.mpd",
+        "hls_url": "http://samp.le/url.hls",
+        "part_nr": 1,
+        "ad_blocks":  [
+          {   
+            "sec_in_part": 10,
+            "ad_block_parts": [
+                {
+                  "order_nr": 1,
+                  "ad_id": 2
+                }
+                ]
+          },
+          {   
+            "sec_in_part": 10,
+            "ad_block_parts": [
+                {
+                  "order_nr": 1,
+                  "ad_id": 2
+                }
+                ]
+          }
+        ]
+      },
+      {
+        "name": "Part 2",
+        "dash_url": "http://daiservices.fokus.fraunhofer.de:3002/mpds/1515962031964.mpd",
+        "hls_url": "http://samp.le/url.hls",
+        "part_nr": 2,
+        "ad_blocks":  [
+          {   
+            "sec_in_part": 10,
+            "ad_block_parts": [
+              {
+                "order_nr": 1,
+                "ad_id": 2
+              }
+              ]
+          },
+          {   
+            "sec_in_part": 10,
+            "ad_block_parts": [
+                {
+                  "order_nr": 1,
+                  "ad_id": 2
+                }
+                ]
+          }
+        ]
+      }
+    ]
+  }
 
 class HomeVideoAdInsertion extends React.Component {
     render() {
@@ -53,12 +112,14 @@ class HomeVideoAdInsertion extends React.Component {
                     <div>
                         <h2>Tables</h2>
                         <button className='ad-inserter-button-white-blue' onClick={ () => createTables()}>DB create Tables</button>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => deleteTables()}>DB delete Tables</button>
                         <button className='ad-inserter-button-white-blue' onClick={ () => createData()}>DB create Test Data</button>
                     </div>
                     <div>
                         <h2>Videos</h2>
                         <button className='ad-inserter-button-white-blue' onClick={ () => getVideos()}>DB get Videos</button>
                         <button className='ad-inserter-button-white-blue' onClick={ () => getVideo(1)}>DB get Video</button>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => createVideo(createVideoTestJson)}>DB createVideo</button>
                     </div>
                     <div>
                         <h2>Ads</h2>

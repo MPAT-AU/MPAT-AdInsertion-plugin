@@ -1,5 +1,5 @@
 
-var debuggingON = false;
+var debuggingON = true;
 
 // creates all necessary tables
 // POST
@@ -18,6 +18,27 @@ export function createTables() {
         error: function (error) {
             if (debuggingON){
                 console.log("createTables()- Error happened: " + error);
+            }
+            reject(false);
+        }
+    }));
+}
+
+export function deleteTables() {
+    return new Promise((resolve, reject) =>
+    $.ajax({
+        url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
+        data: {function: 'deleteTables'},
+        type: 'post',
+        success: function(data) {
+            if (debuggingON){
+                console.log("deleteTables()- Data recieved: " + data);
+            }
+            resolve(true);
+        },
+        error: function (error) {
+            if (debuggingON){
+                console.log("deleteTables()- Error happened: " + error);
             }
             reject(false);
         }

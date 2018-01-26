@@ -25,6 +25,13 @@ if ( isset( $_POST['function'] ) ) {
             createAdBlockTable();
             createAdBlockPartTable();
             break;
+        case 'deleteTables':
+            deleteAdBlockPartTable();
+            deleteAdTable();
+            deleteAdBlockTable();
+            deleteVideoPartTable();
+            deleteVideoTable();
+            break;
         case 'createData': 
             createData();
             break;
@@ -191,8 +198,59 @@ function createAdTable() {
     }
 }
 
+function deleteVideoTable() {
+    global $wpdb;
+    
+    $table_name = 'video';
+    if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') == $table_name ) {
+        $wpdb->query( 
+            'DROP TABLE video'
+        );
+    }
+}
 
+function deleteVideoPartTable() {
+    global $wpdb;
+    
+    $table_name = 'video_part';
+    if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') == $table_name ) {
+        $wpdb->query( 
+            'DROP TABLE video_part'
+        );
+    }
+}
 
+function deleteAdBlockTable() {
+    global $wpdb;
+    
+    $table_name = 'ad_block';
+    if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') == $table_name ) {
+        $wpdb->query( 
+            'DROP TABLE ad_block'
+        );
+    }
+}
+
+function deleteAdBlockPartTable() {
+    global $wpdb;
+    $table_name = 'ad_block_part';
+    if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') == $table_name ) {
+        $wpdb->query( 
+            'DROP TABLE ad_block_part'
+        );
+    }
+}
+
+function deleteAdTable() {
+    global $wpdb;
+    
+    $table_name = 'ad';
+    if ( $wpdb->get_var('SHOW TABLES LIKE \''.$table_name.'\';') == $table_name ) {
+        $wpdb->query( 
+            'DROP TABLE ad'
+        );
+    }
+}
 
 
 
@@ -256,26 +314,74 @@ function getVideo($id) {
 // 1.3
 function createVideo($json){
     global $wpdb;
+    
+    //$json = json_decode($json);
 
-    $result = $wpdb->insert( 
+    //debug_to_console(json_encode($json));
+
+    // ad's already exists
+    // create video row
+    $video_result = $wpdb->insert( 
         'video', 
         array(  
             'name' => $json['name'],
             'output_dash_url' => $json['output_dash_url'],
             'output_hls_url' => $json['output_hls_url']
-        ), 
-        array( 
-            '%s',
-            '%s',
-            '%s'
-        ) 
+        )
     );
+    $video_id = $wpdb->insert_id;
 
-    if (false === $result){
-        echo false;
-    } else {
-        echo true;
-    } 
+    // create video_part row
+    $parts = $json['parts'];
+    //debug_to_console( json_encode($parts) );
+    foreach( $parts as $part ) {
+        //debug_to_console(json_encode($part));
+        $part_result = $wpdb->insert( 
+            'video_part', 
+            array(  
+                'v_id' => $video_id,
+                'name' => $part['name'],
+                'dash_url' => $part['dash_url'],
+                'hls_url' => $part['hls_url'],
+                'part_nr' => $part['part_nr']
+            )
+        );
+
+        $video_part_id = $wpdb->insert_id;
+
+        $ad_blocks = $part['ad_blocks'];
+        //debug_to_console( json_encode($ad_blocks) );
+
+        // create ad_block row
+        foreach( $ad_blocks as $ad_block ) {
+            $ad_block_result = $wpdb->insert( 
+                'ad_block',
+                array(
+                    'vp_id' => $video_part_id,
+                    'sec_in_part' => $ad_block['sec_in_part']
+                )
+            );
+
+            // create ad_block_part row
+            $ad_block_id = $wpdb->insert_id;
+            
+            if (isset( $ad_block['ad_block_parts'] )) {
+                $ad_block_parts = $ad_block['ad_block_parts'];
+                echo( json_encode( $ad_block_parts ) );
+    
+                foreach( $ad_block_parts as $ad_block_part ) {
+                    $ad_block_part_result = $wpdb->insert(
+                        'ad_block_part',
+                        array(
+                            'ab_id' => $ad_block_id,
+                            'order_nr' => $ad_block_part['order_nr'],
+                            'ad_id' => $ad_block_part['ad_id']
+                        )
+                    );
+                }
+            }
+        }
+    }
 }
 
 // 1.4
