@@ -5,11 +5,12 @@ import { Link } from 'react-router-dom'
 
 import { highlightNavigation } from '../helper/wpRouting'
 
-import { createTables, getVideos, getVideo, getAds, getAd, createAd, updateAd, deleteAd, createData, getAdsWithCount, createVideo, deleteTables } from '../handler/DBHandler';
+import { createTables, getVideos, getVideo, getAds, getAd, createAd, updateAd, deleteAd, createData, getAdsWithCount, createVideo, deleteTables, updateVideo } from '../handler/DBHandler';
 
 var createVideoTestJson = {
-    "name" : "Testvideo",
-    "output_dash_url" : "http://daiservices.fokus.fraunhofer.de:3002/mpds/1515962031964.mpd",
+    "id": 1,
+    "name": "Testvideo update",
+    "output_dash_url": "http://daiservices.fokus.fraunhofer.de:3002/mpds/1515962031964.mpd",
     "output_hls_url": "http://samp.le/url.hls",
     "parts":  [
       {
@@ -31,7 +32,7 @@ var createVideoTestJson = {
             "sec_in_part": 10,
             "ad_block_parts": [
                 {
-                  "order_nr": 1,
+                  "order_nr": 2,
                   "ad_id": 2
                 }
                 ]
@@ -57,7 +58,7 @@ var createVideoTestJson = {
             "sec_in_part": 10,
             "ad_block_parts": [
                 {
-                  "order_nr": 1,
+                  "order_nr": 2,
                   "ad_id": 2
                 }
                 ]
@@ -120,6 +121,7 @@ class HomeVideoAdInsertion extends React.Component {
                         <button className='ad-inserter-button-white-blue' onClick={ () => getVideos()}>DB get Videos</button>
                         <button className='ad-inserter-button-white-blue' onClick={ () => getVideo(1)}>DB get Video</button>
                         <button className='ad-inserter-button-white-blue' onClick={ () => createVideo(createVideoTestJson)}>DB createVideo</button>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => updateVideo(createVideoTestJson)}>DB updateVideo</button>
                     </div>
                     <div>
                         <h2>Ads</h2>
