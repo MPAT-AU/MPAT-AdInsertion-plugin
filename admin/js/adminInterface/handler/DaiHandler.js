@@ -1,5 +1,5 @@
 
-function sendAndHandleRequest(jsonBody,name,thumbnail){
+export function sendAndHandleRequest(jsonBody,name,thumbnail){
 
   var dashUrl = ""
   var hlsUrl  = ""
@@ -31,4 +31,87 @@ function httpGetAsync(theUrl, JSONBODY , callback)
 
 function saveInDatabase(dashUrl, hlsUrl, name , thumbnail){
   
+}
+
+function getDuration(url){
+
+  httpGetAsync(url, '', response => {
+    parser = new DOMParser();
+    xmlDoc = parser.parseFromString(response,"text/xml");
+
+    let mpd = xmlDoc.getElementsByTagName("MPD")[0];
+    let rawTime = mpd.getAttribute('mediaPresentationDuration');
+
+    if(rawTime.length == 0){
+      return 0
+    }else{
+        //remove PT
+        rawTime = rawTime.substr(1);
+        rawTime = rawTime.substr(1);
+
+
+        //H
+        var h = 0;
+        var hPosi = rawTime.search("H");
+        if(hPosi != -1){
+            h = rawTime.substring(0, hPosi);
+            rawTime = rawTime.slice(hPosi + 1);
+            h = parseInt(h);
+        }
+        //console.log("H: " + h);  
+        
+        //M
+        var m = 0;
+        var mPosi = rawTime.search("M");
+        if(mPosi != -1){
+            m = rawTime.substring(0, mPosi);
+            rawTime = rawTime.slice(mPosi + 1);
+            m = parseInt(m);
+        }
+        //console.log("M: " + m);  
+        
+        //S
+        var s = 0;
+        var sPosi = rawTime.search("S");
+        if(sPosi != -1){
+            s = rawTime.substring(0, sPosi);
+            s = s.replace('.','');
+            if(s.length != 5){
+                switch(s.length) {
+                    case 4:
+                        s = (s + "0");
+                        break;
+                    case 3:
+                        s = (s + "00");
+                        break;
+                    case 2:
+                        s = (s + "000");
+                        break;
+                    case 1:
+                        s = (s + "000");
+                        break;    
+                    default:
+                        s = 0;
+                }
+            }
+            s = parseInt(s);
+        }
+        //console.log("S: " + s);  
+      
+        var duration = 0;
+        
+        if (isInt(h) && isInt(m) && isInt(s)) {
+            duration = (h * 3600000) + (m * 60000) + (s);
+        }
+        console.log("Final Duration: " + duration);
+
+        return duration;
+    }
+  });
+
+}
+
+
+function isInt(n){
+    return Number(n) === n && n % 1 === 0;
 }
