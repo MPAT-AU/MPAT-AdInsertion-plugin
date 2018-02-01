@@ -144,11 +144,11 @@ export function createVideo(json){
 // 1.4
 // returns true/false
 // POST
-export function updateVideo(id, json){
+export function updateVideo(json){
     return new Promise((resolve, reject) =>
     $.ajax({
         url: window.location.origin + '/app/plugins/mpat-adinsertion-plugin/admin/php/DBHandler.php',
-        data: {function: 'updateVideo',id: id, json: json},
+        data: {function: 'updateVideo', json: json},
         type: 'post',
         success: function(data) {
             if (debuggingON){

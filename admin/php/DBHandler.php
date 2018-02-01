@@ -39,7 +39,7 @@ if ( isset( $_POST['function'] ) ) {
             createVideo($_POST['json']);
             break;
         case 'updateVideo':                                 //1.4
-            updateVideo($_POST['id'],$_POST['json']);
+            updateVideo($_POST['json']);
             break; 
         case 'deleteVideo':                                 //1.5
             deleteVideo($_POST['id']);
@@ -314,10 +314,6 @@ function getVideo($id) {
 // 1.3
 function createVideo($json){
     global $wpdb;
-    
-    //$json = json_decode($json);
-
-    //debug_to_console(json_encode($json));
 
     // ad's already exists
     // create video row
@@ -333,9 +329,7 @@ function createVideo($json){
 
     // create video_part row
     $parts = $json['parts'];
-    //debug_to_console( json_encode($parts) );
     foreach( $parts as $part ) {
-        //debug_to_console(json_encode($part));
         $part_result = $wpdb->insert( 
             'video_part', 
             array(  
@@ -350,7 +344,6 @@ function createVideo($json){
         $video_part_id = $wpdb->insert_id;
 
         $ad_blocks = $part['ad_blocks'];
-        //debug_to_console( json_encode($ad_blocks) );
 
         // create ad_block row
         foreach( $ad_blocks as $ad_block ) {
@@ -367,7 +360,6 @@ function createVideo($json){
             
             if (isset( $ad_block['ad_block_parts'] )) {
                 $ad_block_parts = $ad_block['ad_block_parts'];
-                echo( json_encode( $ad_block_parts ) );
     
                 foreach( $ad_block_parts as $ad_block_part ) {
                     $ad_block_part_result = $wpdb->insert(
@@ -385,33 +377,19 @@ function createVideo($json){
 }
 
 // 1.4
-function updateVideo($id,$json){
+function updateVideo($json){
     global $wpdb;
 
-    $result = $wpdb->update( 
-        'video', 
-        array( 
-            'name' => $json['name'],
-            'output_dash_url' => $json['output_dash_url'],
-            'output_hls_url' => $json['output_hls_url']
-        ),
-        array(
-            'id' => $id 
-        ), 
-        array( 
-            '%s',
-            '%s',
-            '%s'
-        ),
-        array(
-            '%d'
-        )
-    );
+    $video_id = $json['id'];
 
-    if (false === $result){
-        echo false;
-    } else {
+    deleteVideo($video_id);
+    createVideo($json);
+
+
+    if ($result){
         echo true;
+    } else {
+        echo false;
     } 
 }
 
@@ -528,6 +506,20 @@ function deleteVideoPart($id){
     } else {
         echo true;
     } 
+}
+
+function getVideoParts( $video_id ) {
+    global $wpdb;
+
+    $results = $wpdb->get_results( $wpdb->prepare(  
+        'SELECT id
+        FROM video_part
+        WHERE v_id = %d',
+        $video_id
+    ));
+ 
+    $json = json_encode($results);
+    return $json;
 }
 
 
