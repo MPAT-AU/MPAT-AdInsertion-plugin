@@ -93,7 +93,7 @@ class CreateAd extends React.Component {
                            placeholder='name'
                            title='Insert a name for this ad.'
                            type='text'
-                           maxLength='20'
+                           maxLength='2000'
                            required
                            value={this.state.name}
                            onChange={this.handleChange}/>
@@ -103,7 +103,7 @@ class CreateAd extends React.Component {
                     <input className='ad-inserter-input'
                            id='dash'
                            placeholder='url (.mpd)'
-                           title='Insert url which links to an DASH file (.mpd).'
+                           title='Insert url which links to a DASH file (.mpd).'
                            type='url'
                            pattern='.*\.mpd$'
                            required
@@ -115,10 +115,9 @@ class CreateAd extends React.Component {
                     <input className='ad-inserter-input'
                            id='hls'
                            placeholder='url (.m3u8)'
-                           title='Insert url which links to an HLS file (.m3u8).'
+                           title='Insert url which links to a HLS file (.m3u8).'
                            type='url'
                            pattern='.*\.m3u8$'
-                           required
                            value={this.state.hls}
                            onChange={this.handleChange}/>
                 </div>
