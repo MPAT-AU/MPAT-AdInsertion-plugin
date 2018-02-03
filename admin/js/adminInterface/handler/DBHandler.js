@@ -426,7 +426,7 @@ export function createAd(json){
                 if (debuggingON){
                     console.log("createAd()- Data recieved: " + data);
                 }
-                resolve(true);
+                resolve(json.parse(data));
             },
             error: function (error) {
                 if (debuggingON){

@@ -128,7 +128,7 @@ class HomeVideoAdInsertion extends React.Component {
                         <button className='ad-inserter-button-white-blue' onClick={ () => getAds()}>DB getAds</button>
                         <button className='ad-inserter-button-white-blue' onClick={ () => getAdsWithCount()}>DB getAdsWithCount</button>
                         <button className='ad-inserter-button-white-blue' onClick={ () => getAd(1)}>DB getAd(1)</button>
-                        <button className='ad-inserter-button-white-blue' onClick={ () => createAd({name: 'test',dash_url: 'ahsgfjahf',hls_url: 'jdhfkjshdkfj'})}>DB create ad</button>
+                        <button className='ad-inserter-button-white-blue' onClick={ () => createAd({name: 'test',dash_url: 'ahsgfjahf',hls_url: 'jdhfkjshdkfj', duration: 1000})}>DB create ad</button>
                         <button className='ad-inserter-button-white-blue' onClick={ () => updateAd(1,{name: 'test2',dash_url: 'ahsgfjahf',hls_url: 'jdhfkjshdkfj'})}>DB update</button>
                         <button className='ad-inserter-button-white-blue' onClick={ () => deleteAd(1)}>DB delete</button>
                     </div>
