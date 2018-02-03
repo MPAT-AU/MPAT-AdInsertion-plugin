@@ -684,12 +684,14 @@ function createAd($json){
         array( 
             'name' => $json['name'], 
             'dash_url' => $json['dash_url'],
-            'hls_url' => $json['hls_url']
+            'hls_url' => $json['hls_url'],
+            'duration' => $json['duration']
         ), 
         array( 
             '%s', 
             '%s',
-            '%s' 
+            '%s',
+            '%d' 
         ) 
     );
 
@@ -709,7 +711,8 @@ function updateAd($id,$json){
         array( 
             'name' => $json['name'], 
             'dash_url' => $json['dash_url'],
-            'hls_url' => $json['hls_url']
+            'hls_url' => $json['hls_url'],
+            'duration' => $json['duration']
         ),
         array(
             'id' => $id
@@ -717,7 +720,8 @@ function updateAd($id,$json){
         array( 
             '%s', 
             '%s',
-            '%s' 
+            '%s',
+            '%d' 
         ),
         array(
             '%d'
