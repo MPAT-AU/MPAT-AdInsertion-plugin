@@ -188,8 +188,8 @@ class AdBlock extends React.Component {
         })
     }
 
-    handleClickOnAddAd() {
-        this.setState({addAd: true})
+    handleClickOnAddAdOrCancel() {
+        this.setState({addAd: !this.state.addAd})
     }
 
     handleClickOnRadioButtonOrLabel(event) {
@@ -202,7 +202,6 @@ class AdBlock extends React.Component {
     handleOnChangeSelect(event) {
         const index = event.target.value
         this.setState({chosenAd: this.state.allAdsArray[index]})
-        console.log(this.state.chosenAd)
     }
 
     render() {
@@ -244,15 +243,66 @@ class AdBlock extends React.Component {
                 </div>
                 {
                     !this.state.chooseAd ?
-                        <div>Test</div>
+                        <div className='ad-inserter-create-ad'>
+                            <div className='ad-inserter-lable-input-row'>
+                                <label className='ad-inserter-input-label'>ad name</label>
+                                <input className='ad-inserter-input'
+                                       id='name'
+                                       placeholder='name'
+                                       title='Insert a name for this ad.'
+                                       type='text'
+                                       maxLength='2000'
+                                       required
+                                       value={this.state.name}
+                                       onChange={this.handleChange}/>
+                            </div>
+                            <div className='ad-inserter-lable-input-row'>
+                                <label className='ad-inserter-input-label'>dash url</label>
+                                <input className='ad-inserter-input'
+                                       id='dash'
+                                       placeholder='url (.mpd)'
+                                       title='Insert url which links to a DASH file (.mpd).'
+                                       type='url'
+                                       pattern='.*\.mpd$'
+                                       required
+                                       value={this.state.dash}
+                                       onChange={this.handleChange}/>
+                            </div>
+                            <div className='ad-inserter-lable-input-row'>
+                                <label className='ad-inserter-input-label'>hls url</label>
+                                <input className='ad-inserter-input'
+                                       id='hls'
+                                       placeholder='url (.m3u8)'
+                                       title='Insert url which links to a HLS file (.m3u8).'
+                                       type='url'
+                                       pattern='.*\.m3u8$'
+                                       value={this.state.hls}
+                                       onChange={this.handleChange}/>
+                            </div>
+                        </div>
                         :
                         null
                 }
+                <div className='ad-inserter-right-button-group'>
+                    <button type='button'
+                            className='ad-inserter-button-white-blue'
+                            onClick={this.handleClickOnAddAdOrCancel.bind(this)}>
+                        <i className="material-icons">clear</i>cancel
+                    </button>
+                    {
+                        this.state.createAd ?
+                            <LoadingButton icon='add_to_queue' color='green' loadingMessage={this.state.chooseAd ? 'add' : 'create and add'}/> :
+                            <button type='button'
+                                    className='ad-inserter-button-green-white'>
+                                <i className="material-icons">add_to_queue</i>{this.state.chooseAd ? 'add' : 'create and add'}
+                            </button>
+                    }
+                </div>
             </div>
                 :
             <div className='ad-inserter-right-button-row'>
                 <button type='button'
-                        onClick={this.handleClickOnAddAd.bind(this)}
+                        onClick={this.handleClickOnAddAdOrCancel.bind(this)}
                         className='ad-inserter-button-white-blue'>
                     <i className='material-icons'>add</i>ad
                 </button>

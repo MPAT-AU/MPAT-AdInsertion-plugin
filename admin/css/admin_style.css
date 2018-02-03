@@ -34,7 +34,7 @@
     padding: 20px 0;
 }
 
-.ad-inserter-right-button-group > a {
+.ad-inserter-right-button-group button:first-child {
     margin: 0 8px;
 }
 

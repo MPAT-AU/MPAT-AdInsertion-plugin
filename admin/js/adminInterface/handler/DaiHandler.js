@@ -33,7 +33,7 @@ function saveInDatabase(dashUrl, hlsUrl, name , thumbnail){
   
 }
 
-function getDuration(url){
+export function getDuration(url){
     return new Promise((resolve, reject) => 
         httpGetAsync(url, '', response => {
             parser = new DOMParser();
