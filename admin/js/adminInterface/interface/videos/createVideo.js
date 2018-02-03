@@ -8,6 +8,7 @@ import {highlightNavigation} from '../../helper/wpRouting'
 import {createAd, getAds} from '../../handler/DBHandler'
 import LoadingButton from '../loadingButton'
 import {waitTwoSeconds} from '../demoHelper'
+import {getDuration} from '../../handler/DaiHandler'
 
 class CreateVideo extends React.Component {
     constructor(props) {
@@ -159,12 +160,18 @@ class AdBlock extends React.Component {
             sec_in_part: null,
             ads: [],
             addAd: false,
+            addAdName: '',
+            addAdDash: '',
+            addAdHls: '',
             chooseAd: true,
             chosenAd: null,
             allAdsArray: [],
-            adsAvailable: false
+            adsAvailable: false,
+            createAd: false
         }
         this.getAdArray()
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     getAdArray() {
@@ -205,11 +212,57 @@ class AdBlock extends React.Component {
 
     handelClickOnAddAdToAdBlock() {
         if (this.state.chooseAd) {
-            const ads = this.state.ads
-            ads.push(this.state.chosenAd)
-            this.setState({addAd: !this.state.addAd})
+            let moreAds = this.state.ads
+            moreAds.push(this.state.chosenAd)
+            this.setState({
+                addAd: false,
+                ads: moreAds
+            })
         } else {
-            console.log('else')
+            this.setState({createAd: true})
+            this.getJsonForSubmit()
+                .then( json =>
+                        createAd(json)
+                            .then(ad => {
+                                let moreAds = this.state.ads
+                                moreAds.push(ad)
+                                this.setState({
+                                    createdAd: false,
+                                    addAd: false,
+                                    ads: moreAds
+                                })
+                            })
+                    )
+        }
+    }
+
+    getJsonForSubmit() {
+        return getDuration(this.state.addAdDash).then( result => {
+                return {
+                    name: this.state.addAdName,
+                    duration: result,
+                    dash_url: this.state.addAdDash,
+                    hls_url: this.state.addAdHls
+                }
+            }
+        )
+    }
+
+    handleChange(event) {
+        switch (event.target.id) {
+            case 'name' : {
+                this.setState({addAdName: event.target.value})
+                break
+            }
+            case 'dash' : {
+                this.setState({addAdDash: event.target.value})
+                break
+            }
+            case 'hls' : {
+                this.setState({addAdHls: event.target.value});
+                break
+            }
+            default : break
         }
     }
 
@@ -262,7 +315,8 @@ class AdBlock extends React.Component {
                                        title='Insert a name for this ad.'
                                        type='text'
                                        maxLength='2000'
-                                       value={this.state.name}
+                                       required
+                                       value={this.state.addAdName}
                                        onChange={this.handleChange}/>
                             </div>
                             <div className='ad-inserter-lable-input-row'>
@@ -273,7 +327,8 @@ class AdBlock extends React.Component {
                                        title='Insert url which links to a DASH file (.mpd).'
                                        type='url'
                                        pattern='.*\.mpd$'
-                                       value={this.state.dash}
+                                       required
+                                       value={this.state.addAdDash}
                                        onChange={this.handleChange}/>
                             </div>
                             <div className='ad-inserter-lable-input-row'>
@@ -284,7 +339,7 @@ class AdBlock extends React.Component {
                                        title='Insert url which links to a HLS file (.m3u8).'
                                        type='url'
                                        pattern='.*\.m3u8$'
-                                       value={this.state.hls}
+                                       value={this.state.addAdHls}
                                        onChange={this.handleChange}/>
                             </div>
                         </div>
@@ -320,7 +375,7 @@ class AdBlock extends React.Component {
 
         const ads = this.state.ads.map((ad, index) => {
             return (
-                <div key={'ad-number-' + index}>Ad {index}</div>
+                <div key={'ad-number-' + index}>{ad.name}</div>
             )
         })
 
