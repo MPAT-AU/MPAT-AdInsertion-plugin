@@ -43,7 +43,7 @@ export function getDuration(url){
         httpGetAsync(url, '', response => {
 
             if(response == ""){
-                return;
+                return resolve(0);
             }else{
                 parser = new DOMParser();
                 xmlDoc = parser.parseFromString(response,"text/xml");

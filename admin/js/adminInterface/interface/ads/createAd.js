@@ -47,17 +47,18 @@ class CreateAd extends React.Component {
         event.preventDefault();
         this.setState({createAd: true})
         this.getJsonForSubmit()
-            // .then( json =>
+            // .then( json => {
             //     createAd(json)
-            //         .then(result => {
-            //             this.setState({createdAd: false})
-            //             if (result) {
-            //                 this.setState({redirect: true});
-            //                 highlightNavigation('mpat-ad-insertion-new-ad', 'mpat-ad-insertion-all-ads')
-            //             } else {
-            //                 console.log('Error')
-            //             }
-            //         })
+            //             .then(result => {
+            //                 this.setState({createdAd: false})
+            //                 if (result) {
+            //                     this.setState({redirect: true});
+            //                     highlightNavigation('mpat-ad-insertion-new-ad', 'mpat-ad-insertion-all-ads')
+            //                 } else {
+            //                     console.log('Error')
+            //                 }
+            //             })
+            //     }
             // )
         // only for demo purposes
             .then( json =>
@@ -79,12 +80,12 @@ class CreateAd extends React.Component {
 
     getJsonForSubmit() {
         return getDuration(this.state.dash).then( result => {
-                return {
-                    name: this.state.name,
-                    duration: result,
-                    dash_url: this.state.dash,
-                    hls_url: this.state.hls
-                }
+            return {
+                name: this.state.name,
+                duration: result,
+                dash_url: this.state.dash,
+                hls_url: this.state.hls
+            }
             }
         )
     }
