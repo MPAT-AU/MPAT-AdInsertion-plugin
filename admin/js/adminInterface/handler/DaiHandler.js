@@ -45,8 +45,8 @@ export function getDuration(url){
             if(response == ""){
                 return resolve(0);
             }else{
-                parser = new DOMParser();
-                xmlDoc = parser.parseFromString(response,"text/xml");
+
+                var xmlDoc = $.parseXML(response);
 
                 let mpd = xmlDoc.getElementsByTagName("MPD")[0];
                 let rawTime = mpd.getAttribute('mediaPresentationDuration');
@@ -57,7 +57,8 @@ export function getDuration(url){
                     //remove PT
                     rawTime = rawTime.substr(1);
                     rawTime = rawTime.substr(1);
-                    
+                
+
                     //H
                     var h = 0;
                     var hPosi = rawTime.search("H");
