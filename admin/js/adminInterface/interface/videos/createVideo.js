@@ -5,7 +5,7 @@ import {Redirect} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 
 import {highlightNavigation} from '../../helper/wpRouting'
-import {createAd} from '../../handler/DBHandler'
+import {createAd, getAds} from '../../handler/DBHandler'
 import LoadingButton from '../loadingButton'
 import {waitTwoSeconds} from '../demoHelper'
 
@@ -151,17 +151,6 @@ function AddVideoPartButton(props) {
     )
 }
 
-function AddAdButton(props) {
-    return (
-        <div className='ad-inserter-right-button-row'>
-            <button type='button'
-                    onClick={() => this.props.onClick()}
-                    className='ad-inserter-button-white-blue'>
-                <i className='material-icons'>add</i>ad
-            </button>
-        </div>
-    )
-}
 
 class AdBlock extends React.Component {
     constructor(props) {
@@ -170,8 +159,33 @@ class AdBlock extends React.Component {
             sec_in_part: null,
             ads: [],
             addAd: false,
-            chooseAd: true
+            chooseAd: true,
+            chosenAd: null,
+            allAdsArray: [],
+            adsAvailable: false
+
         }
+        this.getAdArray()
+    }
+
+    getAdArray() {
+        getAds().then(result => {
+            if(result.length === 0) return
+            const sortedAds = result.sort((a, b) => {
+                const nameA = a.name.toUpperCase()
+                const nameB = b.name.toUpperCase()
+                if (nameA < nameB) return -1
+                if (nameA > nameB) return 1
+                return 0
+            })
+            this.setState({
+                allAdsArray: sortedAds,
+                chosenAd: sortedAds[0],
+                adsAvailable: true
+            })
+        }, err => {
+            console.log('Error ', err)
+        })
     }
 
     handleClickOnAddAd() {
@@ -185,7 +199,17 @@ class AdBlock extends React.Component {
         }
     }
 
+    handleOnChangeSelect(event) {
+        const index = event.target.value
+        this.setState({chosenAd: this.state.allAdsArray[index]})
+        console.log(this.state.chosenAd)
+    }
+
     render() {
+
+        const adOptions = this.state.allAdsArray.map((ad, index) => {
+            return (<option key={'ad' + ad.id} value={index}>{ad.name}</option>)
+        })
 
         const buttonOrAddAd = this.state.addAd ?
             <div>
@@ -202,7 +226,9 @@ class AdBlock extends React.Component {
                 </div>
                 {
                     this.state.chooseAd ?
-                        <div>Test</div>
+                        <select onChange={this.handleOnChangeSelect.bind(this)}>
+                            {adOptions}
+                        </select>
                         :
                         null
                 }
