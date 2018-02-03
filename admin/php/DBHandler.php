@@ -139,6 +139,7 @@ function createVideoPartTable() {
                 dash_url VARCHAR(1000),
                 hls_url VARCHAR(1000),
                 part_nr INT,
+                duration INT,
                 CONSTRAINT `fk_video_part_video` FOREIGN KEY (v_id) REFERENCES video (id) ON DELETE CASCADE ON UPDATE RESTRICT
             )'
         );
@@ -192,7 +193,8 @@ function createAdTable() {
                 id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(1000),
                 dash_url VARCHAR(1000),
-                hls_url VARCHAR(1000)
+                hls_url VARCHAR(1000),
+                duration INT
             )'
         );
     }
@@ -263,7 +265,7 @@ function getVideos() {
     global $wpdb;
 
     $results = $wpdb->get_results( 
-        'SELECT id, name, output_dash_url, output_hls_url, number_of_video_parts, number_of_ad_blocks, number_of_ads
+        'SELECT id, name, output_dash_url, output_hls_url, number_of_video_parts, number_of_ad_blocks, number_of_ads, dur.duration
             FROM video v, 
 	            (SELECT v_id, COUNT(*) as number_of_video_parts 
     	            FROM video_part
@@ -275,8 +277,16 @@ function getVideos() {
                 (SELECT vp.v_id, COUNT(*) AS number_of_ads
 					FROM video_part vp, ad_block ab, ad_block_part abp
 					WHERE vp.id = ab.vp_id AND ab.id = abp.ab_id
-					GROUP BY vp.v_id) noa
-            WHERE v.id = novp.v_id AND novp.v_id = noab.v_id AND noab.v_id = noa.v_id'
+					GROUP BY vp.v_id) noa,
+                (SELECT v.id AS v_id, SUM(vp.duration) + SUM(IFNULL(ad_block_duration,0)) AS duration
+                    FROM video v, video_part vp
+                    LEFT JOIN (SELECT ab.vp_id, ab.id, SUM(ad.duration) as ad_block_duration
+	                    FROM ad_block ab, ad_block_part abp, ad
+	                    WHERE ab.id = abp.ab_id AND abp.ad_id = ad.id
+	                    GROUP BY ab.id) ad_sum ON vp.id = ad_sum.vp_id
+                    WHERE v.id = vp.v_id
+                    GROUP BY v.id) dur
+            WHERE v.id = novp.v_id AND novp.v_id = noab.v_id AND noab.v_id = noa.v_id AND v.id = dur.v_id'
     );
  
     $json = json_encode( $results );
@@ -674,12 +684,14 @@ function createAd($json){
         array( 
             'name' => $json['name'], 
             'dash_url' => $json['dash_url'],
-            'hls_url' => $json['hls_url']
+            'hls_url' => $json['hls_url'],
+            'duration' => $json['duration']
         ), 
         array( 
             '%s', 
             '%s',
-            '%s' 
+            '%s',
+            '%d' 
         ) 
     );
 
@@ -699,7 +711,8 @@ function updateAd($id,$json){
         array( 
             'name' => $json['name'], 
             'dash_url' => $json['dash_url'],
-            'hls_url' => $json['hls_url']
+            'hls_url' => $json['hls_url'],
+            'duration' => $json['duration']
         ),
         array(
             'id' => $id
@@ -707,7 +720,8 @@ function updateAd($id,$json){
         array( 
             '%s', 
             '%s',
-            '%s' 
+            '%s',
+            '%d' 
         ),
         array(
             '%d'
@@ -892,7 +906,8 @@ function createData() {
         array( 
             'name' => 'ad 1',
             'dash_url' => 'ad dash url 1',
-            'hls_url' => 'ad hls url 1'
+            'hls_url' => 'ad hls url 1',
+            'duration' => 16
         )
     );
 
@@ -901,7 +916,8 @@ function createData() {
         array( 
             'name' => 'ad 2',
             'dash_url' => 'ad dash url 2',
-            'hls_url' => 'ad hls url 2'
+            'hls_url' => 'ad hls url 2',
+            'duration' => 16
         )
     );
     
@@ -910,11 +926,12 @@ function createData() {
         array( 
             'name' => 'ad 3',
             'dash_url' => 'ad dash url 3',
-            'hls_url' => 'ad hls url 3'
+            'hls_url' => 'ad hls url 3',
+            'duration' => 16
         )
     );
 
-    // create parts
+    // create video parts
     $wpdb->insert( 
         'video_part', 
         array( 
@@ -922,7 +939,8 @@ function createData() {
             'name' => 'video_part 1',
             'dash_url' => 'video_part dash url 1',
             'hls_url' => 'video_part hls url 1',
-            'part_nr' => 1
+            'part_nr' => 1,
+            'duration' => 16
         )
     );
 
@@ -933,7 +951,8 @@ function createData() {
             'name' => 'video_part 2',
             'dash_url' => 'video_part dash url 2',
             'hls_url' => 'video_part hls url 2',
-            'part_nr' => 2
+            'part_nr' => 2,
+            'duration' => 16
         )
     );
 
@@ -944,7 +963,8 @@ function createData() {
             'name' => 'video_part 3',
             'dash_url' => 'video_part dash url 3',
             'hls_url' => 'video_part hls url 3',
-            'part_nr' => 3
+            'part_nr' => 3,
+            'duration' => 16
         )
     );
 
@@ -955,7 +975,8 @@ function createData() {
             'name' => 'video_part 4',
             'dash_url' => 'video_part dash url 4',
             'hls_url' => 'video_part hls url 4',
-            'part_nr' => 1
+            'part_nr' => 1,
+            'duration' => 16
         )
     );
 
@@ -966,7 +987,8 @@ function createData() {
             'name' => 'video_part 5',
             'dash_url' => 'video_part dash url 5',
             'hls_url' => 'video_part hls url 5',
-            'part_nr' => 1
+            'part_nr' => 1,
+            'duration' => 16
         )
     );
 
@@ -977,7 +999,8 @@ function createData() {
             'name' => 'video_part 6',
             'dash_url' => 'video_part dash url 6',
             'hls_url' => 'video_part hls url 6',
-            'part_nr' => 2
+            'part_nr' => 2,
+            'duration' => 16
         )
     );
 
@@ -988,7 +1011,8 @@ function createData() {
             'name' => 'video_part 7',
             'dash_url' => 'video_part dash url 7',
             'hls_url' => 'video_part hls url 7',
-            'part_nr' => 3
+            'part_nr' => 3,
+            'duration' => 16
         )
     );
 
@@ -999,7 +1023,8 @@ function createData() {
             'name' => 'video_part 8',
             'dash_url' => 'video_part dash url 8',
             'hls_url' => 'video_part hls url 8',
-            'part_nr' => 4
+            'part_nr' => 4,
+            'duration' => 16
         )
     );
        
@@ -1010,7 +1035,8 @@ function createData() {
             'name' => 'video_part 9',
             'dash_url' => 'video_part dash url 9',
             'hls_url' => 'video_part hls url 9',
-            'part_nr' => 1
+            'part_nr' => 1,
+            'duration' => 16
         )
     );
     
