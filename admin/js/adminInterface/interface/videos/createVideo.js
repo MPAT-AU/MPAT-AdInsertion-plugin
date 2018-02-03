@@ -163,7 +163,6 @@ class AdBlock extends React.Component {
             chosenAd: null,
             allAdsArray: [],
             adsAvailable: false
-
         }
         this.getAdArray()
     }
@@ -204,6 +203,16 @@ class AdBlock extends React.Component {
         this.setState({chosenAd: this.state.allAdsArray[index]})
     }
 
+    handelClickOnAddAdToAdBlock() {
+        if (this.state.chooseAd) {
+            const ads = this.state.ads
+            ads.push(this.state.chosenAd)
+            this.setState({addAd: !this.state.addAd})
+        } else {
+            console.log('else')
+        }
+    }
+
     render() {
 
         const adOptions = this.state.allAdsArray.map((ad, index) => {
@@ -217,7 +226,7 @@ class AdBlock extends React.Component {
                            id='chooseAd'
                            name='addAd'
                            value='chooseAd'
-                           defaultChecked
+                           defaultChecked={this.state.chooseAd}
                            onClick={this.handleClickOnRadioButtonOrLabel.bind(this)}/>
                     <label htmlFor='chooseAd'
                            id='labelChooseAd'
@@ -236,6 +245,7 @@ class AdBlock extends React.Component {
                            id='createAd'
                            name='addAd'
                            value='createAd'
+                           defaultChecked={!this.state.chooseAd}
                            onClick={this.handleClickOnRadioButtonOrLabel.bind(this)}/>
                     <label htmlFor='createAd'
                            id='labelCreateAd'
@@ -252,7 +262,6 @@ class AdBlock extends React.Component {
                                        title='Insert a name for this ad.'
                                        type='text'
                                        maxLength='2000'
-                                       required
                                        value={this.state.name}
                                        onChange={this.handleChange}/>
                             </div>
@@ -264,7 +273,6 @@ class AdBlock extends React.Component {
                                        title='Insert url which links to a DASH file (.mpd).'
                                        type='url'
                                        pattern='.*\.mpd$'
-                                       required
                                        value={this.state.dash}
                                        onChange={this.handleChange}/>
                             </div>
@@ -291,9 +299,11 @@ class AdBlock extends React.Component {
                     </button>
                     {
                         this.state.createAd ?
-                            <LoadingButton icon='add_to_queue' color='green' loadingMessage={this.state.chooseAd ? 'add' : 'create and add'}/> :
+                            <LoadingButton icon='add_to_queue' color='green' loadingMessage={this.state.chooseAd ? 'add' : 'create and add'}/>
+                                :
                             <button type='button'
-                                    className='ad-inserter-button-green-white'>
+                                    className='ad-inserter-button-green-white'
+                                    onClick={this.handelClickOnAddAdToAdBlock.bind(this)}>
                                 <i className="material-icons">add_to_queue</i>{this.state.chooseAd ? 'add' : 'create and add'}
                             </button>
                     }
