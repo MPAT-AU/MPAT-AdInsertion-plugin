@@ -29,6 +29,7 @@ class AdTable extends React.Component {
                 ad.editOpen = false
                 ad.saveAd = false
                 ad.deleteAd = false
+                ad.duration = this.changeFormat(ad.duration)
                 return ad
             })
             this.setState({
@@ -38,6 +39,10 @@ class AdTable extends React.Component {
         }, err => {
             console.log('Error ', err)
         })
+    }
+
+    changeFormat(duration) {
+        return null
     }
 
     handleChange(index, event) {

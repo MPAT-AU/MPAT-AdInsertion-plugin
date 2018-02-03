@@ -643,7 +643,7 @@ function getAdsWithCount() {
     global $wpdb;
 
     $results = $wpdb->get_results( 
-        "   SELECT ad.id, ad.name, ad.dash_url, ad.hls_url, ad.duration IFNULL(aduse.uses,0) AS uses
+        "   SELECT ad.id, ad.name, ad.dash_url, ad.hls_url, ad.duration, IFNULL(aduse.uses,0) AS uses
             FROM ad LEFT JOIN (SELECT ad_block_part.ad_id AS id, COUNT(*) AS uses 
                             FROM ad_block_part 
                             GROUP BY ad_block_part.ad_id) AS aduse ON  ad.id = aduse.id
