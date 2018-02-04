@@ -345,6 +345,10 @@
     width: 180px;
 }
 
+.ad-inserter-table-data-fixed-width-number {
+    width: 65px;
+}
+
 .ad-inserter-table-data-fixed-width-icon {
     width: 44px;
 }
