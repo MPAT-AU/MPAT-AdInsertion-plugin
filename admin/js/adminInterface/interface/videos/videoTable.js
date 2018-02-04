@@ -149,7 +149,7 @@ class VideoTable extends React.Component {
 
         // only for demo purposes
         waitTwoSeconds(1000).then(() =>
-            deleteAd(this.state.adDataArray[index].id)
+            deleteVideo(this.state.videoDataArray[index].id)
                 .then(result => {
                     this.setDeleteVideo(index)
                     if (result) {
@@ -191,7 +191,7 @@ class VideoTable extends React.Component {
                             :
                         <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button key-down" onClick={this.handleClickOnEditCloseIcon.bind(this, index)}>expand_more</i></td>
                     }
-                    <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleClickOnEditCloseIcon.bind(this, index)}>delete</i></td>
+                    <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleDelete.bind(index)}>delete</i></td>
                 </tr> 
             ]
         })
