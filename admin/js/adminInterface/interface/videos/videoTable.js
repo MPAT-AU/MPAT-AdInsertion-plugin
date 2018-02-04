@@ -56,7 +56,13 @@ class VideoTable extends React.Component {
         if(ms == 0){
             output = (h + "h " + m + "min " + s + "s"); 
         }else{
-            output = (h + "h " + m + "min " + s + "." + ms + "s"); 
+            if (ms >= 100) {
+                output = (h + "h " + m + "min " + s + "." + ms + "s"); 
+            }else if (ms >= 10){
+                output = (h + "h " + m + "min " + s + ".0" + ms + "s"); 
+            }else{
+                output = (h + "h " + m + "min " + s + ".00" + ms + "s"); 
+            }
         }
         return output;
     }
@@ -137,11 +143,11 @@ class VideoTable extends React.Component {
 
     handleDelete(index) {
         this.setDeleteVideo(index)
-        // deleteAd(this.state.adDataArray[index].id)
+        // deleteVideo(this.state.videoDataArray[index].id)
         //     .then(result => {
-        //         this.setDeleteAd(index)
+        //         this.setDeleteVideo(index)
         //         if (result) {
-        //             this.removeAd(index)
+        //             this.removeVideo(index)
         //         } else {
         //             console.log('Error')
         //         }

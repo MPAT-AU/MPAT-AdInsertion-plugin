@@ -55,7 +55,13 @@ class AdTable extends React.Component {
         if(ms == 0){
             output = (h + "h " + m + "min " + s + "s"); 
         }else{
-            output = (h + "h " + m + "min " + s + "." + ms + "s"); 
+            if (ms >= 100) {
+                output = (h + "h " + m + "min " + s + "." + ms + "s"); 
+            }else if (ms >= 10){
+                output = (h + "h " + m + "min " + s + ".0" + ms + "s"); 
+            }else{
+                output = (h + "h " + m + "min " + s + ".00" + ms + "s"); 
+            }
         }
         return output;
     }
