@@ -26,6 +26,11 @@
     justify-content: space-between;
 }
 
+/* ========== paragraph ========== */
+.ad-inserter-paragraph {
+    font-size: 15px;
+}
+
 /* ========== button groups ========== */
 .ad-inserter-right-button-group {
     display: flex;
@@ -46,7 +51,7 @@
 
 /* ========== layout ========== */
 .ad-insertion-content-wrapper {
-    padding: 0 10px;
+    padding: 0 20px;
 }
 
 
@@ -393,6 +398,35 @@
 
 .ad-inserter-no-data > a {
     align-self: center;
+}
+
+/* ========== start Page Sections ========== */
+.ad-inserter-section-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    max-width: 1000px;
+    width: 100%;
+    margin: auto;
+}
+
+.ad-inserter-section-second-level-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.ad-inserter-start-page-image-container {
+    display: flex;
+    justify-content: center;
+}
+
+.ad-inserter-section-paragraph {
+    font-size: 15px;
+}
+
+.ad-inserter-start-page-button-container {
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* ========== only for test purposes (delete later!!!) ========== */
