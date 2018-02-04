@@ -672,7 +672,7 @@ function getAd($id) {
         $json = json_encode($result[0]);
         echo $json;
     }
-    
+    return $json;
 }
 
 // 4.3
@@ -698,7 +698,7 @@ function createAd($json){
     if (false === $result){
         echo false;
     } else {
-        echo true;
+        getAd($wpdb->insert_id);
     } 
 }
 
