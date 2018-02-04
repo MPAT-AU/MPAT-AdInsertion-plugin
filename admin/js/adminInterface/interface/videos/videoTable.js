@@ -16,7 +16,6 @@ class VideoTable extends React.Component {
             videoDataArray: [],
             loadData: true
         }
-        // this.getAdDataArray()
 
         // only for demo purposes
         waitTwoSeconds(1000).then(() =>
@@ -67,7 +66,7 @@ class VideoTable extends React.Component {
         return output;
     }
 
-    handleChange(index, event) {
+    handleChange(index, event) { //TODO
         // const videoDataArray = this.state.videoDataArray
         // switch (event.target.id) {
         //     case 'name' : {
