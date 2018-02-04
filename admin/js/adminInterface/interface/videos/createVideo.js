@@ -210,42 +210,61 @@ class AdBlock extends React.Component {
         this.setState({chosenAd: this.state.allAdsArray[index]})
     }
 
-    handelClickOnAddAdToAdBlock() {
+    handelClickOnAddAdToAdBlock(event) {
         if (this.state.chooseAd) {
             let moreAds = this.state.ads
             moreAds.push(this.state.chosenAd)
             this.setState({
                 addAd: false,
-                ads: moreAds
+                ads: moreAds,
+                chosenAd: this.state.allAdsArray[0]
             })
         } else {
-            this.setState({createAd: true})
-            this.getJsonForSubmit()
-                .then( json =>
-                        createAd(json)
-                            .then(ad => {
-                                let moreAds = this.state.ads
-                                moreAds.push(ad)
-                                this.setState({
-                                    createdAd: false,
-                                    addAd: false,
-                                    ads: moreAds
-                                })
+            if (this.checkAddAdValidation(event)) {
+                this.setState({createAd: true})
+                getDuration(this.state.addAdDash).then( result => {
+                    return {
+                        name: this.state.addAdName,
+                        duration: result,
+                        dash_url: this.state.addAdDash,
+                        hls_url: this.state.addAdHls
+                    }
+                }, error => {
+                    return {
+                        name: this.state.addAdName,
+                        duration: 0,
+                        dash_url: this.state.addAdDash,
+                        hls_url: this.state.addAdHls
+                    }
+                }).then( json =>
+                    createAd(json)
+                        .then(ad => {
+                            let moreAds = this.state.ads
+                            moreAds.push(ad)
+                            this.setState({
+                                createAd: false,
+                                addAd: false,
+                                ads: moreAds
                             })
-                    )
+                            this.getAdArray()
+                        })
+                )
+            }
         }
     }
 
-    getJsonForSubmit() {
-        return getDuration(this.state.addAdDash).then( result => {
-                return {
-                    name: this.state.addAdName,
-                    duration: result,
-                    dash_url: this.state.addAdDash,
-                    hls_url: this.state.addAdHls
-                }
-            }
-        )
+    checkAddAdValidation(e) {
+        const parentDiv = e.target.parentElement.parentElement
+        const name = parentDiv.querySelector('#name')
+        const dash = parentDiv.querySelector('#dash')
+        if (!name.checkValidity()) {
+            name.reportValidity()
+            return false
+        } else if (!dash.checkValidity()) {
+            dash.reportValidity()
+            return false
+        }
+        return true
     }
 
     handleChange(event) {
@@ -387,50 +406,3 @@ class AdBlock extends React.Component {
         )
     }
 }
-
-// class VideoPart extends React.Component {
-//     constructor(props) {
-//         super(props)
-//         this.state = {
-//             createVideoPart: false
-//         }
-//     }
-//
-//     render() {
-//
-//         const createVideoPart = (
-//             <div>
-//                 <AddVideoPartButton/>
-//                 <div className='ad-inserter-lable-input-row'>
-//                     <label className='ad-inserter-input-label'>dash url</label>
-//                     <input className='ad-inserter-input'
-//                            id='dash'
-//                            placeholder='url (.mpd)'
-//                            title='Insert url which links to a DASH file (.mpd).'
-//                            type='url'
-//                            pattern='.*\.mpd$'
-//                            required
-//                            value={this.state.dash}
-//                            onChange={this.handleChange}/>
-//                 </div>
-//                 <div className='ad-inserter-lable-input-row'>
-//                     <label className='ad-inserter-input-label'> hls url</label>
-//                     <input className='ad-inserter-input'
-//                            id='hls'
-//                            placeholder='url (.m3u8)'
-//                            title='Insert url which links to a HLS file (.m3u8).'
-//                            type='url'
-//                            pattern='.*\.m3u8$'
-//                            value={this.state.hls}
-//                            onChange={this.handleChange}/>
-//                 </div>
-//             </div>
-//         )
-//
-//         return (
-//             this.props.buttomButton ?
-//                 this.state.createVideoPart ?
-//
-//         )
-//     }
-// }
