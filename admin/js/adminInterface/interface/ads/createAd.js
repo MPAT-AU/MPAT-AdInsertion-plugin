@@ -49,7 +49,7 @@ class CreateAd extends React.Component {
         getDuration(this.state.dash).then( result => {
             return {
                 name: this.state.name,
-                duration: result,
+                duration: Number(result),
                 dash_url: this.state.dash,
                 hls_url: this.state.hls
             }
