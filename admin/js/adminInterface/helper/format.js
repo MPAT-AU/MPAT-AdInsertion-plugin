@@ -9,10 +9,26 @@ export function changeFormat(duration) {
     let ms = duration;
     let output = ""
 
-    if(ms == 0){
-        output = (h + "h " + m + "min " + s + "s");
+    if(ms === 0){
+        if(h === 0) {
+            if(m === 0) {
+                output = (s + "s");
+            } else {
+                output = (m + "min " + s + "s");
+            }
+        } else {
+            output = (h + "h " + m + "min " + s + "s");
+        }
     }else{
-        output = (h + "h " + m + "min " + s + "." + ms + "s");
+        if(h === 0) {
+            if(m === 0) {
+                output = (s + "." + ms + "s");
+            } else {
+                output = (m + "min " + s + "." + ms + "s");
+            }
+        } else {
+            output = (h + "h " + m + "min " + s + "." + ms + "s");
+        }
     }
     return output;
 }

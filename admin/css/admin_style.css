@@ -329,23 +329,33 @@
 .ad-inserter-ad-block-header {
     display: flex;
     justify-content: space-between;
-}
-
-.ad-inserter-ad-block-header > div {
-    display: flex;
     align-items: center;
-}
-
-.ad-inserter-ad-block-header > div >  .ad-inserter-h3 {
-    padding-right: 20px;
-}
-.ad-inserter-ad-block-header > div > i {
-    margin-top: -2px;
 }
 
 .ad-inserter-ad-block-header > div > i:hover {
     color: #43B4F9;
     cursor: pointer;
+}
+
+.ad-inserter-ad-block-header > div > i:first-child {
+    margin-right: 20px;
+}
+
+.ad-inserter-ad-block-time-subheader {
+    display: flex;
+}
+
+.ad-inserter-ad-block-time-subheader > p {
+    color: #555;
+    margin: 0 0 10px;
+}
+
+.ad-inserter-ad-block-time-subheader > p:nth-child(2) {
+    padding: 0 20px;
+}
+
+.ad-inserter-ad-block-time-subheader > p > span {
+    padding-left: 2px;
 }
 
 .ad-inserter-ad-block-container {
@@ -465,6 +475,10 @@
 
 .ad-inserter-table-cell-left {
     text-align: left;
+}
+
+.ad-inserter-table-cell-right {
+    text-align: right;
 }
 
 .ad-inserter-table-edit-ad-view {

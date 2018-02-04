@@ -159,7 +159,7 @@ class AdTable extends React.Component {
                 <tr key={index + 'ad-table-view'}
                     className={ this.state.adDataArray[index].editOpen ? 'active-row' : null}>
                     <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold'>{ad.name}</td>
-                    <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold ad-inserter-table-data-fixed-width-duration'>{ad.duration}</td>
+                    <td className='ad-inserter-td ad-inserter-table-cell-right ad-inserter-bold ad-inserter-table-data-fixed-width-duration'>{ad.duration}</td>
                     <td className='ad-inserter-th ad-inserter-table-cell-center ad-inserter-bold ad-inserter-table-data-fixed-width-uses'>{ad.uses}</td>
                     {
                         !this.state.adDataArray[index].editOpen ?
@@ -255,7 +255,7 @@ class AdTable extends React.Component {
                     <thead className='ad-inserter-thead'>
                     <tr>
                         <th className='ad-inserter-th ad-inserter-table-cell-left'>name</th>
-                        <th className='ad-inserter-th ad-inserter-table-cell-left'>duration</th>
+                        <th className='ad-inserter-th ad-inserter-table-cell-right'>duration</th>
                         <th className='ad-inserter-th ad-inserter-table-cell-center'>uses</th>
                         <th></th>
                     </tr>
