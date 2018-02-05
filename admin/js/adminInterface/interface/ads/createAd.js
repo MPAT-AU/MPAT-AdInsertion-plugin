@@ -46,22 +46,35 @@ class CreateAd extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         this.setState({createAd: true})
-        this.getJsonForSubmit()
-            // .then( json => {
-            //     createAd(json)
-            //             .then(result => {
-            //                 this.setState({createdAd: false})
-            //                 if (result) {
-            //                     this.setState({redirect: true});
-            //                     highlightNavigation('mpat-ad-insertion-new-ad', 'mpat-ad-insertion-all-ads')
-            //                 } else {
-            //                     console.log('Error')
-            //                 }
-            //             })
-            //     }
-            // )
+        getDuration(this.state.dash).then( result => {
+            return {
+                name: this.state.name,
+                duration: Number(result),
+                dash_url: this.state.dash,
+                hls_url: this.state.hls
+            }
+        }, error => {
+            return {
+                name: this.state.name,
+                duration: 0,
+                dash_url: this.state.dash,
+                hls_url: this.state.hls
+            }
+        })
+        // .then( json => {
+        //     createAd(json)
+        //             .then(result => {
+        //                 this.setState({createdAd: false})
+        //                 if (result) {
+        //                     this.setState({redirect: true});
+        //                     highlightNavigation('mpat-ad-insertion-new-ad', 'mpat-ad-insertion-all-ads')
+        //                 } else {
+        //                     console.log('Error')
+        //                 }
+        //             })
+        // })
         // only for demo purposes
-            .then( json =>
+            .then( json => {
                 waitTwoSeconds(2000).then(() =>
                     createAd(json)
                         .then(result => {
@@ -74,20 +87,8 @@ class CreateAd extends React.Component {
                             }
                         })
                 )
-            )
+            })
         return false
-    }
-
-    getJsonForSubmit() {
-        return getDuration(this.state.dash).then( result => {
-            return {
-                name: this.state.name,
-                duration: result,
-                dash_url: this.state.dash,
-                hls_url: this.state.hls
-            }
-            }
-        )
     }
 
     render() {

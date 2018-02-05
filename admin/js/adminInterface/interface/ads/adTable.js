@@ -7,6 +7,7 @@ import LoadingButton from '../loadingButton'
 import { waitTwoSeconds } from '../demoHelper'
 import LoadingScreen from '../loadingScreen'
 import NoData from '../noData'
+import {changeFormat} from '../../helper/format'
 
 class AdTable extends React.Component {
     constructor(props) {
@@ -29,7 +30,7 @@ class AdTable extends React.Component {
                 ad.editOpen = false
                 ad.saveAd = false
                 ad.deleteAd = false
-                ad.duration = this.changeFormat(ad.duration)
+                ad.duration = changeFormat(ad.duration)
                 return ad
             })
             this.setState({
@@ -39,31 +40,6 @@ class AdTable extends React.Component {
         }, err => {
             console.log('Error ', err)
         })
-    }
-
-    changeFormat(duration) {
-  
-        let h = Math.floor(duration/3600000);
-        duration = duration - ( h * 3600000);
-        let m = Math.floor(duration/60000);
-        duration = duration - ( m * 60000);
-        let s = Math.floor(duration/1000);
-        duration = duration - ( s * 1000);
-        let ms = duration;
-        let output = ""
-
-        if(ms == 0){
-            output = (h + "h " + m + "min " + s + "s"); 
-        }else{
-            if (ms >= 100) {
-                output = (h + "h " + m + "min " + s + "." + ms + "s"); 
-            }else if (ms >= 10){
-                output = (h + "h " + m + "min " + s + ".0" + ms + "s"); 
-            }else{
-                output = (h + "h " + m + "min " + s + ".00" + ms + "s"); 
-            }
-        }
-        return output;
     }
 
     handleChange(index, event) {
@@ -183,7 +159,7 @@ class AdTable extends React.Component {
                 <tr key={index + 'ad-table-view'}
                     className={ this.state.adDataArray[index].editOpen ? 'active-row' : null}>
                     <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold'>{ad.name}</td>
-                    <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold ad-inserter-table-data-fixed-width-duration'>{ad.duration}</td>
+                    <td className='ad-inserter-td ad-inserter-table-cell-right ad-inserter-bold ad-inserter-table-data-fixed-width-duration'>{ad.duration}</td>
                     <td className='ad-inserter-th ad-inserter-table-cell-center ad-inserter-bold ad-inserter-table-data-fixed-width-uses'>{ad.uses}</td>
                     {
                         !this.state.adDataArray[index].editOpen ?
@@ -279,7 +255,7 @@ class AdTable extends React.Component {
                     <thead className='ad-inserter-thead'>
                     <tr>
                         <th className='ad-inserter-th ad-inserter-table-cell-left'>name</th>
-                        <th className='ad-inserter-th ad-inserter-table-cell-left'>duration</th>
+                        <th className='ad-inserter-th ad-inserter-table-cell-right'>duration</th>
                         <th className='ad-inserter-th ad-inserter-table-cell-center'>uses</th>
                         <th></th>
                     </tr>

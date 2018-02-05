@@ -1,5 +1,5 @@
 
-var debuggingON = true;
+var debuggingON = false;
 
 // creates all necessary tables
 // POST
@@ -426,7 +426,7 @@ export function createAd(json){
                 if (debuggingON){
                     console.log("createAd()- Data recieved: " + data);
                 }
-                resolve(json.parse(data));
+                resolve(JSON.parse(data));
             },
             error: function (error) {
                 if (debuggingON){
