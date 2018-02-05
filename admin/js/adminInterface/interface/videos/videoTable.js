@@ -16,7 +16,6 @@ class VideoTable extends React.Component {
             videoDataArray: [],
             loadData: true
         }
-        // this.getAdDataArray()
 
         // only for demo purposes
         waitTwoSeconds(1000).then(() =>
@@ -56,12 +55,18 @@ class VideoTable extends React.Component {
         if(ms == 0){
             output = (h + "h " + m + "min " + s + "s"); 
         }else{
-            output = (h + "h " + m + "min " + s + "." + ms + "s"); 
+            if (ms >= 100) {
+                output = (h + "h " + m + "min " + s + "." + ms + "s"); 
+            }else if (ms >= 10){
+                output = (h + "h " + m + "min " + s + ".0" + ms + "s"); 
+            }else{
+                output = (h + "h " + m + "min " + s + ".00" + ms + "s"); 
+            }
         }
         return output;
     }
 
-    handleChange(index, event) {
+    handleChange(index, event) { //TODO
         // const videoDataArray = this.state.videoDataArray
         // switch (event.target.id) {
         //     case 'name' : {
@@ -137,11 +142,11 @@ class VideoTable extends React.Component {
 
     handleDelete(index) {
         this.setDeleteVideo(index)
-        // deleteAd(this.state.adDataArray[index].id)
+        // deleteVideo(this.state.videoDataArray[index].id)
         //     .then(result => {
-        //         this.setDeleteAd(index)
+        //         this.setDeleteVideo(index)
         //         if (result) {
-        //             this.removeAd(index)
+        //             this.removeVideo(index)
         //         } else {
         //             console.log('Error')
         //         }
@@ -149,7 +154,7 @@ class VideoTable extends React.Component {
 
         // only for demo purposes
         waitTwoSeconds(1000).then(() =>
-            deleteAd(this.state.adDataArray[index].id)
+            deleteVideo(this.state.videoDataArray[index].id)
                 .then(result => {
                     this.setDeleteVideo(index)
                     if (result) {
@@ -174,6 +179,11 @@ class VideoTable extends React.Component {
     }
 
 
+    handleVideoPreviewInNewTab(index) {
+        var win = window.open(this.state.videoDataArray[index].output_dash_url, '_blank');
+        win.focus();
+    }
+
 
     render() {
         const tableContent = this.state.videoDataArray.map((video, index) => {
@@ -191,7 +201,8 @@ class VideoTable extends React.Component {
                             :
                         <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button key-down" onClick={this.handleClickOnEditCloseIcon.bind(this, index)}>expand_more</i></td>
                     }
-                    <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleClickOnEditCloseIcon.bind(this, index)}>delete</i></td>
+                    <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleVideoPreviewInNewTab.bind(this,index)} >video_label</i></td>
+                    <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleDelete.bind(this,index)}>delete</i></td>
                 </tr> 
             ]
         })
@@ -201,7 +212,7 @@ class VideoTable extends React.Component {
                 :
             (
                 this.state.videoDataArray.length === 0 ?
-                <NoData datatype='ads'
+                <NoData datatype='ads' //TODO auf Video anpassen
                         linkToNew='/wp/wp-admin/admin.php?page=mpat-ad-insertion-new-ad'
                         from='mpat-ad-insertion-all-ads'
                         to='mpat-ad-insertion-new-ad'
@@ -215,6 +226,7 @@ class VideoTable extends React.Component {
                         <th className='ad-inserter-th ad-inserter-table-cell-left'>blocks</th>
                         <th className='ad-inserter-th ad-inserter-table-cell-left'>Ads</th>
                         <th className='ad-inserter-th ad-inserter-table-cell-left'>duration</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>

@@ -76,7 +76,7 @@ class HomeVideoAdInsertion extends React.Component {
                     <h2 className='ad-inserter-h2'>MPAT - Video Ad Insertion Plugin</h2>
                 </div>
                 <div className='ad-insertion-content-wrapper'>
-                    <p className='ad-inserter-paragraph'>Welcome to the Ad Insertion Plugin. This Plugin enables you to create ad inserted videos very easily. Your Video is just a few Clicks away.</p>
+                    <p className='ad-inserter-paragraph'>Welcome to the Ad Insertion Plugin. This Plugin enables you to create ad inserted videos very easily. Your next Video is just a few Clicks away.</p>
 
                     <hr/>
 
@@ -86,7 +86,7 @@ class HomeVideoAdInsertion extends React.Component {
                             <h2>All Videos</h2>
                             <div className='ad-inserter-section-third-level-container'>
                                 <p className='ad-inserter-section-paragraph'>
-                                    See all your new created videos here. Just press on the button to see a full list of already created videos.
+                                    See all your new created videos here. Just press the button to see a full list of already created videos.
                                 </p>
                                 <div className='ad-inserter-start-page-image-container'>
                                     <img src='https://avatars1.githubusercontent.com/u/29566466?s=200&v=4' />
@@ -132,7 +132,7 @@ class HomeVideoAdInsertion extends React.Component {
                             <h2>All Ads</h2>
                             <div className='ad-inserter-section-third-level-container'>
                                 <p className='ad-inserter-section-paragraph'>
-                                    See all your ads here. Just press on the button to see a full list of already added ads.
+                                    See all your ads here. Just press the button to see a full list of already added ads.
                                 </p>
                                 <div className='ad-inserter-start-page-image-container'>
                                     <img src='https://avatars1.githubusercontent.com/u/29566466?s=200&v=4' />

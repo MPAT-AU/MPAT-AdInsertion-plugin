@@ -13,6 +13,16 @@
     text-transform: uppercase;
 }
 
+.ad-inserter-h3 span {
+    text-transform: none;
+}
+
+.ad-inserter-h3-bold {
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
 /* ========== headline ========== */
 .ad-inserter-headline, .ad-inserter-headline-with-button {
     padding: 0 10px;
@@ -314,7 +324,117 @@
     margin-right: 8px;
 }
 
-    /* ========== table ========== */
+/* ========== buttons up and down ========== */
+.ad-inserter-up-down-keys {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========== ad-block ========== */
+.ad-inserter-ad-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ad-inserter-ad-block-header > div > i:hover {
+    color: #43B4F9;
+    cursor: pointer;
+}
+
+.ad-inserter-ad-block-header > div > i:first-child {
+    margin-right: 20px;
+}
+
+.ad-inserter-ad-block-time-subheader {
+    display: flex;
+}
+
+.ad-inserter-ad-block-time-subheader > p {
+    color: #555;
+    margin: 0 0 10px;
+}
+
+.ad-inserter-ad-block-time-subheader > p:nth-child(2) {
+    padding: 0 20px;
+}
+
+.ad-inserter-ad-block-time-subheader > p > span {
+    padding-left: 2px;
+}
+
+.ad-inserter-ad-block-container {
+    padding: 20px;
+}
+
+.ad-inserter-ad-block-container .ad-inserter-right-button-row {
+    padding: 20px 0;
+}
+
+.ad-inserter-ad-block-create-ad-container {
+    padding: 20px;
+}
+
+.ad-inserter-ad-block-selector-container {
+    display: flex;
+    align-items: center;
+}
+
+.ad-inserter-ad-in-ad-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ad-inserter-ad-in-ad-block .material-icons:hover {
+    color: #43B4F9;
+    cursor: pointer;
+}
+
+.ad-inserter-ad-in-ad-block:first-child .up-button, .ad-inserter-ad-in-ad-block:last-child .down-button {
+    color: #ccc;
+    cursor: inherit;
+}
+
+.ad-inserter-ad-in-ad-block:first-child .up-button:hover, .ad-inserter-ad-in-ad-block:last-child .down-button:hover {
+    cursor: inherit;
+}
+
+.ad-inserter-ad-in-ad-block > div {
+    display: flex;
+    align-items: center;
+}
+
+.ad-inserter-ad-in-ad-block > div > span {
+    padding: 20px;
+}
+
+/* ========== Dropdown ========== */
+.ad-inserter select {
+    background: none;
+    box-shadow: none;
+    outline: none;
+    border: 2px solid transparent;
+    border-bottom: 2px solid #43B4F9;
+    color: #43B4F9;
+    height: 30px;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* ========== input radio ========== */
+.ad-inserter input[type='radio'] {
+    outline-color: #43B4F9;
+    min-width: inherit !important;
+}
+
+.ad-inserter input[type='radio'] + label {
+    text-transform: uppercase;
+    width: 200px;
+    padding: 20px 20px 20px 10px;
+}
+
+/* ========== table ========== */
 .ad-inserter .active-row {
     background: linear-gradient(to bottom, #E6E6E6, #F2F2F2);
 }
@@ -364,6 +484,10 @@
 
 .ad-inserter-table-cell-left {
     text-align: left;
+}
+
+.ad-inserter-table-cell-right {
+    text-align: right;
 }
 
 .ad-inserter-table-edit-ad-view {

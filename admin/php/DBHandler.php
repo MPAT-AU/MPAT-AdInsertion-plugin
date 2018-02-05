@@ -77,7 +77,7 @@ if ( isset( $_POST['function'] ) ) {
         case 'updateAdBlockPart':                                //5.2
             updateAdBlockPart($_POST['ab_id'],$_POST['order_nr'],$_POST['ad_id']);
             break; 
-        case 'deleteAdBlock':                                    //5.3
+        case 'deleteAdBlockPart':                                    //5.3
             deleteAdBlockPart($_POST['ab_id'],$_POST['order_nr']);
             break;                
     }
