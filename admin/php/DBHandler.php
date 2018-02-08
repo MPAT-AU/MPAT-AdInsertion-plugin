@@ -265,28 +265,27 @@ function getVideos() {
     global $wpdb;
 
     $results = $wpdb->get_results( 
-        'SELECT id, name, output_dash_url, output_hls_url, number_of_video_parts, number_of_ad_blocks, number_of_ads, dur.duration
-            FROM video v, 
-	            (SELECT v_id, COUNT(*) as number_of_video_parts 
-    	            FROM video_part
-    	            GROUP BY v_id) novp,
-                (SELECT vp.v_id, COUNT(*) as number_of_ad_blocks
+        'SELECT id, name, output_dash_url, output_hls_url, IFNULL(number_of_video_parts, 0) AS number_of_video_parts, IFNULL(number_of_ad_blocks, 0) AS number_of_ad_blocks, IFNULL(number_of_ads, 0) AS number_of_ads, IFNULL(dur.duration, 0) AS duration
+            FROM video v
+			LEFT JOIN (SELECT v_id, COUNT(*) as number_of_video_parts 
+					FROM video_part
+    	            GROUP BY v_id) novp ON v.id = novp.v_id
+			LEFT JOIN (SELECT vp.v_id, COUNT(*) as number_of_ad_blocks
 		            FROM video_part vp, ad_block ab
 		            WHERE vp.id = ab.vp_id
-		            GROUP BY vp.v_id) noab,
-                (SELECT vp.v_id, COUNT(*) AS number_of_ads
+		            GROUP BY vp.v_id) noab ON v.id = noab.v_id
+			LEFT JOIN (SELECT vp.v_id, COUNT(*) AS number_of_ads
 					FROM video_part vp, ad_block ab, ad_block_part abp
 					WHERE vp.id = ab.vp_id AND ab.id = abp.ab_id
-					GROUP BY vp.v_id) noa,
-                (SELECT v.id AS v_id, SUM(vp.duration) + SUM(IFNULL(ad_block_duration,0)) AS duration
+					GROUP BY vp.v_id) noa ON v.id = noa.v_id
+			LEFT JOIN (SELECT v.id AS v_id, SUM(vp.duration) + SUM(IFNULL(ad_block_duration,0)) AS duration
                     FROM video v, video_part vp
                     LEFT JOIN (SELECT ab.vp_id, ab.id, SUM(ad.duration) as ad_block_duration
 	                    FROM ad_block ab, ad_block_part abp, ad
 	                    WHERE ab.id = abp.ab_id AND abp.ad_id = ad.id
 	                    GROUP BY ab.id) ad_sum ON vp.id = ad_sum.vp_id
                     WHERE v.id = vp.v_id
-                    GROUP BY v.id) dur
-            WHERE v.id = novp.v_id AND novp.v_id = noab.v_id AND noab.v_id = noa.v_id AND v.id = dur.v_id'
+                    GROUP BY v.id) dur ON v.id = dur.v_id'
     );
  
     $json = json_encode( $results );
