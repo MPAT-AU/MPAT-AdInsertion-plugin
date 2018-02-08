@@ -20,14 +20,20 @@ export function changeFormat(duration) {
             output = (h + "h " + m + "min " + s + "s");
         }
     }else{
+        let msS = ms
+        if (ms < 10) {
+            msS = '00' + ms
+        } else if (ms < 100) {
+            msS = '0' + ms
+        }
         if(h === 0) {
             if(m === 0) {
-                output = (s + "." + ms + "s");
+                output = (s + "." + msS + "s");
             } else {
-                output = (m + "min " + s + "." + ms + "s");
+                output = (m + "min " + s + "." + msS + "s");
             }
         } else {
-            output = (h + "h " + m + "min " + s + "." + ms + "s");
+            output = (h + "h " + m + "min " + s + "." + msS + "s");
         }
     }
     return output;

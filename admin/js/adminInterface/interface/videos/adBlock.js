@@ -14,11 +14,10 @@ class AdBlock extends React.Component {
             addAdName: '',
             addAdDash: '',
             addAdHls: '',
+            createAd: false,
             chooseAd: true,
             chosenAd: null,
-            allAdsArray: [],
-            adsAvailable: false,
-            createAd: false
+            allAdsArray: []
         }
         this.getAdArray()
 
@@ -38,7 +37,6 @@ class AdBlock extends React.Component {
             this.setState({
                 allAdsArray: sortedAds,
                 chosenAd: sortedAds[0],
-                adsAvailable: true
             })
         }, err => {
             console.log('Error ', err)
@@ -183,6 +181,10 @@ class AdBlock extends React.Component {
             duration += Number(ads[i].duration)
         }
         return duration
+    }
+
+    handelCLickOnDeleteAdBlockButton() {
+        this.props.onClickDeleteAdBlock()
     }
 
     render() {
@@ -332,21 +334,14 @@ class AdBlock extends React.Component {
             <div className='ad-inserter-ad-block-container'>
                 <div className='ad-inserter-ad-block-header'>
                     <p className='ad-inserter-h3-bold'>{this.props.adBlockNumber + '. ad block'}</p>
-                    <div>
-                        <i className="material-icons"
-                           onClick={() => console.log('edit-block')}>
-                            mode_edit
-                        </i>
-                        <i className="material-icons"
-                           onClick={() => console.log('delete-block')}>
-                            delete
-                        </i>
-                    </div>
+                    <i className="material-icons"
+                       onClick={this.handelCLickOnDeleteAdBlockButton.bind(this)}>
+                        delete
+                    </i>
                 </div>
                 <div className='ad-inserter-ad-block-time-subheader'>
-                    <p className='ad-inserter-h3'>start<span>{' ' + changeFormat(this.props.startTime)}</span></p>
-                    <p className='ad-inserter-h3'>end<span>{' ' + changeFormat(this.calculateEndTimeOfAdBlock(this.props.startTime))}</span></p>
-                    <p className='ad-inserter-h3'>duration<span>{' ' + changeFormat(this.calculateDurationOfAdBlock(this.props.startTime))}</span></p>
+                    <p className='ad-inserter-h3'>start<span>{changeFormat(this.props.startTime)}</span></p>
+                    <p className='ad-inserter-h3'>ad block duration<span>{changeFormat(this.calculateDurationOfAdBlock(this.props.startTime))}</span></p>
                 </div>
                 <div className='ad-inserter-ads-in-ad-block'>
                     { ads }

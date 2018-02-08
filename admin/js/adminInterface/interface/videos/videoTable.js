@@ -1,8 +1,7 @@
 'use strict'
 
 import React from 'react'
-import { getVideos, getVideo, deleteVideo } from '../../handler/DBHandler'
-import LoadingButton from '../loadingButton'
+import { getVideos, deleteVideo } from '../../handler/DBHandler'
 import { waitTwoSeconds } from '../demoHelper'
 import LoadingScreen from '../loadingScreen'
 import NoData from '../noData'
