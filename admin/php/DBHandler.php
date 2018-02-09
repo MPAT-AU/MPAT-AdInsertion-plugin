@@ -342,7 +342,7 @@ function getVideos() {
             }
             $video->video_parts[] = $video_part;
         }
-        $videos[] = $video;
+        $return_videos[] = $video;
     } 
 
 
@@ -354,7 +354,7 @@ function getVideos() {
 
 
 
-    $json = json_encode( $videos );
+    $json = json_encode( $return_videos );
     echo $json;
 }
 
