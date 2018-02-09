@@ -98,10 +98,10 @@ class VideoTable extends React.Component {
     }
 
     setEditOpen(index) {
-        //TODO
-        // const videoDataArray = this.state.videoDataArray
-        // videoDataArray[index].editOpen = !videoDataArray[index].editOpen
-        // this.setState({videoDataArray: videoDataArray})
+
+        const videoDataArray = this.state.videoDataArray
+        videoDataArray[index].editOpen = !videoDataArray[index].editOpen
+        this.setState({videoDataArray: videoDataArray})
     }
 
     handleSubmit(index, event) {
@@ -185,6 +185,52 @@ class VideoTable extends React.Component {
 
 
     render() {
+
+
+        const timelineContent = this.state.videoDataArray.map((video, index) => {
+
+            let fullDuration = video.duration
+            let globalLeft = 0
+            let outputArray = []
+
+            //videoPart
+            video.video_parts.map((videoPart, p_index) => {
+                let partName = videoPart.part_name
+                let partFullDuration = videoPart.part_full_duration
+                let partDuration = videoPart.part_duration
+
+                let partWidth = Math.floor((partFullDuration / fullDuration) * 100) 
+
+                let htmlVideoPart = <div className='ad-inserter-timeline-video-block' style={{width: (partWidth + "%")}}></div>
+                outputArray.push(htmlVideoPart)
+
+                //adblock
+                videoPart.ad_blocks.map((block, b_index) => {
+                    let blockDuration = block.block_duration   
+                    let blockStart = block.block_start
+
+                    let blockWidth = Math.floor((blockDuration  / fullDuration) * 100)
+                    let blockLeft = Math.floor(((globalLeft + blockStart) / fullDuration) * 100)
+
+                    let htmlBlock = <div className='ad-inserter-timeline-ad-block' style={{left: (blockLeft + "%"), width: (blockWidth + "%")}}></div>
+                    outputArray.push(htmlVideoPart)
+
+                    //ads
+                    block.ads.map((ad,ad_index) => {
+                        let name = ad.ad_name 
+                        //TODO
+                    })
+
+                    globalLeft = globalLeft + blockDuration
+                })
+                
+                globalLeft = globalLeft + partFullDuration
+            })
+
+            return outputArray
+        })    
+
+
         const tableContent = this.state.videoDataArray.map((video, index) => {
             return [
                 <tr key={index + 'ad-table-view'}
@@ -202,6 +248,19 @@ class VideoTable extends React.Component {
                     }
                     <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleVideoPreviewInNewTab.bind(this,index)} >video_label</i></td>
                     <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleDelete.bind(this,index)}>delete</i></td>
+                </tr>,
+                <tr>
+                    <td colSpan='4'
+                        className={ this.state.videoDataArray[index].editOpen ? 'ad-inserter-table-edit-ad-view active' : 'ad-inserter-table-edit-ad-view' }>
+                        {
+                            this.state.videoDataArray[index].editOpen ?
+                            <div className='ad-inserter-timeline'>
+                                {timelineContent}
+                            </div>        
+                                :
+                            null
+                        }
+                    </td>
                 </tr> 
             ]
         })
@@ -234,6 +293,7 @@ class VideoTable extends React.Component {
                     {tableContent}
                     </tbody>
                 </table>
+                
             )
 
         return (<div>{loadingScreenOrTable}</div>)

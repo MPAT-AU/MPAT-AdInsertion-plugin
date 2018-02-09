@@ -1,38 +1,21 @@
 
-export function sendAndHandleRequest(jsonBody,name,thumbnail){
+export function sendAndHandleRequest(json){
+    return new Promise((resolve, reject) => {
+        let url = "http://daiservices.fokus.fraunhofer.de:3001/json/fame/vod"
 
-  var dashUrl = ""
-  var hlsUrl  = ""
-
-  httpGetAsync("http://daiservices.fokus.fraunhofer.de:3001/json/fame/vod", jsonBody, response => {
-    
-    if(response == ""){
-        return;
-    }else{
-        dashUrl = response['dashUrl'];
-        hlsUrl = response['hlsUrl'];
-
-        saveInDatabase(dashUrl, hlsUrl, name , thumbnail);
-    }    
-  });
-
-}
-
-
-function httpGetAsync(theUrl, JSONBODY , callback)
-{
-  var xmlHttp = new XMLHttpRequest();
-  xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState === 4 && xmlHttp.status === 200){
-            callback(xmlHttp.responseText);
-        }else{
-            callback("");
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() { 
+              if (xmlHttp.readyState === 4 && xmlHttp.status === 200){
+                  resolve(JSON.parse(xmlHttp.responseText));
+              }else{
+                  reject();
+              }
         }
-  }
-  xmlHttp.open("GET", theUrl, true); 
-  xmlHttp.send(JSONBODY);
+        xmlHttp.open("GET", url, true); 
+        xmlHttp.send(body);
+    }) 
 }
- 
+
 
 function saveInDatabase(dashUrl, hlsUrl, name , thumbnail){
   
