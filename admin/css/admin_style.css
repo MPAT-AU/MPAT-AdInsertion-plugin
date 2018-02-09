@@ -557,3 +557,35 @@
 .db-test-buttons {
     margin-top: 100px;
 }
+
+
+/* test timeline */
+.ad-inserter-timeline {
+    position: relative;
+    width: 100%;
+    height: 40px;
+}
+
+.ad-inserter-timeline-video-block {
+    border: 2px solid #43B4F9;
+    border-radius: 8px;
+    height: 40px;
+}
+
+.ad-inserter-timeline-video-block#video-block-id1 {
+    width: 25%;
+}
+
+.ad-inserter-timeline-ad-block {
+    border: 4px solid #25C1B2;
+    background-color: #25C1B2;
+    position: absolute;
+    border-radius: 8px;
+    height: 40px;
+    top: -2px;
+}
+
+.ad-inserter-timeline-ad-block#ad-block-id1 {
+    left: 50%;
+    width: 10%;
+}
