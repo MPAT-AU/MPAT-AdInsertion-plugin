@@ -309,14 +309,63 @@ function getVideosForDropdown() {
 function getVideo($id) {
     global $wpdb;
 
-    $results = $wpdb->get_results( $wpdb->prepare(  
+    $video_results = $wpdb->get_results( $wpdb->prepare(
         'SELECT *
         FROM video
         WHERE id = %d',
         $id
     ));
- 
-    $json = json_encode($results[0]);
+    
+    foreach( $video_results as $video ) {
+        $video_id = $video->id;
+        
+        $video_part_results = $wpdb->get_results( $wpdb->prepare(
+            'SELECT *
+            FROM video_part
+            WHERE v_id = %d',
+            $video_id
+        ));
+        
+        foreach( $video_part_results as $video_part ) {
+            $video_part_id = $video_part->id;
+
+            $ad_block_results = $wpdb->get_results( $wpdb->prepare(
+                'SELECT *
+                FROM ad_block
+                WHERE vp_id = %d',
+                $video_part_id
+            ));
+
+            foreach( $ad_block_results as $ad_block ) {
+                $ad_block_id = $ad_block->id;
+    
+                $ad_block_part_results = $wpdb->get_results( $wpdb->prepare(
+                    'SELECT *
+                    FROM ad_block_part
+                    WHERE ab_id = %d',
+                    $ad_block_id
+                ));
+
+                foreach( $ad_block_part_results as $ad_block_part ) {
+                    $ad_block_part_ad_id = $ad_block_part->ad_id;
+        
+                    $ad_results = $wpdb->get_results( $wpdb->prepare(
+                        'SELECT *
+                        FROM ad
+                        WHERE id = %d',
+                        $ad_block_part_ad_id
+                    ));         
+
+                    $ad_block_part->ads = $ad_results;
+                    $ad_block->ad_block_parts[] = $ad_block_part;
+                }
+                
+                $video_part->ad_blocks[] = $ad_block;
+            }
+            $video->video_parts[] = $video_part;
+        }
+    } 
+    $json = json_encode($video);
     echo $json;
 }
 
