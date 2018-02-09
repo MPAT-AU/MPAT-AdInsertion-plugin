@@ -1021,7 +1021,7 @@ function createData() {
             'name' => 'ad 1',
             'dash_url' => 'ad dash url 1',
             'hls_url' => 'ad hls url 1',
-            'duration' => 16
+            'duration' => 16345
         )
     );
 
@@ -1031,7 +1031,7 @@ function createData() {
             'name' => 'ad 2',
             'dash_url' => 'ad dash url 2',
             'hls_url' => 'ad hls url 2',
-            'duration' => 16
+            'duration' => 20324
         )
     );
     
@@ -1041,7 +1041,7 @@ function createData() {
             'name' => 'ad 3',
             'dash_url' => 'ad dash url 3',
             'hls_url' => 'ad hls url 3',
-            'duration' => 16
+            'duration' => 12839
         )
     );
 
@@ -1054,7 +1054,7 @@ function createData() {
             'dash_url' => 'video_part dash url 1',
             'hls_url' => 'video_part hls url 1',
             'part_nr' => 1,
-            'duration' => 16
+            'duration' => 120342
         )
     );
 
@@ -1066,7 +1066,7 @@ function createData() {
             'dash_url' => 'video_part dash url 2',
             'hls_url' => 'video_part hls url 2',
             'part_nr' => 2,
-            'duration' => 16
+            'duration' => 80338
         )
     );
 
@@ -1078,7 +1078,7 @@ function createData() {
             'dash_url' => 'video_part dash url 3',
             'hls_url' => 'video_part hls url 3',
             'part_nr' => 3,
-            'duration' => 16
+            'duration' => 43895
         )
     );
 
@@ -1090,7 +1090,7 @@ function createData() {
             'dash_url' => 'video_part dash url 4',
             'hls_url' => 'video_part hls url 4',
             'part_nr' => 1,
-            'duration' => 16
+            'duration' => 344893
         )
     );
 
@@ -1102,7 +1102,7 @@ function createData() {
             'dash_url' => 'video_part dash url 5',
             'hls_url' => 'video_part hls url 5',
             'part_nr' => 1,
-            'duration' => 16
+            'duration' => 49844
         )
     );
 
@@ -1114,7 +1114,7 @@ function createData() {
             'dash_url' => 'video_part dash url 6',
             'hls_url' => 'video_part hls url 6',
             'part_nr' => 2,
-            'duration' => 16
+            'duration' => 89493
         )
     );
 
@@ -1126,7 +1126,7 @@ function createData() {
             'dash_url' => 'video_part dash url 7',
             'hls_url' => 'video_part hls url 7',
             'part_nr' => 3,
-            'duration' => 16
+            'duration' => 100000
         )
     );
 
@@ -1138,7 +1138,7 @@ function createData() {
             'dash_url' => 'video_part dash url 8',
             'hls_url' => 'video_part hls url 8',
             'part_nr' => 4,
-            'duration' => 16
+            'duration' => 3399949
         )
     );
        
@@ -1150,7 +1150,7 @@ function createData() {
             'dash_url' => 'video_part dash url 9',
             'hls_url' => 'video_part hls url 9',
             'part_nr' => 1,
-            'duration' => 16
+            'duration' => 37828
         )
     );
     
@@ -1159,7 +1159,7 @@ function createData() {
         'ad_block', 
         array(
             'vp_id' => 1,
-            'sec_in_part' => 10
+            'sec_in_part' => 8983
         )
     );
 
@@ -1167,7 +1167,7 @@ function createData() {
         'ad_block', 
         array(
             'vp_id' => 4,
-            'sec_in_part' => 15
+            'sec_in_part' => 2390
         )
     );
 
@@ -1175,7 +1175,7 @@ function createData() {
         'ad_block', 
         array(
             'vp_id' => 7,
-            'sec_in_part' => 5
+            'sec_in_part' => 12990
         )
     );
 
@@ -1183,7 +1183,7 @@ function createData() {
         'ad_block', 
         array(
             'vp_id' => 8,
-            'sec_in_part' => 5
+            'sec_in_part' => 2990
         )
     );
 
@@ -1191,7 +1191,7 @@ function createData() {
         'ad_block', 
         array(
             'vp_id' => 9,
-            'sec_in_part' => 5
+            'sec_in_part' => 4500
         )
     );
 
