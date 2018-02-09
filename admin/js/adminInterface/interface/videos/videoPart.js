@@ -52,10 +52,6 @@ class VideoPart extends React.Component {
         }
     }
 
-    handelCLickOnDeleteAdBlockButton() {
-
-    }
-
     render() {
 
         const adBlocks = this.props.part.ad_blocks.map((adBlock,index) => {
@@ -63,8 +59,17 @@ class VideoPart extends React.Component {
                 <AdBlock
                     key={'ad-block-' + index}
                     adBlockNumber={index+1}
-                    startTime={this.props.part.ad_blocks[index].sec_in_part}
-                    onClickDeleteAdBlock={this.props.onClickDeleteAdBlock}/>
+                    adBlock={this.props.part.ad_blocks[index]}
+                    allAdsArray={this.props.allAdsArray}
+                    onClickDeleteAdBlock={() => this.props.onClickDeleteAdBlock(this.props.part.part_nr, index)}
+                    onClickAddAdOrCancelAdBlock={() => this.props.onClickAddAdOrCancelAdBlock(this.props.part.part_nr, index)}
+                    onChangeSelectAdBlock={(allAdsArrayIndex) => this.props.onChangeSelectAdBlock(this.props.part.part_nr, index, allAdsArrayIndex)}
+                    onClickRadioButtonOrLabelAdBlock={(targetId) => this.props.onClickRadioButtonOrLabelAdBlock(this.props.part.part_nr, index, targetId)}
+                    onChangeAddAdAdBlock={(targetId, targetValue) => this.props.onChangeAddAdAdBlock(this.props.part.part_nr, index, targetId, targetValue)}
+                    onClickAddAdToAdBlock={(targetElement) => this.props.onClickAddAdToAdBlock(this.props.part.part_nr, index, targetElement)}
+                    onClickRemoveAdAdBlock={(targetIndex) => this.props.onClickRemoveAdAdBlock(this.props.part.part_nr, index, targetIndex)}
+                    onClickUpButtonInAdBlock={(targetIndex) => this.props.onClickUpButtonInAdBlock(this.props.part.part_nr, index, targetIndex)}
+                    onClickDownButtonInAdBlock={(targetIndex) => this.props.onClickDownButtonInAdBlock(this.props.part.part_nr, index, targetIndex)}/>
             )
         })
 
@@ -91,8 +96,8 @@ class VideoPart extends React.Component {
                 </div>
                 <div className='ad-inserter-video-part-subheader'>
                     <div>
-                        <p className='ad-inserter-h3'>start<span>{changeFormat(this.props.part.start)}</span></p>
-                        <p className='ad-inserter-h3'>end<span>{changeFormat(this.props.part.end)}</span></p>
+                        <p className='ad-inserter-h3'>start<span>{changeFormat(this.props.start)}</span></p>
+                        <p className='ad-inserter-h3'>end<span>{changeFormat(this.props.start + this.props.part.durationWithAds)}</span></p>
                     </div>
                     <div>
                         <p className='ad-inserter-h3'>video duration<span>{changeFormat(this.props.part.duration)}</span></p>

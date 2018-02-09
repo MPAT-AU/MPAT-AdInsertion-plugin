@@ -1,13 +1,14 @@
 'use strict'
 
 import React from 'react'
-import ReactTooltip from 'react-tooltip'
 import {Link, Redirect} from 'react-router-dom'
 import LoadingButton from '../loadingButton'
 import {highlightNavigation} from '../../helper/wpRouting'
 import VideoPart from './videoPart'
 import {changeFormat} from '../../helper/format'
 import {getDuration} from '../../handler/DaiHandler'
+import {createAd} from '../../handler/DBHandler'
+import {getAds} from '../../handler/DBHandler'
 
 
 class CreateVideo extends React.Component {
@@ -19,7 +20,6 @@ class CreateVideo extends React.Component {
                 name: '',
                 output_dash_url: '',
                 output_hls_url: '',
-                duration: 0,
                 parts: [
                     {
                         name: '',
@@ -28,15 +28,39 @@ class CreateVideo extends React.Component {
                         part_nr: 0,
                         duration: 0,
                         durationWithAds: 0,
-                        start: 0,
-                        end: 0,
                         ad_blocks: [],
                         addAdBlock: false
                     }
                 ]
             },
+            allAdsArray: [],
             redirect: false
         }
+        this.getAdArray()
+    }
+
+    getAdArray() {
+        getAds().then(result => {
+            if(result.length === 0) return
+            const sortedAds = result.sort((a, b) => {
+                const nameA = a.name.toUpperCase()
+                const nameB = b.name.toUpperCase()
+                if (nameA < nameB) return -1
+                if (nameA > nameB) return 1
+                return 0
+            })
+            this.setState({allAdsArray: sortedAds})
+        }, err => {
+            console.log('Error ', err)
+        })
+    }
+
+    calculateVideoDuration() {
+        return this.state.video.parts.map(part => {
+            return part.durationWithAds
+        }).reduce((prev,curr) => {
+            return prev + curr
+        })
     }
 
     handleChangeName(event) {
@@ -46,7 +70,7 @@ class CreateVideo extends React.Component {
     }
 
     handleSubmit(event) {
-        event.preventDefault()
+        event.preventDefault()//TODO
     }
 
     handleChangeInVideoPart(index, inputName, value, valid) {
@@ -88,21 +112,6 @@ class CreateVideo extends React.Component {
         this.setState({video: video})
     }
 
-    calculateDurationOfVideo() {
-        // console.log(this.state.video.parts.reduce((partA,partB) => {
-        //     console.log(partA.durationWithAds)
-        //     partA.durationWithAds + partB.durationWithAds
-        // }))
-        // return this.state.video.parts.reduce((partA,partB) => {
-        //     return partA.durationWithAds + partB.durationWithAds
-        // })
-        return 0
-    }
-
-    calculateDurationOfVideoPart() {
-        return 0
-    }
-
     handelClickOnNewPart() {
         let newPart = {
             name: '',
@@ -111,8 +120,6 @@ class CreateVideo extends React.Component {
             part_nr: this.state.video.parts.length,
             duration: 0,
             durationWithAds: 0,
-            start: 0,
-            end: 0,
             ad_blocks: [],
             addAdBlock: false
         }
@@ -162,37 +169,186 @@ class CreateVideo extends React.Component {
         this.setState({video: video})
     }
 
-    handelClickOnPartCreateAdBlock(index,secInPart) {
+    handelClickOnPartCreateAdBlock(partIndex,secInPart) {
         let video = this.state.video
         const newAdBlock = {
             sec_in_part: secInPart,
-            ads: []
+            duration: 0,
+            ads: [],
+            addAd: false,
+            addAdName: '',
+            addAdDash: '',
+            addAdHls: '',
+            createAd: false,
+            chooseAd: true,
+            chosenAd: this.state.allAdsArray[0]
         }
-        video.parts[index].ad_blocks.push(newAdBlock)
-        if (video.parts[index].ad_blocks.length !== 0) {
-            video.parts[index].ad_blocks.sort((blockA, blockB) => {
+        video.parts[partIndex].ad_blocks.push(newAdBlock)
+        if (video.parts[partIndex].ad_blocks.length !== 0) {
+            video.parts[partIndex].ad_blocks.sort((blockA, blockB) => {
                 return blockA.sec_in_part - blockB.sec_in_part
             })
         }
-        video.parts[index].addAdBlock = !video.parts[index].addAdBlock
+        video.parts[partIndex].addAdBlock = !this.state.video.parts[partIndex].addAdBlock
         this.setState({video: video})
     }
 
     handelClickOnDeleteAdBlock(partIndex,adBlockIndex) {
         let video = this.state.video
-        video.parts = video.parts[partIndex].ad_blocks.slice(0,adBlockIndex).concat(video.parts[partIndex].ad_blocks.slice(adBlockIndex + 1))
+        video.parts[partIndex].durationWithAds -= video.parts[partIndex].ad_blocks[adBlockIndex].duration
+        video.parts[partIndex].ad_blocks = video.parts[partIndex].ad_blocks.slice(0,adBlockIndex).concat(video.parts[partIndex].ad_blocks.slice(adBlockIndex + 1))
         this.setState({video: video})
     }
 
+    handleClickOnAddAdOrCancelAdBlock(partIndex,adBlockIndex) {
+        let video = this.state.video
+        video.parts[partIndex].ad_blocks[adBlockIndex].addAd = !video.parts[partIndex].ad_blocks[adBlockIndex].addAd
+        this.setState({video: video})
+    }
+
+    handleOnChangeSelectAdBlock(partIndex,adBlockIndex,allAdsArrayIndex) {
+        let video = this.state.video
+        video.parts[partIndex].ad_blocks[adBlockIndex].chosenAd = this.state.allAdsArray[allAdsArrayIndex]
+        this.setState({video: video})
+    }
+
+    handleClickOnRadioButtonOrLabel(partIndex,adBlockIndex,targetId) {
+        let video = this.state.video
+        const chooseAd = video.parts[partIndex].ad_blocks[adBlockIndex].chooseAd
+        if ( (!chooseAd && targetId === 'chooseAd') || (!chooseAd && targetId === 'labelChooseAd') || (chooseAd && targetId === 'createAd') || (chooseAd && targetId === 'labelCreateAd') ) {
+            video.parts[partIndex].ad_blocks[adBlockIndex].chooseAd = !chooseAd
+            this.setState({video: video})
+        }
+    }
+
+    handleChangeAddAdAdBlock(partIndex,adBlockIndex,targetId,targetValue) {
+        let video = this.state.video
+        switch (targetId) {
+            case 'name' : {
+                video.parts[partIndex].ad_blocks[adBlockIndex].addAdName = targetValue
+                break
+            }
+            case 'dash' : {
+                video.parts[partIndex].ad_blocks[adBlockIndex].addAdDash = targetValue
+                break
+            }
+            case 'hls' : {
+                video.parts[partIndex].ad_blocks[adBlockIndex].addAdHls = targetValue
+                break
+            }
+            default : break
+        }
+        this.setState({video: video})
+    }
+
+    handelClickOnAddAdToAdBlock(partIndex,adBlockIndex,targetElement) {
+        let video = this.state.video
+        if (video.parts[partIndex].ad_blocks[adBlockIndex].chooseAd && this.state.allAdsArray.length !== 0) {
+            video.parts[partIndex].ad_blocks[adBlockIndex].ads.push(video.parts[partIndex].ad_blocks[adBlockIndex].chosenAd)
+            video.parts[partIndex].ad_blocks[adBlockIndex].addAd = false
+            const adDuration = video.parts[partIndex].ad_blocks[adBlockIndex].chosenAd.duration
+            video.parts[partIndex].ad_blocks[adBlockIndex].duration += Number(adDuration)
+            video.parts[partIndex].durationWithAds += Number(adDuration)
+            video.parts[partIndex].ad_blocks[adBlockIndex].chosenAd = this.state.allAdsArray[0]
+            this.setState({video: video})
+        } else {
+            if (this.checkAddAdValidation(targetElement)) {
+                video.parts[partIndex].ad_blocks[adBlockIndex].createAd = true
+                this.setState({video: video})
+                getDuration(video.parts[partIndex].ad_blocks[adBlockIndex].addAdDash).then( result => {
+                    let video = this.state.video
+                    return {
+                        name: video.parts[partIndex].ad_blocks[adBlockIndex].addAdName,
+                        duration: Number(result),
+                        dash_url: video.parts[partIndex].ad_blocks[adBlockIndex].addAdDash,
+                        hls_url: video.parts[partIndex].ad_blocks[adBlockIndex].addAdHls
+                    }
+                }, error => {
+                    let video = this.state.video
+                    return {
+                        name: video.parts[partIndex].ad_blocks[adBlockIndex].addAdName,
+                        duration: 0,
+                        dash_url: video.parts[partIndex].ad_blocks[adBlockIndex].addAdDash,
+                        hls_url: video.parts[partIndex].ad_blocks[adBlockIndex].addAdHls
+                    }
+                }).then( json =>
+                    createAd(json)
+                        .then(ad => {
+                            let video = this.state.video
+                            video.parts[partIndex].ad_blocks[adBlockIndex].ads.push(ad)
+                            video.parts[partIndex].ad_blocks[adBlockIndex].createAd = false
+                            video.parts[partIndex].ad_blocks[adBlockIndex].addAd = false
+                            video.parts[partIndex].ad_blocks[adBlockIndex].addAdName = ''
+                            video.parts[partIndex].ad_blocks[adBlockIndex].addAdDash = ''
+                            video.parts[partIndex].ad_blocks[adBlockIndex].addAdHls = ''
+                            video.parts[partIndex].ad_blocks[adBlockIndex].chosenAd = true
+                            video.parts[partIndex].ad_blocks[adBlockIndex].duration += Number(ad.duration)
+                            video.parts[partIndex].durationWithAds += Number(ad.duration)
+                            this.setState({video: video})
+
+                            this.getAdArray()
+                        })
+                )
+            }
+        }
+    }
+
+    checkAddAdValidation(e) {
+        const parentDiv = e.parentElement.parentElement
+        const name = parentDiv.querySelector('#name')
+        const dash = parentDiv.querySelector('#dash')
+        if (!name.checkValidity()) {
+            name.reportValidity()
+            return false
+        } else if (!dash.checkValidity()) {
+            dash.reportValidity()
+            return false
+        }
+        return true
+    }
+
+    handleRemoveAdd(partIndex,adBlockIndex,targetIndex) {
+        let video = this.state.video
+        const adDuration = video.parts[partIndex].ad_blocks[adBlockIndex].ads[targetIndex].duration
+        video.parts[partIndex].ad_blocks[adBlockIndex].duration -= Number(adDuration)
+        video.parts[partIndex].durationWithAds -= Number(adDuration)
+        video.parts[partIndex].ad_blocks[adBlockIndex].ads = video.parts[partIndex].ad_blocks[adBlockIndex].ads.slice(0,targetIndex).concat(video.parts[partIndex].ad_blocks[adBlockIndex].ads.slice(targetIndex + 1))
+        this.setState({video: video})
+    }
+
+    handleClickOnUpButtonInAdBlock(partIndex,adBlockIndex,targetIndex) {
+        if (targetIndex > 0) {
+            let video = this.state.video
+            const tmp = video.parts[partIndex].ad_blocks[adBlockIndex].ads[targetIndex-1]
+            video.parts[partIndex].ad_blocks[adBlockIndex].ads[targetIndex-1] = video.parts[partIndex].ad_blocks[adBlockIndex].ads[targetIndex]
+            video.parts[partIndex].ad_blocks[adBlockIndex].ads[targetIndex] = tmp
+            this.setState({video: video})
+        }
+    }
+
+    handleClickOnDownButtonInAdBlock(partIndex,adBlockIndex,targetIndex) {
+        let video = this.state.video
+        if (targetIndex < video.parts[partIndex].ad_blocks[adBlockIndex].ads.length - 1) {
+            const tmp = video.parts[partIndex].ad_blocks[adBlockIndex].ads[targetIndex+1]
+            video.parts[partIndex].ad_blocks[adBlockIndex].ads[targetIndex+1] = video.parts[partIndex].ad_blocks[adBlockIndex].ads[targetIndex]
+            video.parts[partIndex].ad_blocks[adBlockIndex].ads[targetIndex] = tmp
+            this.setState({video: video})
+        }
+    }
 
     render() {
         if (this.state.redirect) {
             return <Redirect push to='/wp/wp-admin/admin.php?page=mpat-ad-insertion-all-ad-inserted-videos'/>
         }
 
+        let startTime = 0
         const videoParts = this.state.video.parts.map( (part, index) => {
+            const currentStartTime = startTime
+            startTime += part.durationWithAds
             return <VideoPart key={'video-part-' + index}
                               part={part}
+                              start={currentStartTime}
+                              allAdsArray={this.state.allAdsArray}
                               onChange={this.handleChangeInVideoPart.bind(this)}
                               isOnlyPart={this.state.video.parts.length === 1}
                               onDelete={this.handelDeletePart.bind(this)}
@@ -200,15 +356,25 @@ class CreateVideo extends React.Component {
                               onClickDown={this.handelClickOnPartDown.bind(this)}
                               onClickAddAdBlock={this.handelClickOnPartAddAdBlock.bind(this)}
                               onClickCreateAdBlock={this.handelClickOnPartCreateAdBlock.bind(this)}
-                              onClickDeleteAdBlock={this.handelClickOnDeleteAdBlock.bind(this)}/>
+                              onClickDeleteAdBlock={(partIndex,adBlockIndex) => this.handelClickOnDeleteAdBlock(partIndex,adBlockIndex)}
+                              onClickAddAdOrCancelAdBlock={(partIndex,adBlockIndex) => this.handleClickOnAddAdOrCancelAdBlock(partIndex,adBlockIndex)}
+                              onChangeSelectAdBlock={(partIndex,adBlockIndex,allAdsArrayIndex) => this.handleOnChangeSelectAdBlock(partIndex,adBlockIndex,allAdsArrayIndex)}
+                              onClickRadioButtonOrLabelAdBlock={(partIndex,adBlockIndex,targetId) => this.handleClickOnRadioButtonOrLabel(partIndex,adBlockIndex,targetId)}
+                              onChangeAddAdAdBlock={(partIndex,adBlockIndex,targetId,targetValue) => this.handleChangeAddAdAdBlock(partIndex,adBlockIndex,targetId,targetValue)}
+                              onClickAddAdToAdBlock={(partIndex,adBlockIndex,targetElement) => this.handelClickOnAddAdToAdBlock(partIndex,adBlockIndex,targetElement)}
+                              onClickRemoveAdAdBlock={(partIndex,adBlockIndex,targetIndex) => this.handleRemoveAdd(partIndex,adBlockIndex,targetIndex)}
+                              onClickUpButtonInAdBlock={(partIndex,adBlockIndex,targetIndex) => this.handleClickOnUpButtonInAdBlock(partIndex,adBlockIndex,targetIndex)}
+                              onClickDownButtonInAdBlock={(partIndex,adBlockIndex,targetIndex) => this.handleClickOnDownButtonInAdBlock(partIndex,adBlockIndex,targetIndex)}/>
         })
+
+        console.log(this.state)
 
         return (
             <div>
                 <form className='ad-inserter-create-video' onSubmit={this.handleSubmit.bind(this)}>
                     <div className='ad-inserter-video-head'>
                         <p className='ad-inserter-h3-bold'>new video<span className='ad-inserter-h3'>{this.state.video.name}</span></p>
-                        <p className='ad-inserter-h3'>duration<span className='ad-inserter-h3'>{changeFormat(this.calculateDurationOfVideo())}</span></p>
+                        <p className='ad-inserter-h3'>duration<span className='ad-inserter-h3'>{changeFormat(this.calculateVideoDuration())}</span></p>
                     </div>
                     <div className='ad-inserter-lable-input-row'>
                         <label className='ad-inserter-input-label'
