@@ -1,24 +1,26 @@
-
-export function sendAndHandleRequest(json){
+export function sendAndHandleRequest(json) {
     return new Promise((resolve, reject) => {
-        let url = "http://daiservices.fokus.fraunhofer.de:3001/json/fame/vod"
-
-        let xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function() { 
-              if (xmlHttp.readyState === 4 && xmlHttp.status === 200){
-                  resolve(JSON.parse(xmlHttp.responseText));
-              }else{
-                  reject();
-              }
+        let xhr = new XMLHttpRequest()
+        xhr.open('POST', 'http://daiservices.fokus.fraunhofer.de:3001/json/fame/vod', true)
+        xhr.setRequestHeader('Content-type', 'application/json')
+        xhr.onload = function () {
+            if (this.status === 200 ) {
+                resolve(JSON.parse(xhr.responseText).dashUrl)
+            } else {
+                reject({
+                    status: this.status,
+                    statusText: xhr.statusText
+                })
+            }
         }
-        xmlHttp.open("GET", url, true); 
-        xmlHttp.send(body);
-    }) 
-}
-
-
-function saveInDatabase(dashUrl, hlsUrl, name , thumbnail){
-  
+        xhr.onerror = function () {
+            reject({
+                status: this.status,
+                statusText: xhr.statusText
+            })
+        }
+        xhr.send(JSON.stringify(json))
+    })
 }
 
 export function getDuration(url) {

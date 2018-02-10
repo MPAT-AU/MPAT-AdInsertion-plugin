@@ -149,9 +149,11 @@ class MPAT_AdInsertion_plugin_Admin {
     }
 
     function display() {
+		$path = $_SERVER['DOCUMENT_ROOT'];
+		include_once $path . '/app/plugins/mpat-adinsertion-plugin/admin/php/DBCreateTable.php';
 	    ?>
             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" type="text/javascript"></script>
-            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             <div id="reactRoot" class="wrap ad-inserter"></div>
         <?php
     }

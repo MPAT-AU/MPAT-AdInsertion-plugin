@@ -6,7 +6,7 @@ import LoadingButton from '../loadingButton'
 import {highlightNavigation} from '../../helper/wpRouting'
 import VideoPart from './videoPart'
 import {changeFormat} from '../../helper/format'
-import {getDuration} from '../../handler/DaiHandler'
+import {getDuration, sendAndHandleRequest} from '../../handler/DaiHandler'
 import {createAd} from '../../handler/DBHandler'
 import {getAds} from '../../handler/DBHandler'
 
@@ -34,6 +34,7 @@ class CreateVideo extends React.Component {
                 ]
             },
             allAdsArray: [],
+            createVideo: false,
             redirect: false
         }
         this.getAdArray()
@@ -70,7 +71,75 @@ class CreateVideo extends React.Component {
     }
 
     handleSubmit(event) {
-        event.preventDefault()//TODO
+        event.preventDefault()
+        this.state.createVideo = true
+        sendAndHandleRequest(this.createDaiJson()).then(result => {
+            this.createVideoJson(result)
+        }, error => {
+            console.log(error)
+            this.state.createVideo = false
+        })
+        return false
+    }
+
+    createDaiJson() {
+        let json = {
+            content: {}
+        }
+        const dashContent = this.state.video.parts.map(part => {
+            return {
+                mpd: part.dash_url,
+                baseUrl: this.getBaseUrl(part.dash_url),
+                type: 'content',
+                subContent: part.ad_blocks.map(adBlock => {
+                    const spliceTime = adBlock.sec_in_part
+                    return adBlock.ads.map(ad => {
+                        return {
+                            mpd: ad.dash_url,
+                            baseUrl: this.getBaseUrl(ad.dash_url),
+                            type: 'ad',
+                            spliceTime: spliceTime
+                        }
+                    })
+                }).reduce((prev,curr) => {
+                    return prev.concat(curr)
+                }, [])
+            }
+        })
+        json.content.dash = dashContent
+        return json
+    }
+
+    createVideoJson(dashUrl) {
+        return {
+            name: this.state.video.name,
+            output_dash_url: dashUrl,
+            output_hls_url: '',
+            parts: this.state.video.parts.map(part => {
+                return {
+                    name: part.name,
+                    dash_url: part.dash_url,
+                    hls_url: part.hls_url,
+                    part_nr: part.part_nr,
+                    duration: part.duration,
+                    ad_blocks: part.ad_blocks.map(adBlock => {
+                        return {
+                            sec_in_part: adBlock.sec_in_part,
+                            ad_block_parts: adBlock.ads.map((ad,index) => {
+                                return {
+                                    order_nr: index,
+                                    ad_id: ad.id
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    }
+
+    getBaseUrl(url) {
+        return url.slice(0, (url.lastIndexOf('/') + 1))
     }
 
     handleChangeInVideoPart(index, inputName, value, valid) {
@@ -366,8 +435,6 @@ class CreateVideo extends React.Component {
                               onClickUpButtonInAdBlock={(partIndex,adBlockIndex,targetIndex) => this.handleClickOnUpButtonInAdBlock(partIndex,adBlockIndex,targetIndex)}
                               onClickDownButtonInAdBlock={(partIndex,adBlockIndex,targetIndex) => this.handleClickOnDownButtonInAdBlock(partIndex,adBlockIndex,targetIndex)}/>
         })
-
-        console.log(this.state)
 
         return (
             <div>
