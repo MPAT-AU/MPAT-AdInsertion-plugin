@@ -78,6 +78,7 @@ class CreateVideo extends React.Component {
                     createVideo: false,
                     redirect: true
                 })
+                highlightNavigation('mpat-ad-insertion-new-video', 'mpat-ad-insertion-all-ad-inserted-videos')
             }, error => {
                 console.log('Error ',error)
                 this.setState({createVideo: false})
