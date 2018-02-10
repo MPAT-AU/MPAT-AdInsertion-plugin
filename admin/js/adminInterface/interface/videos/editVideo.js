@@ -7,10 +7,10 @@ import {highlightNavigation} from '../../helper/wpRouting'
 import VideoPart from './videoPart'
 import {changeFormat} from '../../helper/format'
 import {getDuration, sendAndHandleRequest} from '../../handler/DaiHandler'
-import {createAd, createVideo, getAds} from '../../handler/DBHandler'
+import {createAd, getAds} from '../../handler/DBHandler'
 
 
-class CreateVideo extends React.Component {
+class EditVideo extends React.Component {
 
     constructor(props) {
         super(props)
@@ -497,7 +497,7 @@ class CreateVideo extends React.Component {
                         {
                             this.state.createVideo ?
                                 <LoadingButton icon='add_to_queue' color='green' loadingMessage='create'/>
-                                    :
+                                :
                                 <button type='submit'
                                         className='ad-inserter-button-green-white'>
                                     <i className="material-icons">add_to_queue</i>create
@@ -510,4 +510,4 @@ class CreateVideo extends React.Component {
     }
 }
 
-export default CreateVideo
+export default EditVideo

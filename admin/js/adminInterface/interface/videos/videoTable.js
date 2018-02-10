@@ -2,11 +2,10 @@
 
 import React from 'react'
 import ReactTooltip from 'react-tooltip'
-import { getVideos, getVideo, deleteVideo } from '../../handler/DBHandler'
-import LoadingButton from '../loadingButton'
-import { waitTwoSeconds } from '../demoHelper'
+import { getVideos, deleteVideo } from '../../handler/DBHandler'
 import LoadingScreen from '../loadingScreen'
 import NoData from '../noData'
+import {changeFormat} from '../../helper/format'
 
 
 class VideoTable extends React.Component {
@@ -18,19 +17,21 @@ class VideoTable extends React.Component {
             loadData: true
         }
 
-        // only for demo purposes
-        waitTwoSeconds(1000).then(() =>
-            this.getVideoDataArray()
-        )
+        this.getVideoDataArray()
     }
 
     getVideoDataArray() {
         getVideos().then(result => {
-            result = result.map((video) => {
-                video.editOpen = false
-                video.saveVideo = false
+            result = result.sort((a, b) => {
+                const nameA = a.name.toUpperCase()
+                const nameB = b.name.toUpperCase()
+                if (nameA < nameB) return -1
+                if (nameA > nameB) return 1
+                return 0
+            }).map((video) => {
+                video.showTimeline = false
                 video.deleteVideo = false
-                video.stringDuration = this.changeFormat(video.duration)
+                video.stringDuration = changeFormat(video.duration)
 
                 return video
             })
@@ -43,129 +44,27 @@ class VideoTable extends React.Component {
         })
     }
 
-    changeFormat(duration) {
-  
-        let h = Math.floor(duration/3600000);
-        duration = duration - ( h * 3600000);
-        let m = Math.floor(duration/60000);
-        duration = duration - ( m * 60000);
-        let s = Math.floor(duration/1000);
-        duration = duration - ( s * 1000);
-        let ms = duration;
-        let output = ""
-
-        if(ms == 0){
-            output = (h + "h " + m + "min " + s + "s"); 
-        }else{
-            if (ms >= 100) {
-                output = (h + "h " + m + "min " + s + "." + ms + "s"); 
-            }else if (ms >= 10){
-                output = (h + "h " + m + "min " + s + ".0" + ms + "s"); 
-            }else{
-                output = (h + "h " + m + "min " + s + ".00" + ms + "s"); 
-            }
-        }
-        return output;
+    handleClickOnEdit(index) {
+        console.log('goto edit')
     }
 
-    handleChange(index, event) { //TODO
-        // const videoDataArray = this.state.videoDataArray
-        // switch (event.target.id) {
-        //     case 'name' : {
-        //         videoDataArray[index].name = event.target.value
-        //         break
-        //     }
-        //     case 'number_of_video_parts' : {
-        //         videoDataArray[index].number_of_video_parts = event.target.value
-        //         break
-        //     }
-        //     case 'number_of_ad_blocks' : {
-        //         videoDataArray[index].number_of_ad_blocks = event.target.value
-        //         break
-        //     }
-        //     case 'number_of_ads' : {
-        //         videoDataArray[index].number_of_ads = event.target.value
-        //         break
-        //     }
-        //     case 'duration' : {
-        //         videoDataArray[index].duration = event.target.value
-        //         break
-        //     }
-        //     default : break
-        // }
-        // this.setState({adDataArray: adDataArray})
-    }
-
-    handleClickOnEditCloseIcon(index) {
-        this.setEditOpen(index)
-    }
-
-    setEditOpen(index) {
-
+    handleClickOnShowHideTimeline(index) {
         const videoDataArray = this.state.videoDataArray
-        videoDataArray[index].editOpen = !videoDataArray[index].editOpen
+        videoDataArray[index].showTimeline = !videoDataArray[index].showTimeline
         this.setState({videoDataArray: videoDataArray})
-    }
-
-    handleSubmit(index, event) {
-        // event.preventDefault();
-        // this.setSaveAd(index)
-        // const json = this.getJsonForSubmit(index)
-        // // updateAd(this.state.adDataArray[index].id, json)
-        // //     .then(result => {
-        // //         this.setSaveAd(index)
-        // //         if (result) {
-        // //             this.setEditOpen(index)
-        // //         } else {
-        // //             console.log('Error')
-        // //         }
-        // //     })
-
-        // // only for demo purposes
-        // waitTwoSeconds(2000).then(() =>
-        //     updateAd(this.state.adDataArray[index].id, json)
-        //         .then(result => {
-        //             this.setSaveAd(index)
-        //             if (result) {
-        //                 this.setEditOpen(index)
-        //             } else {
-        //                 console.log('Error')
-        //             }
-        //         })
-        // )
-        // return false
-    }
-
-    setSaveAd(index) {
-        // const videoDataArray = this.state.videoDataArray
-        // videoDataArray[index].saveAd = !videoDataArray[index].saveAd
-        // this.setState({videoDataArray: videoDataArray})
     }
 
     handleDelete(index) {
         this.setDeleteVideo(index)
-        // deleteVideo(this.state.videoDataArray[index].id)
-        //     .then(result => {
-        //         this.setDeleteVideo(index)
-        //         if (result) {
-        //             this.removeVideo(index)
-        //         } else {
-        //             console.log('Error')
-        //         }
-        //     })
-
-        // only for demo purposes
-        waitTwoSeconds(1000).then(() =>
-            deleteVideo(this.state.videoDataArray[index].id)
-                .then(result => {
-                    this.setDeleteVideo(index)
-                    if (result) {
-                        this.removeVideo(index)
-                    } else {
-                        console.log('Error')
-                    }
-                })
-        )
+        deleteVideo(this.state.videoDataArray[index].id)
+            .then(result => {
+                this.setDeleteVideo(index)
+                if (result) {
+                    this.removeVideo(index)
+                } else {
+                    console.log('Error')
+                }
+            })
     }
 
     removeVideo(index) {
@@ -188,7 +87,6 @@ class VideoTable extends React.Component {
 
 
     render() {
-
 
         const timelineContent = this.state.videoDataArray.map((video, index) => {
 
@@ -242,25 +140,106 @@ class VideoTable extends React.Component {
         const tableContent = this.state.videoDataArray.map((video, index) => {
             return [
                 <tr key={index + 'ad-table-view'}
-                    className={ this.state.videoDataArray[index].editOpen ? 'active-row' : null}>
-                    <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold'>{video.name}</td>
-                    <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold ad-inserter-table-data-fixed-width-number'>{video.number_of_video_parts}</td>
-                    <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold ad-inserter-table-data-fixed-width-number'>{video.number_of_ad_blocks}</td>
-                    <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold ad-inserter-table-data-fixed-width-number'>{video.number_of_ads}</td>
-                    <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold ad-inserter-table-data-fixed-width-number'>{video.stringDuration}</td>
+                    className={ this.state.videoDataArray[index].showTimeline ? 'active-row' : null}>
                     {
-                        !this.state.videoDataArray[index].editOpen ?
-                        <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleClickOnEditCloseIcon.bind(this, index)}>mode_edit</i></td>
-                            :
-                        <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button key-down" onClick={this.handleClickOnEditCloseIcon.bind(this, index)}>expand_more</i></td>
+                        this.state.videoDataArray[index].showTimeline ?
+                            <td className='ad-inserter-video-table-row-item ad-inserter-video-table-fixed-size-of-material-icon'>
+                                <i className='material-icons material-icon-as-button'
+                                   data-tip='React-tooltip'
+                                   data-delay-show='500'
+                                   data-for={'timeline-' + index}
+                                   onClick={this.handleClickOnShowHideTimeline.bind(this,index)}>
+                                    expand_more
+                                </i>
+                                <ReactTooltip place='top'
+                                              type='dark'
+                                              effect='solid'
+                                              className='ad-inserter-react-tooltip'
+                                              id={'timeline-' + index}
+                                              delayShow={500}>
+                                    <span>hide video timeline</span>
+                                </ReactTooltip>
+                            </td>
+                                :
+                            <td className='ad-inserter-video-table-row-item ad-inserter-video-table-fixed-size-of-material-icon'>
+                                <i className='material-icons material-icon-as-button'
+                                   data-tip='React-tooltip'
+                                   data-delay-show='500'
+                                   data-for={'timeline-' + index}
+                                   onClick={this.handleClickOnShowHideTimeline.bind(this,index)}>
+                                    theaters
+                                </i>
+                                <ReactTooltip place='top'
+                                              type='dark'
+                                              effect='solid'
+                                              className='ad-inserter-react-tooltip'
+                                              id={'timeline-' + index}
+                                              delayShow={500}>
+                                    <span>show video timeline</span>
+                                </ReactTooltip>
+                            </td>
                     }
-                    <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleVideoPreviewInNewTab.bind(this,index)} >video_label</i></td>
-                    <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleDelete.bind(this,index)}>delete</i></td>
+                    <td className='ad-inserter-video-table-row-item ad-inserter-video-table-text-left'>{video.name}</td>
+                    <td className='ad-inserter-video-table-row-item ad-inserter-video-table-text-center ad-inserter-video-table-fixed-width-parts'>{video.number_of_video_parts}</td>
+                    <td className='ad-inserter-video-table-row-item ad-inserter-video-table-text-center ad-inserter-video-table-fixed-width-ad-blocks'>{video.number_of_ad_blocks}</td>
+                    <td className='ad-inserter-video-table-row-item ad-inserter-video-table-text-center ad-inserter-video-table-fixed-width-ads'>{video.number_of_ads}</td>
+                    <td className='ad-inserter-video-table-row-item ad-inserter-video-table-text-right ad-inserter-video-table-fixed-width-duration'>{video.stringDuration}</td>
+                    <td className='ad-inserter-video-table-row-item ad-inserter-video-table-fixed-size-of-material-icon'>
+                        <i className='material-icons material-icon-as-button'
+                           data-tip='React-tooltip'
+                           data-delay-show='500'
+                           data-for={'preview-' + index}
+                           onClick={this.handleVideoPreviewInNewTab.bind(this,index)}>
+                            ondemand_video
+                        </i>
+                        <ReactTooltip place='top'
+                                      type='dark'
+                                      effect='solid'
+                                      className='ad-inserter-react-tooltip'
+                                      id={'preview-' + index}
+                                      delayShow={500}>
+                            <span>show video preview</span>
+                        </ReactTooltip>
+                    </td>
+                    <td className='ad-inserter-video-table-row-item ad-inserter-video-table-fixed-size-of-material-icon'>
+                        <i className="material-icons material-icon-as-button"
+                           data-tip="React-tooltip"
+                           data-delay-show='500'
+                           data-for={'edit-' + index}
+                           onClick={this.handleClickOnEdit.bind(this, index)}>
+                            mode_edit
+                        </i>
+                        <ReactTooltip place='top'
+                                      type='dark'
+                                      effect='solid'
+                                      className='ad-inserter-react-tooltip'
+                                      id={'edit-' + index}
+                                      delayShow={500}>
+                            <span>edit video</span>
+                        </ReactTooltip>
+                    </td>
+                    <td className='ad-inserter-video-table-row-item ad-inserter-video-table-fixed-size-of-material-icon'>
+                        <i className="material-icons material-icon-as-button"
+                           data-tip="React-tooltip"
+                           data-delay-show='500'
+                           data-for={'delete-' + index}
+                           onClick={this.handleDelete.bind(this,index)}>
+                            delete
+                        </i>
+                        <ReactTooltip place='top'
+                                      type='dark'
+                                      effect='solid'
+                                      className='ad-inserter-react-tooltip'
+                                      id={'delete-' + index}
+                                      delayShow={500}>
+                            <span>delete video</span>
+                        </ReactTooltip>
+                    </td>
                 </tr>,
                 <tr>
-                    <td colSpan='8' className={ this.state.videoDataArray[index].editOpen ? 'ad-inserter-table-edit-ad-view active' : 'ad-inserter-table-edit-ad-view' }>
+                    <td colSpan='9' className={ this.state.videoDataArray[index].showTimeline ? 'ad-inserter-table-edit-ad-view active' : 'ad-inserter-table-edit-ad-view' }>
                         {
-                            this.state.videoDataArray[index].editOpen ?
+                            this.state.videoDataArray[index].showTimeline ?
                             <div className='ad-inserter-timeline'>
                                 {timelineContent[index]}
 
@@ -288,27 +267,26 @@ class VideoTable extends React.Component {
                 :
             (
                 this.state.videoDataArray.length === 0 ?
-                <NoData datatype='ads' //TODO auf Video anpassen
-                        linkToNew='/wp/wp-admin/admin.php?page=mpat-ad-insertion-new-ad'
-                        from='mpat-ad-insertion-all-ads'
-                        to='mpat-ad-insertion-new-ad'
+                <NoData datatype='videos'
+                        linkToNew='/wp/wp-admin/admin.php?page=mpat-ad-insertion-new-video'
+                        from='mpat-ad-insertion-all-ad-inserted-videos'
+                        to='mpat-ad-insertion-new-video'
                         buttonText='new Video'/>
                 :
                 <table className='ad-inserter-table'>
                     <thead className='ad-inserter-thead'>
-                    <tr>
-                        <th className='ad-inserter-th ad-inserter-table-cell-left'>name</th>
-                        <th className='ad-inserter-th ad-inserter-table-cell-left'>videos</th>
-                        <th className='ad-inserter-th ad-inserter-table-cell-left'>blocks</th>
-                        <th className='ad-inserter-th ad-inserter-table-cell-left'>Ads</th>
-                        <th className='ad-inserter-th ad-inserter-table-cell-left'>duration</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
+                        <tr>
+                            <th></th>
+                            <th className='ad-inserter-video-table-row-item ad-inserter-video-table-text-left'>name</th>
+                            <th className='ad-inserter-video-table-row-item ad-inserter-video-table-text-center ad-inserter-video-table-fixed-width-parts'>parts</th>
+                            <th className='ad-inserter-video-table-row-item ad-inserter-video-table-text-center ad-inserter-video-table-fixed-width-ad-blocks'>ad blocks</th>
+                            <th className='ad-inserter-video-table-row-item ad-inserter-video-table-text-center ad-inserter-video-table-fixed-width-ads'>ads</th>
+                            <th className='ad-inserter-video-table-row-item ad-inserter-video-table-text-right ad-inserter-video-table-fixed-width-duration'>duration</th>
+                            <th colSpan='3' className='ad-inserter-video-table-row-item'>actions</th>
+                        </tr>
+                        </thead>
                     <tbody>
-                    {tableContent}
+                       {tableContent}
                     </tbody>
                 </table>
                 
