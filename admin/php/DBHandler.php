@@ -254,15 +254,10 @@ function deleteAdTable() {
     }
 }
 
-
-
-
-
-
-
 //1.1.1
 function getVideos() {
     global $wpdb;
+    $return_videos = array();
 
     $videos = $wpdb->get_results( 
         'SELECT id, name, output_dash_url, output_hls_url, IFNULL(number_of_video_parts, 0) AS number_of_video_parts, IFNULL(number_of_ad_blocks, 0) AS number_of_ad_blocks, IFNULL(number_of_ads, 0) AS number_of_ads, IFNULL(dur.duration, 0) AS duration
@@ -344,15 +339,6 @@ function getVideos() {
         }
         $return_videos[] = $video;
     } 
-
-
-
-
-
-
-
-
-
 
     $json = json_encode( $return_videos );
     echo $json;
@@ -461,7 +447,8 @@ function createVideo($json){
                 'name' => $part['name'],
                 'dash_url' => $part['dash_url'],
                 'hls_url' => $part['hls_url'],
-                'part_nr' => $part['part_nr']
+                'part_nr' => $part['part_nr'],
+                'duration' => $part['duration']
             )
         );
 
