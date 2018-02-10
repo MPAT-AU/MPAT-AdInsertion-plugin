@@ -37,6 +37,7 @@ export function getDuration(url) {
                     let mpd = xmlDoc.getElementsByTagName("MPD")[0]
                     let rawTime = mpd.getAttribute('mediaPresentationDuration')
 
+
                     if (rawTime.length === 0) {
                         reject(0)
                     } else {
@@ -44,6 +45,7 @@ export function getDuration(url) {
                         rawTime = rawTime.substr(1)
                         rawTime = rawTime.substr(1)
 
+                        
 
                         //H
                         let h = 0
@@ -63,33 +65,44 @@ export function getDuration(url) {
                             m = parseInt(m)
                         }
 
-                        //S
+
+                        //S + ms
                         let s = 0
-                        let sPosi = rawTime.search("S")
-                        if (sPosi !== -1) {
-                            s = rawTime.substring(0, sPosi)
-                            s = s.replace('.', '')
-                            if (s.length !== 5) {
-                                switch (s.length) {
-                                    case 4:
-                                        s = (s + "0")
-                                        break
-                                    case 3:
-                                        s = (s + "00")
-                                        break
+                        let bigS = 0
+                        let ms = 0
+                        if (rawTime.search("S") !== -1) {
+
+                            let pPosi = rawTime.search(/\./)
+                            if (pPosi !== -1){
+                                bigS = (rawTime.substring(0,pPosi) * 1000)
+                                rawTime = rawTime.slice(pPosi +1)
+
+                                let sPosi = rawTime.search("S")
+                                ms = rawTime.substring(0,sPosi)
+
+                                switch (ms.length) {
                                     case 2:
-                                        s = (s + "000")
+                                        ms = (ms + "0")
                                         break
                                     case 1:
-                                        s = (s + "000")
+                                        ms = (ms + "00")
                                         break
                                     default:
-                                        s = 0
+                                        ms = ms
                                 }
-                            }
-                            s = parseInt(s)
-                        }
+                                
+                                s = parseInt(bigS) + parseInt(ms) 
 
+                            }else {
+                                //nur Seckunden
+                                let sPosi = rawTime.search("S")
+                                bigS = rawTime.substring(0,sPosi)
+
+                                s = parseInt(bigS) * 1000
+                            }
+                        }    
+
+                        s = parseInt(s)
                         let duration = 0
 
                         if (isInt(h) && isInt(m) && isInt(s)) {
@@ -97,6 +110,7 @@ export function getDuration(url) {
                         }
                         console.log("Final Duration: " + duration)
                         resolve(duration)
+
                     }
                 }
             } else {
