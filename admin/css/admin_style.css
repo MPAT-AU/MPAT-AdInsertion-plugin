@@ -686,10 +686,6 @@
     padding: 0 20px;
 }
 
-.ad-inserter-table-edit-ad-view button, .ad-inserter-table-edit-ad-view .ad-inserter-loading-button-container {
-    /*margin: 0 4px;*/
-}
-
 /* ========== no ad data ========== */
 .ad-inserter-no-data {
     display: flex;
