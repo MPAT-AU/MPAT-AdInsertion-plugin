@@ -265,11 +265,9 @@ class VideoTable extends React.Component {
                         {
                             this.state.videoDataArray[index].editOpen ?
                             <div className='ad-inserter-timeline'>
-                                {/* {timelineContent[index]} */}
+                                {timelineContent[index]}
 
-                                <div className='ad-inserter-timeline-video-block' style={{width: "25%"}}></div>
-                                <div className='ad-inserter-timeline-video-block' style={{width: "75%"}}></div>
-
+                            
                                 {/* <div data-tip data-for='video' className='ad-inserter-timeline-video-block' style={{width: '100%'}}></div>
                                 <div data-tip data-for='adBlock' className='ad-inserter-timeline-ad-block' style={{left: '50%', width: '25%'}}></div>
                                 <ReactTooltip id='video' place="top" type="dark" effect="float">
