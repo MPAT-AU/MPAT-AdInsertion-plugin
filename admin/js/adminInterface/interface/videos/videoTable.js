@@ -203,38 +203,46 @@ class VideoTable extends React.Component {
                 let partName = videoPart.part_name
                 let partFullDuration = parseInt(videoPart.part_full_duration)
                 let partDuration = parseInt(videoPart.part_duration)
-
                 let partWidth = Number((Math.floor((partFullDuration / fullDuration) * 100)).toFixed(1)) 
 
                 //output
-                let htmlVideoPart = <div key={"timeline-video-part-" + Math.floor((Math.random() * 100000) + 1)}  className='ad-inserter-timeline-video-block' style={{width: (partWidth + "%")}}></div>
+                let vpID = Math.floor((Math.random() * 1000000) + 1)
+                let htmlVideoPart = <div data-tip data-for={"video=" + vpID} key={"timeline-video-part-" + vpID}  className='ad-inserter-timeline-video-block' style={{width: (partWidth + "%")}}></div>
+                let videoPartTooltip = <ReactTooltip id={"video=" + vpID} key={"videoTooltip-" + vpID} place="top" type="dark" effect="float"><span>{"VideoPart: " + partName}</span></ReactTooltip>
                 output.push(htmlVideoPart)
-                
+                output.push(videoPartTooltip)
 
                 if (videoPart.ad_blocks != undefined) {
                     videoPart.ad_blocks.map((block, b_index) => {
                         let blockDuration = parseInt(block.block_duration)   
                         let blockStart = parseInt(block.block_start)
-    
                         let blockWidth = Number((Math.floor((blockDuration  / fullDuration) * 100)).toFixed(1)) 
                         let blockLeft = Number((Math.floor(((parseInt(globalLeft) + blockStart) / fullDuration) * 100)).toFixed(1))
     
+                        //adblock parts
+                        let adNames = ""
+                        block.ad_block_parts.map((adBlockPart,abp_index) => {               
+                            adBlockPart.ads.map((ad,a_index) => {
+                                adNames = adNames + ad.ad_name + " ; "
+                            })
+                        })
+
+                        console.log(adNames)
+
                         //output
-                        let htmlBlock = <div key={"timeline-adblock-" + Math.floor((Math.random() * 100000) + 1)} className='ad-inserter-timeline-ad-block' style={{left: (blockLeft + "%"), width: (blockWidth + "%")}}></div>
+                        let bID = Math.floor((Math.random() * 1000000) + 1)
+                        let htmlBlock = <div data-tip data-for={'ad-'+ bID} key={"timeline-adblock-" + bID} className='ad-inserter-timeline-ad-block' style={{left: (blockLeft + "%"), width: (blockWidth + "%")}}></div>
+                        let htmlBlockTooltip = <ReactTooltip id={'ad-'+ bID} key={"blockTooltip-" + bID} place="top" type="dark" effect="float"><span>{"Ads: " + adNames}</span></ReactTooltip>
                         output.push(htmlBlock)
-                        
-                        //ads
-                        // block.ads.map((ad,ad_index) => {
-                        //     let name = ad.ad_name 
-                        //     //TODO
-                        // })
-    
+                        output.push(htmlBlockTooltip)
+        
                         globalLeft = globalLeft + parseInt(blockDuration)
                     })
                 }
                 globalLeft = globalLeft + parseInt(partFullDuration)
             })
 
+            console.log(output)
             return output
         })    
 
@@ -263,17 +271,6 @@ class VideoTable extends React.Component {
                             this.state.videoDataArray[index].editOpen ?
                             <div className='ad-inserter-timeline'>
                                 {timelineContent[index]}
-
-                            
-                                {/* <div data-tip data-for='video' className='ad-inserter-timeline-video-block' style={{width: '100%'}}></div>
-                                <div data-tip data-for='adBlock' className='ad-inserter-timeline-ad-block' style={{left: '50%', width: '25%'}}></div>
-                                <ReactTooltip id='video' place="top" type="dark" effect="float">
-                                    <span>Video name</span>
-                                </ReactTooltip>
-                                <ReactTooltip id='adBlock' place="top" type="dark" effect="float">
-                                    <span>Ad name</span>
-                                </ReactTooltip> */}
-
                             </div>        
                                 :
                             null
