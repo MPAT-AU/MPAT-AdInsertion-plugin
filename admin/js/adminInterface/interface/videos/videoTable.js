@@ -192,6 +192,8 @@ class VideoTable extends React.Component {
 
         const timelineContent = this.state.videoDataArray.map((video, index) => {
 
+            console.log(video)
+
             let fullDuration = video.duration
             let globalLeft = 0
             let output = []
@@ -199,29 +201,26 @@ class VideoTable extends React.Component {
             //videoPart
             video.video_parts.map((videoPart, p_index) => {
                 let partName = videoPart.part_name
-                let partFullDuration = videoPart.part_full_duration
-                let partDuration = videoPart.part_duration
+                let partFullDuration = parseInt(videoPart.part_full_duration)
+                let partDuration = parseInt(videoPart.part_duration)
 
-                let partWidth = Math.floor((partFullDuration / fullDuration) * 100) 
+                let partWidth = Number((Math.floor((partFullDuration / fullDuration) * 100)).toFixed(1)) 
 
                 //output
-                let htmlVideoPart = <div key={"timeline-video-part-" + p_index}  className='ad-inserter-timeline-video-block' style={{width: (partWidth + "%")}}></div>
+                let htmlVideoPart = <div key={"timeline-video-part-" + Math.floor((Math.random() * 100000) + 1)}  className='ad-inserter-timeline-video-block' style={{width: (partWidth + "%")}}></div>
                 output.push(htmlVideoPart)
                 
 
                 if (videoPart.ad_blocks != undefined) {
                     videoPart.ad_blocks.map((block, b_index) => {
-                        let blockDuration = block.block_duration   
-                        let blockStart = block.block_start
+                        let blockDuration = parseInt(block.block_duration)   
+                        let blockStart = parseInt(block.block_start)
     
-                        let blockWidth = Math.floor((blockDuration  / fullDuration) * 100)
-                        let blockLeft = Math.floor(((globalLeft + blockStart) / fullDuration) * 100)
+                        let blockWidth = Number((Math.floor((blockDuration  / fullDuration) * 100)).toFixed(1)) 
+                        let blockLeft = Number((Math.floor(((parseInt(globalLeft) + blockStart) / fullDuration) * 100)).toFixed(1))
     
-                        console.log("debug: " + fullDuration + " blockDuration: " + blockDuration + " width " + blockWidth)
-
-
                         //output
-                        let htmlBlock = <div key={"timeline-adblock-" + b_index} className='ad-inserter-timeline-ad-block' style={{left: (blockLeft + "%"), width: (blockWidth + "%")}}></div>
+                        let htmlBlock = <div key={"timeline-adblock-" + Math.floor((Math.random() * 100000) + 1)} className='ad-inserter-timeline-ad-block' style={{left: (blockLeft + "%"), width: (blockWidth + "%")}}></div>
                         output.push(htmlBlock)
                         
                         //ads
@@ -230,12 +229,10 @@ class VideoTable extends React.Component {
                         //     //TODO
                         // })
     
-                        globalLeft = globalLeft + blockDuration
+                        globalLeft = globalLeft + parseInt(blockDuration)
                     })
                 }
-
-                globalLeft = globalLeft + partFullDuration
-
+                globalLeft = globalLeft + parseInt(partFullDuration)
             })
 
             return output
