@@ -1,9 +1,7 @@
 'use strict'
 
 import React from 'react'
-import ReactTooltip from 'react-tooltip'
-import { getVideos, getVideo, deleteVideo } from '../../handler/DBHandler'
-import LoadingButton from '../loadingButton'
+import { getVideos, deleteVideo } from '../../handler/DBHandler'
 import { waitTwoSeconds } from '../demoHelper'
 import LoadingScreen from '../loadingScreen'
 import NoData from '../noData'
@@ -30,8 +28,7 @@ class VideoTable extends React.Component {
                 video.editOpen = false
                 video.saveVideo = false
                 video.deleteVideo = false
-                // video.duration = this.changeFormat(video.duration)
-                video.stringDuration = this.changeFormat(video.duration)
+                video.duration = this.changeFormat(video.duration)
                 return video
             })
             this.setState({
@@ -194,9 +191,8 @@ class VideoTable extends React.Component {
 
             let fullDuration = video.duration
             let globalLeft = 0
-            let output = []
+            let outputArray = []
 
-            console.log(video)
             //videoPart
             video.video_parts.map((videoPart, p_index) => {
                 let partName = videoPart.part_name
@@ -205,43 +201,33 @@ class VideoTable extends React.Component {
 
                 let partWidth = Math.floor((partFullDuration / fullDuration) * 100) 
 
-                //output
-                let htmlVideoPart = <div key={"timeline-video-part-" + p_index}  className='ad-inserter-timeline-video-block' style={{width: (partWidth + "%")}}></div>
-                output.push(htmlVideoPart)
-
-                // console.log("debug: " + fullDuration + " partDuration: " + partFullDuration + " width " + partWidth)
+                let htmlVideoPart = <div className='ad-inserter-timeline-video-block' style={{width: (partWidth + "%")}}></div>
+                outputArray.push(htmlVideoPart)
 
                 //adblock
-                if (videoPart.ad_blocks != undefined) {
-                    videoPart.ad_blocks.map((block, b_index) => {
-                        let blockDuration = block.block_duration   
-                        let blockStart = block.block_start
-    
-                        let blockWidth = Math.floor((blockDuration  / fullDuration) * 100)
-                        let blockLeft = Math.floor(((globalLeft + blockStart) / fullDuration) * 100)
-    
-                        console.log("debug: " + fullDuration + " blockDuration: " + blockDuration + " width " + blockWidth)
+                videoPart.ad_blocks.map((block, b_index) => {
+                    let blockDuration = block.block_duration   
+                    let blockStart = block.block_start
 
+                    let blockWidth = Math.floor((blockDuration  / fullDuration) * 100)
+                    let blockLeft = Math.floor(((globalLeft + blockStart) / fullDuration) * 100)
 
-                        //output
-                        let htmlBlock = <div key={"timeline-adblock-" + b_index} className='ad-inserter-timeline-ad-block' style={{left: (blockLeft + "%"), width: (blockWidth + "%")}}></div>
-                        output.push(htmlBlock)
-                        
-                        //ads
-                        // block.ads.map((ad,ad_index) => {
-                        //     let name = ad.ad_name 
-                        //     //TODO
-                        // })
-    
-                        globalLeft = globalLeft + blockDuration
+                    let htmlBlock = <div className='ad-inserter-timeline-ad-block' style={{left: (blockLeft + "%"), width: (blockWidth + "%")}}></div>
+                    outputArray.push(htmlVideoPart)
+
+                    //ads
+                    block.ads.map((ad,ad_index) => {
+                        let name = ad.ad_name 
+                        //TODO
                     })
-                }
-                
+
+                    globalLeft = globalLeft + blockDuration
+                })
                 
                 globalLeft = globalLeft + partFullDuration
             })
-            return output
-            
+
+            return outputArray
         })    
 
 
@@ -253,7 +239,7 @@ class VideoTable extends React.Component {
                     <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold ad-inserter-table-data-fixed-width-number'>{video.number_of_video_parts}</td>
                     <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold ad-inserter-table-data-fixed-width-number'>{video.number_of_ad_blocks}</td>
                     <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold ad-inserter-table-data-fixed-width-number'>{video.number_of_ads}</td>
-                    <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold ad-inserter-table-data-fixed-width-duration'>{video.stringDuration}</td>
+                    <td className='ad-inserter-td ad-inserter-table-cell-left ad-inserter-bold ad-inserter-table-data-fixed-width-number'>{video.duration}</td>
                     {
                         !this.state.videoDataArray[index].editOpen ?
                         <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleClickOnEditCloseIcon.bind(this, index)}>mode_edit</i></td>
@@ -264,21 +250,12 @@ class VideoTable extends React.Component {
                     <td className='ad-inserter-table-data-fixed-width-icon'><i className="material-icons material-icon-as-button" onClick={this.handleDelete.bind(this,index)}>delete</i></td>
                 </tr>,
                 <tr>
-                    <td className={ this.state.videoDataArray[index].editOpen ? 'ad-inserter-table-edit-ad-view active' : 'ad-inserter-table-edit-ad-view' }>
+                    <td colSpan='4'
+                        className={ this.state.videoDataArray[index].editOpen ? 'ad-inserter-table-edit-ad-view active' : 'ad-inserter-table-edit-ad-view' }>
                         {
                             this.state.videoDataArray[index].editOpen ?
                             <div className='ad-inserter-timeline'>
-                                {timelineContent[index]}
-                                {/* <div data-tip data-for='video' className='ad-inserter-timeline-video-block' style={{width: '100%'}}></div>
-                                <div data-tip data-for='adBlock' className='ad-inserter-timeline-ad-block' style={{left: '50%', width: '25%'}}></div>
-                                <ReactTooltip id='video' place="top" type="dark" effect="float">
-                                    <span>Video name</span>
-                                </ReactTooltip>
-                                <ReactTooltip id='adBlock' place="top" type="dark" effect="float">
-                                    <span>Ad name</span>
-                                </ReactTooltip> */}
-
-
+                                {timelineContent}
                             </div>        
                                 :
                             null

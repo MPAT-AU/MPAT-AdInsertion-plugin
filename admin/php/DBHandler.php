@@ -461,7 +461,8 @@ function createVideo($json){
                 'name' => $part['name'],
                 'dash_url' => $part['dash_url'],
                 'hls_url' => $part['hls_url'],
-                'part_nr' => $part['part_nr']
+                'part_nr' => $part['part_nr'],
+                'duration' => $part['duration']
             )
         );
 

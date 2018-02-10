@@ -12,7 +12,7 @@ import { getDuration } from '../../handler/DaiHandler'
 
 class CreateAd extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             redirect: false,
             createAd: false,
@@ -21,8 +21,8 @@ class CreateAd extends React.Component {
             hls: ''
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     handleChange(event) {
@@ -80,7 +80,7 @@ class CreateAd extends React.Component {
                         .then(result => {
                             this.setState({createdAd: false})
                             if (result) {
-                                this.setState({redirect: true});
+                                this.setState({redirect: true})
                                 highlightNavigation('mpat-ad-insertion-new-ad', 'mpat-ad-insertion-all-ads')
                             } else {
                                 console.log('Error')
@@ -150,7 +150,7 @@ class CreateAd extends React.Component {
                     }
                 </div>
             </form>
-        );
+        )
     }
 }
 
