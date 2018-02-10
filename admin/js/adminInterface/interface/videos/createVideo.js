@@ -7,8 +7,7 @@ import {highlightNavigation} from '../../helper/wpRouting'
 import VideoPart from './videoPart'
 import {changeFormat} from '../../helper/format'
 import {getDuration, sendAndHandleRequest} from '../../handler/DaiHandler'
-import {createAd} from '../../handler/DBHandler'
-import {getAds} from '../../handler/DBHandler'
+import {createAd, createVideo, getAds} from '../../handler/DBHandler'
 
 
 class CreateVideo extends React.Component {
@@ -74,10 +73,18 @@ class CreateVideo extends React.Component {
         event.preventDefault()
         this.state.createVideo = true
         sendAndHandleRequest(this.createDaiJson()).then(result => {
-            this.createVideoJson(result)
+            createVideo(this.createVideoJson(result)).then(result => {
+                this.setState({
+                    createVideo: false,
+                    redirect: true
+                })
+            }, error => {
+                console.log('Error ',error)
+                this.setState({createVideo: false})
+            })
         }, error => {
-            console.log(error)
-            this.state.createVideo = false
+            console.log('Error ',error)
+            this.setState({createVideo: false})
         })
         return false
     }
