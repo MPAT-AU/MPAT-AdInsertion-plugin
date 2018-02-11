@@ -315,7 +315,8 @@ function getVideos() {
                 $ad_block_part_results = $wpdb->get_results( $wpdb->prepare(
                     'SELECT *
                     FROM ad_block_part
-                    WHERE ab_id = %d',
+                    WHERE ab_id = %d
+                    ORDER BY id ASC, order_nr ASC',
                     $ad_block_id
                 ));
 
@@ -329,7 +330,7 @@ function getVideos() {
                         $ad_block_part_ad_id
                     ));         
 
-                    $ad_block_part->ads = $ad_results;
+                    $ad_block_part->ad = $ad_results[0];
                     $ad_block->ad_block_parts[] = $ad_block_part;
                 }
                 
