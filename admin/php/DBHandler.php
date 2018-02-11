@@ -409,7 +409,7 @@ function getVideo($id) {
                         $ad_block_part_ad_id
                     ));         
 
-                    $ad_block_part->ads = $ad_results;
+                    $ad_block_part->ad = $ad_results[0];
                     $ad_block->ad_block_parts[] = $ad_block_part;
                 }
                 
