@@ -81,69 +81,101 @@ class VideoTable extends React.Component {
 
 
     handleVideoPreviewInNewTab(index) {
-        var win = window.open(this.state.videoDataArray[index].output_dash_url, '_blank');
+        const win = window.open(this.state.videoDataArray[index].output_dash_url, '_blank');
         win.focus();
     }
 
 
     render() {
 
-        const timelineContent = this.state.videoDataArray.map((video, index) => {
+        const timelineContent = this.state.videoDataArray.map((video,videoIndex) => {
 
-            console.log(video)
-
-            let fullDuration = video.duration
+            const fullDuration = video.duration
             let globalLeft = 0
             let output = []
 
-            //videoPart
-            video.video_parts.map((videoPart, p_index) => {
-                let partName = videoPart.part_name
-                let partFullDuration = parseInt(videoPart.part_full_duration)
-                let partDuration = parseInt(videoPart.part_duration)
-                let partWidth = Number((Math.floor((partFullDuration / fullDuration) * 100)).toFixed(1)) 
+            output.push(<div key='dotted-timeline-key' className='ad-inserter-timeline-dotted-border'></div>)
 
-                //output
-                let vpID = Math.floor((Math.random() * 1000000) + 1)
-                let htmlVideoPart = <div data-tip data-for={"video=" + vpID} key={"timeline-video-part-" + vpID}  className='ad-inserter-timeline-video-block' style={{width: (partWidth + "%")}}></div>
-                let videoPartTooltip = <ReactTooltip id={"video=" + vpID} key={"videoTooltip-" + vpID} place="top" type="dark" effect="float"><span>{"VideoPart: " + partName}</span></ReactTooltip>
+            video.video_parts.map((videoPart,partIndex) => {
+                const partName = videoPart.part_name
+                const partFullDuration = parseInt(videoPart.part_full_duration)
+                const partDuration = parseInt(videoPart.part_duration)
+                const partWidth = (partFullDuration / fullDuration) * 100
+                const partLeft = (parseInt(globalLeft) / fullDuration) * 100
+
+                const htmlVideoPart = <div data-tip data-for={'video-' + videoIndex + '-part-' + partIndex + 'tooltip'}
+                                         key={'video-' + videoIndex + '-part-' + partIndex + 'div'}
+                                         className='ad-inserter-timeline-video-block'
+                                         style={{width: (partWidth + "%"), left: (partLeft + '%')}}></div>
+                const videoPartTooltip = (
+                    <ReactTooltip id={'video-' + videoIndex + '-part-' + partIndex + 'tooltip'}
+                                  key={'video-' + videoIndex + '-part-' + partIndex + 'tooltip'}
+                                  place='top'
+                                  type='dark'
+                                  effect='float'
+                                  className='react-tooltip'>
+                        <h2>{partName}</h2>
+                        <p><span>START IN VIDEO </span><span>{changeFormat(globalLeft)}</span></p>
+                        <p><span>DURATION </span><span>{changeFormat(partDuration)}</span></p>
+                        <p><span>DURATION WITH ADS </span><span>{changeFormat(partFullDuration)}</span></p>
+                    </ReactTooltip>
+                )
                 output.push(htmlVideoPart)
                 output.push(videoPartTooltip)
 
-                if (videoPart.ad_blocks != undefined) {
-                    videoPart.ad_blocks.map((block, b_index) => {
-                        let blockDuration = parseInt(block.block_duration)   
-                        let blockStart = parseInt(block.block_start)
-                        let blockWidth = Number((Math.floor((blockDuration  / fullDuration) * 100)).toFixed(1)) 
-                        let blockLeft = Number((Math.floor(((parseInt(globalLeft) + blockStart) / fullDuration) * 100)).toFixed(1))
-    
-                        //adblock parts
-                        let adNames = ""
-                        block.ad_block_parts.map((adBlockPart,abp_index) => {               
-                            adBlockPart.ads.map((ad,a_index) => {
-                                adNames = adNames + ad.ad_name + " ; "
-                            })
+                if (videoPart.ad_blocks !== undefined) {
+                    videoPart.ad_blocks.map((block, adBlockIndex) => {
+                        const blockDuration = parseInt(block.block_duration)
+                        const blockStart = parseInt(block.block_start)
+                        const blockWidth = (blockDuration  / fullDuration) * 100
+                        const blockLeft = ((parseInt(globalLeft) + blockStart) / fullDuration) * 100
+
+                        const adBlockHead = (
+                            <div className='ad-inserter-tooltip-ad-block-header'>
+                                <h2>AD BLOCK</h2>
+                                <p><span>START IN VIDEO </span><span>{changeFormat(globalLeft + blockStart)}</span></p>
+                                <p><span>START IN PART </span><span>{changeFormat(blockStart)}</span></p>
+                                <p><span>DURATION </span><span>{changeFormat(blockDuration)}</span></p>
+                            </div>
+                        )
+
+                        const ads =  block.ad_block_parts.map((adBlockPart,partIndex) => {
+                            return (
+                                <p key={'video-' + videoIndex + '-part-' + partIndex + '-ad-block-' + adBlockPart.ab_id + '-ad-' + adBlockPart.ad_id + '-part-index-' + partIndex}>
+                                    <span>{(Number(adBlockPart.order_nr) + 1) + '. ' + adBlockPart.ad.ad_name + ' '}</span>
+                                    <span>{changeFormat(adBlockPart.ad.duration)}</span>
+                                </p>
+                            )
                         })
 
-                        console.log(adNames)
+                        const htmlBlock = <div data-tip data-for={'video-' + videoIndex + '-part-' + partIndex + '-ad-block-' + adBlockIndex + 'tooltip'}
+                                             key={'video-' + videoIndex + '-part-' + partIndex + '-ad-block-' + adBlockIndex + 'div'}
+                                             className='ad-inserter-timeline-ad-block'
+                                             style={{left: (blockLeft + '%'), width: (blockWidth + '%')}}></div>
 
-                        //output
-                        let bID = Math.floor((Math.random() * 1000000) + 1)
-                        let htmlBlock = <div data-tip data-for={'ad-'+ bID} key={"timeline-adblock-" + bID} className='ad-inserter-timeline-ad-block' style={{left: (blockLeft + "%"), width: (blockWidth + "%")}}></div>
-                        let htmlBlockTooltip = <ReactTooltip id={'ad-'+ bID} key={"blockTooltip-" + bID} place="top" type="dark" effect="float"><span>{"Ads: " + adNames}</span></ReactTooltip>
+                        const htmlBlockTooltip = (
+                            <ReactTooltip id={'video-' + videoIndex + '-part-' + partIndex + '-ad-block-' + adBlockIndex + 'tooltip'}
+                                          key={'video-' + videoIndex + '-part-' + partIndex + '-ad-block-' + adBlockIndex + 'tooltip'}
+                                          place='top'
+                                          type='dark'
+                                          effect='float'
+                                          className='react-tooltip'>
+                                {adBlockHead}
+                                {ads}
+                            </ReactTooltip>
+                        )
+
                         output.push(htmlBlock)
                         output.push(htmlBlockTooltip)
-        
-                        globalLeft = globalLeft + parseInt(blockDuration)
+
+                        globalLeft += blockDuration
                     })
                 }
-                globalLeft = globalLeft + parseInt(partFullDuration)
+                globalLeft = globalLeft + parseInt(partDuration)
             })
 
-            console.log(output)
             return output
-        })    
-
+        })
 
         const tableContent = this.state.videoDataArray.map((video, index) => {
             return [

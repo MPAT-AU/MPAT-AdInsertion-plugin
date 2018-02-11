@@ -743,35 +743,93 @@
 }
 
 
-/* test timeline */
+/* timeline */
 .ad-inserter-timeline {
     position: relative;
     width: 100%;
-    height: 40px;
+    height: 20px;
+    border-width: 6px 2px;
+    border-style: solid;
+    border-color: #595959;
 }
 
 .ad-inserter-timeline-video-block {
-    border: 2px solid #43B4F9;
-    border-radius: 8px;
-    height: 40px;
+    position: absolute;
+    z-index: 2;
+    margin-left: -1px;
+    border-width: 0 1px;
+    border-style: solid;
+    border-color: #595959;
+    height: 20px;
+    background-color: rgba(67, 180, 249, 0.15);
 }
 
-.ad-inserter-timeline-video-block#video-block-id1 {
-    width: 25%;
+.ad-inserter-timeline-video-block:hover {
+    background-color: rgba(67, 180, 249, 0.30);
 }
 
 .ad-inserter-timeline-ad-block {
-    border: 4px solid #25C1B2;
-    background-color: #25C1B2;
     position: absolute;
-    border-radius: 8px;
-    height: 40px;
-    top: -2px;
+    z-index: 3;
+    margin-left: -1px;
+    border-width: 0 1px;
+    border-style: solid;
+    border-color: #595959;
+    background-color: rgba(37, 193, 178, 0.50);
+    height: 20px;
 }
 
-.ad-inserter-timeline-ad-block#ad-block-id1 {
-    left: 50%;
-    width: 10%;
+.ad-inserter-timeline-ad-block:hover {
+    background-color: rgba(37, 193, 178, 0.80);
+}
+
+.ad-inserter-timeline-dotted-border {
+    position: absolute;
+    z-index: 1;
+    height: 22px;
+    width: 100%;
+    margin-top: -5px;
+    border-width: 4px 0;
+    border-style: dotted;
+    border-color: #f4f4f4;
+}
+
+/* timeline tooltips */
+.ad-inserter-timeline .react-tooltip h2, .ad-inserter-timeline .react-tooltip p {
+    margin: 0;
+    padding: 0 5px;
+}
+
+.ad-inserter-timeline .react-tooltip p {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ad-inserter-timeline .react-tooltip p:first-of-type {
+    padding-top: 5px;
+}
+
+.ad-inserter-timeline .react-tooltip p span:first-child {
+    padding-right: 20px;
+}
+
+.ad-inserter-timeline .react-tooltip h2 {
+    color: #ffffff;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ffffff;
+}
+
+.ad-inserter-timeline .react-tooltip .ad-inserter-tooltip-ad-block-header h2 {
+    color: #ffffff;
+}
+
+.ad-inserter-timeline .react-tooltip .ad-inserter-tooltip-ad-block-header h2, .ad-inserter-timeline .react-tooltip .ad-inserter-tooltip-ad-block-header p {
+    margin: 0;
+}
+
+.ad-inserter-timeline .react-tooltip .ad-inserter-tooltip-ad-block-header p:last-of-type {
+    border-bottom: 1px solid #ffffff;
+    padding-bottom: 5px;
 }
 
 /* ========== video table ========== */
