@@ -274,13 +274,13 @@ function getVideos() {
 					WHERE vp.id = ab.vp_id AND ab.id = abp.ab_id
 					GROUP BY vp.v_id) noa ON v.id = noa.v_id
 			LEFT JOIN (SELECT v.id AS v_id, SUM(vp.duration) + SUM(IFNULL(ad_block_duration,0)) AS duration
-                    FROM video v, video_part vp
-                    LEFT JOIN (SELECT ab.vp_id, ab.id, SUM(ad.duration) as ad_block_duration
-	                    FROM ad_block ab, ad_block_part abp, ad
-	                    WHERE ab.id = abp.ab_id AND abp.ad_id = ad.id
-	                    GROUP BY ab.id) ad_sum ON vp.id = ad_sum.vp_id
-                    WHERE v.id = vp.v_id
-                    GROUP BY v.id) dur ON v.id = dur.v_id'
+	                    FROM video v, video_part vp
+                        LEFT JOIN (SELECT ab.vp_id, SUM(ad.duration) as ad_block_duration
+				                    FROM ad_block ab, ad_block_part abp, ad
+	    		                    WHERE ab.id = abp.ab_id AND abp.ad_id = ad.id
+	    		        GROUP BY ab.vp_id) ad_sum ON vp.id = ad_sum.vp_id
+	    WHERE v.id = vp.v_id
+	    GROUP BY v.id) dur ON v.id = dur.v_id'
     );
  
     foreach( $videos as $video ) {
