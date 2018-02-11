@@ -98,7 +98,8 @@ class CreateAd extends React.Component {
         return (
             <form className='ad-inserter-create-ad' onSubmit={this.handleSubmit}>
                 <div className='ad-inserter-lable-input-row'>
-                    <label className='ad-inserter-input-label'>ad name</label>
+                    <label className='ad-inserter-input-label'
+                           htmlFor='name'>ad name</label>
                     <input className='ad-inserter-input'
                            id='name'
                            placeholder='name'
@@ -110,7 +111,8 @@ class CreateAd extends React.Component {
                            onChange={this.handleChange}/>
                 </div>
                 <div className='ad-inserter-lable-input-row'>
-                    <label className='ad-inserter-input-label'>dash url</label>
+                    <label className='ad-inserter-input-label'
+                           htmlFor='dash'>dash url</label>
                     <input className='ad-inserter-input'
                            id='dash'
                            placeholder='url (.mpd)'
@@ -122,7 +124,8 @@ class CreateAd extends React.Component {
                            onChange={this.handleChange}/>
                 </div>
                 <div className='ad-inserter-lable-input-row'>
-                    <label className='ad-inserter-input-label'>hls url</label>
+                    <label className='ad-inserter-input-label'
+                           htmlFor='hls'>hls url</label>
                     <input className='ad-inserter-input'
                            id='hls'
                            placeholder='url (.m3u8)'
