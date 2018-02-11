@@ -47,7 +47,7 @@ class AllVideos extends React.Component {
                 :
                 <div>
                     <div className='ad-inserter-headline-with-button'>
-                        <h2 className='ad-inserter-h2'>Edit Videos</h2>
+                        <h2 className='ad-inserter-h2'>Edit Video</h2>
                         <button className='ad-inserter-button-white-blue'
                                 onClick={() => this.changeValueOfShowTable()}>
                             <i className="material-icons">chevron_left</i>back

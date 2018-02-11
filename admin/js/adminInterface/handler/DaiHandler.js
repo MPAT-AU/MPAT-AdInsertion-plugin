@@ -110,7 +110,6 @@ export function getDuration(url) {
                         if (isInt(h) && isInt(m) && isInt(s)) {
                             duration = (h * 3600000) + (m * 60000) + (s)
                         }
-                        console.log("Final Duration: " + duration)
                         resolve(duration)
 
                     }
