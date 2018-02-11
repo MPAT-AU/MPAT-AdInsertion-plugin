@@ -1,6 +1,7 @@
 'use strict'
 
 import React from 'react'
+import ReactTooltip from 'react-tooltip'
 import {changeFormat} from '../../helper/format'
 import AdBlock from './adBlock'
 
@@ -59,6 +60,7 @@ class VideoPart extends React.Component {
                 <AdBlock
                     key={'ad-block-' + index}
                     adBlockNumber={index+1}
+                    partNumber={this.props.part.part_nr}
                     adBlock={this.props.part.ad_blocks[index]}
                     allAdsArray={this.props.allAdsArray}
                     onClickDeleteAdBlock={() => this.props.onClickDeleteAdBlock(this.props.part.part_nr, index)}
@@ -89,10 +91,21 @@ class VideoPart extends React.Component {
                         </div>
                         <p className='ad-inserter-h3-bold'>{(this.props.part.part_nr + 1) + '. video part'}<span className='ad-inserter-h3'>{this.props.part.name}</span></p>
                     </div>
-                    <i className="material-icons delete"
+                    <i className='material-icons delete'
+                       data-tip='React-tooltip'
+                       data-delay-show='500'
+                       data-for={'delete-video-part-' + this.props.part.part_nr}
                        onClick={this.handelDelete.bind(this)}>
                         delete
                     </i>
+                    <ReactTooltip place='top'
+                                  type='dark'
+                                  effect='solid'
+                                  className='ad-inserter-react-tooltip'
+                                  id={'delete-video-part-' + this.props.part.part_nr}
+                                  delayShow={500}>
+                        <span>delete video part</span>
+                    </ReactTooltip>
                 </div>
                 <div className='ad-inserter-video-part-subheader'>
                     <div>
