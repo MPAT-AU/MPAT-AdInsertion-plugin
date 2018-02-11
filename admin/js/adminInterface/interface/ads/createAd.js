@@ -105,7 +105,7 @@ class CreateAd extends React.Component {
                            placeholder='name'
                            title='Insert a name for this ad.'
                            type='text'
-                           maxLength='2000'
+                           maxLength='1000'
                            required
                            value={this.state.name}
                            onChange={this.handleChange}/>

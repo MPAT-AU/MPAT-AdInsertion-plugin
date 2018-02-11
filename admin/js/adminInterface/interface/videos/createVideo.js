@@ -470,7 +470,7 @@ class CreateVideo extends React.Component {
                                placeholder='name'
                                title='Insert a name for this video.'
                                type='text'
-                               maxLength='2000'
+                               maxLength='1000'
                                required
                                value={this.state.video.name}
                                onChange={this.handleChangeName.bind(this)}/>

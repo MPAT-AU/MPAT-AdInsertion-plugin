@@ -112,7 +112,7 @@ class VideoPart extends React.Component {
                                placeholder='name'
                                title='Insert a name for this video part.'
                                type='text'
-                               maxLength='2000'
+                               maxLength='1000'
                                required
                                value={this.props.part.name}
                                onChange={this.handleChange}/>

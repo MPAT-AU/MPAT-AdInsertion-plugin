@@ -69,7 +69,7 @@ class AdBlock extends React.Component {
                                            placeholder='name'
                                            title='Insert a name for this ad.'
                                            type='text'
-                                           maxLength='2000'
+                                           maxLength='1000'
                                            required
                                            value={this.props.adBlock.addAdName}
                                            onChange={(event) => this.props.onChangeAddAdAdBlock(event.target.id, event.target.value)}/>
