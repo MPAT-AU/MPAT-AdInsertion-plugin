@@ -316,7 +316,7 @@ function getVideos() {
                     'SELECT *
                     FROM ad_block_part
                     WHERE ab_id = %d
-                    ORDER BY id ASC, order_nr ASC',
+                    ORDER BY ab_id ASC, order_nr ASC',
                     $ad_block_id
                 ));
 
