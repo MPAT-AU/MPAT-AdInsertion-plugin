@@ -1,5 +1,6 @@
 import {changeFormat} from '../../helper/format'
 import React from 'react'
+import ReactTooltip from 'react-tooltip'
 import LoadingButton from '../loadingButton'
 
 class AdBlock extends React.Component {
@@ -148,10 +149,21 @@ class AdBlock extends React.Component {
                     </div>
                     <div>
                         <span>{changeFormat(ad.duration)}</span>
-                        <i className="material-icons"
+                        <i className='material-icons'
+                           data-tip='React-tooltip'
+                           data-delay-show='500'
+                           data-for={'delete-ad-' + index + '-from-adBlock-' + this.props.adBlockNumber + '-in-part-' + this.props.partNumber}
                            onClick={() => this.props.onClickRemoveAdAdBlock(index)}>
                             delete
                         </i>
+                        <ReactTooltip place='top'
+                                      type='dark'
+                                      effect='solid'
+                                      className='ad-inserter-react-tooltip'
+                                      id={'delete-ad-' + index + '-from-adBlock-' + this.props.adBlockNumber + '-in-part-' + this.props.partNumber}
+                                      delayShow={500}>
+                            <span>remove ad from ad block</span>
+                        </ReactTooltip>
                     </div>
                 </div>
             )
@@ -161,10 +173,21 @@ class AdBlock extends React.Component {
             <div className='ad-inserter-ad-block-container'>
                 <div className='ad-inserter-ad-block-header'>
                     <p className='ad-inserter-h3-bold'>{this.props.adBlockNumber + '. ad block'}</p>
-                    <i className="material-icons"
+                    <i className='material-icons'
+                       data-tip='React-tooltip'
+                       data-delay-show='500'
+                       data-for={'delete-ad-block' + this.props.adBlockNumber + '-in-part-' + this.props.partNumber}
                        onClick={() => this.props.onClickDeleteAdBlock()}>
                         delete
                     </i>
+                    <ReactTooltip place='top'
+                                  type='dark'
+                                  effect='solid'
+                                  className='ad-inserter-react-tooltip'
+                                  id={'delete-ad-block' + this.props.adBlockNumber + '-in-part-' + this.props.partNumber}
+                                  delayShow={500}>
+                        <span>delete ad block</span>
+                    </ReactTooltip>
                 </div>
                 <div className='ad-inserter-ad-block-time-subheader'>
                     <p className='ad-inserter-h3'>start<span>{changeFormat(this.props.adBlock.sec_in_part)}</span></p>
