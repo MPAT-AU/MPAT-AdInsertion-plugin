@@ -246,7 +246,7 @@ class VideoTable extends React.Component {
                            data-tip="React-tooltip"
                            data-delay-show='500'
                            data-for={'edit-' + index}
-                           onClick={this.handleClickOnEdit.bind(this, index)}>
+                           onClick={() => this.props.onClickOnEditVideo(video.id)}>
                             mode_edit
                         </i>
                         <ReactTooltip place='top'
