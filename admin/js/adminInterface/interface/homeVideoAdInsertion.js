@@ -89,7 +89,7 @@ class HomeVideoAdInsertion extends React.Component {
                                     See all your new created videos here. Just press the button to see a full list of already created videos.
                                 </p>
                                 <div className='ad-inserter-start-page-image-container'>
-                                    <img src='https://avatars1.githubusercontent.com/u/29566466?s=200&v=4' />
+                                    <img src='http://img1.img1.de/allAdInsertedVideos48005d97.gif' />
                                 </div>
                                 <div className='ad-inserter-start-page-button-container'>
                                     <Link to={'/wp/wp-admin/admin.php?page=mpat-ad-insertion-all-ad-inserted-videos'}>
@@ -109,7 +109,7 @@ class HomeVideoAdInsertion extends React.Component {
                                     Create your new video here. Simply press the button and put together your videos and ads easily.
                                 </p>
                                 <div className='ad-inserter-start-page-image-container'>
-                                    <img src='https://avatars1.githubusercontent.com/u/29566466?s=200&v=4' />
+                                    <img src='http://img1.img1.de/newVideo4808dd20.gif' />
                                 </div>
                                 <div className='ad-inserter-start-page-button-container'>
                                     <Link to={'/wp/wp-admin/admin.php?page=mpat-ad-insertion-new-video'}>
@@ -135,7 +135,7 @@ class HomeVideoAdInsertion extends React.Component {
                                     See all your ads here. Just press the button to see a full list of already added ads.
                                 </p>
                                 <div className='ad-inserter-start-page-image-container'>
-                                    <img src='https://avatars1.githubusercontent.com/u/29566466?s=200&v=4' />
+                                    <img src='http://img1.img1.de/allAds480489ae.gif' />
                                 </div>
                                 <div className='ad-inserter-start-page-button-container'>
                                     <Link to={'/wp/wp-admin/admin.php?page=mpat-ad-insertion-all-ads'}>
@@ -152,10 +152,10 @@ class HomeVideoAdInsertion extends React.Component {
                             <h2>New Ad</h2>
                             <div className='ad-inserter-section-third-level-container'>
                                 <p className='ad-inserter-section-paragraph'>
-                                    Add your ads here. Simply press the button and save your ads easily.
+                                    Add all of your ads here. Simply press the button and to create a new add easily.
                                 </p>
                                 <div className='ad-inserter-start-page-image-container'>
-                                    <img src='https://avatars1.githubusercontent.com/u/29566466?s=200&v=4' />
+                                    <img src='http://img1.img1.de/newAd480c66b4.gif' />
                                 </div>
 
                                 <div className='ad-inserter-start-page-button-container'>

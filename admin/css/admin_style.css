@@ -721,12 +721,15 @@
 
 .ad-inserter-section-second-level-container {
     display: flex;
+    justify-content: space-between;
     flex-direction: column;
+    padding: 0px 10px;
 }
 
 .ad-inserter-start-page-image-container {
     display: flex;
     justify-content: center;
+    padding: 5px 0px;
 }
 
 .ad-inserter-section-paragraph {
